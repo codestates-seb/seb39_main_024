@@ -1,9 +1,23 @@
 # seb39_main_024
 
+## Main-Project 개발 일정
+### 1. Develop ~ 10/5
+  1. Week 1
+    
+      - 아이디어 회의 및 주제 선정 (Team)
+      - 요구사항 정의서 작성 (Team)
+      - 화면정의서 작성 (FE)
+      - 테이블 명세서 작성 (BE)
+      - API 명세서 작성 (BE)
+### 2. SourceFreezing, BugFix ~10/9
+### 3. FinalTest, Deployment ~10/12
+
+
+## Commit Message Convention
 - FEAT : 새로운 기능의 추가
-- FIX: 버그 수정
-- DOCS: 문서 수정
-- STYLE: 스타일 관련 기능(코드 포맷팅, 세미콜론 누락, 코드 자체의 변경이 없는 경우)
 - REFACTOR: 코드 리펙토링
 - TEST: 테스트 코트, 리펙토링 테스트 코드 추가
-- CHORE: 빌드 업무 수정, 패키지 매니저 수정(ex .gitignore 수정 같은 경우)
+
+***
+- Gitgub Project 탭의 칸반보드를 이용하여 일정관리 예정
+- Discord, Microsoft Teams, Google Meet를 통해 소통
