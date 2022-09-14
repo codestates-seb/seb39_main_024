@@ -19,5 +19,5 @@
 - TEST: 테스트 코트, 리펙토링 테스트 코드 추가
 
 ***
-- Gitgub Project 탭의 칸반보드를 이용하여 일정관리 예정
+- Github Project 탭의 칸반보드를 이용하여 일정관리 예정
 - Discord, Microsoft Teams, Google Meet를 통해 소통
