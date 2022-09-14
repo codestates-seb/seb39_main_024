@@ -1,4 +1,4 @@
-# seb39_main_024
+# FLY-AWAY!
 
 ## Main-Project 개발 일정
 ### 1. Develop ~ 10/5  
