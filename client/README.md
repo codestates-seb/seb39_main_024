@@ -8,8 +8,10 @@
 ### 4. Week 4 (10/05 ~ 10/12)
 
 ## DevelopCancel changes
-- Tailwind
+- Tailwind CSS
 - React
 - Typescript
 - Axios
 - Recoil
+- ESlint
+- Prettier
