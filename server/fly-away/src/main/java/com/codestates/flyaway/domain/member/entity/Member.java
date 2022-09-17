@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.*;
+import static lombok.AccessLevel.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor  //
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
 public class Member extends Auditable {
 
     @Id
