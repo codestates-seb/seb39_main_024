@@ -23,7 +23,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public BoardResponseDto create(Create createDto) {
+    public BoardResponseDto create(BoardDto.Create createDto) {
 
         Board board = new Board(createDto.getTitle(), createDto.getContent());
         boardRepository.save(board);
