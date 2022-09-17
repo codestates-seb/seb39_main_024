@@ -30,7 +30,7 @@ public class Member extends Auditable {
     private String name;
     private String email;
     private String password;
-    private long totalRecord;
+    private Long totalRecord;
 
 
     //==================

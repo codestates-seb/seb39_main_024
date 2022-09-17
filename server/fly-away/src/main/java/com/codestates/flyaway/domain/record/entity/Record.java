@@ -25,7 +25,7 @@ public class Record {
 
 //    @Column(columnDefinition = "")
     private String date;
-    private long record;
+    private Long record;
 
 
     public Record(String date, long record) {
