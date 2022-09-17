@@ -31,10 +31,10 @@ class InsertRecordTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0);
-        Member member2 = new Member(2L, new ArrayList<>(), "park","member2@gmail.com", "pw",  0);
-        Member member3 = new Member(3L, new ArrayList<>(), "lee", "member3@gmail.com", "pw", 0);
-        Member member4 = new Member(4L, new ArrayList<>(), "code","member4@gmail.com", "pw",  0);
+        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", null);
+        Member member2 = new Member(2L, new ArrayList<>(), "park","member2@gmail.com", "pw",  null);
+        Member member3 = new Member(3L, new ArrayList<>(), "lee", "member3@gmail.com", "pw", null);
+        Member member4 = new Member(4L, new ArrayList<>(), "code","member4@gmail.com", "pw",  null);
         memberRepository.save(member1);
         memberRepository.save(member2);
         memberRepository.save(member3);
@@ -49,11 +49,13 @@ class InsertRecordTest {
         InsertRequestDto recordDto = new InsertRequestDto(1800);
         recordService.insertRecord(1L, recordDto);
 
-        Record record = recordRepository.findByMemberIdAndDate(1L, LocalDate.now().toString())
-                .orElseThrow(() -> new RuntimeException("RuntimeException!!!"));
+        InsertRequestDto recordDto2 = new InsertRequestDto(300);
+        recordService.insertRecord(1L, recordDto2);
+
+        Record record = recordRepository.findByMemberIdAndDate(1L, LocalDate.now().toString()).get();
 
         assertThat(record.getMember().getName()).isEqualTo("kim");
-        assertThat(record.getRecord()).isEqualTo(recordDto.getRecord());
+        assertThat(record.getRecord()).isEqualTo(recordDto.getRecord() + recordDto2.getRecord());
     }
 
 

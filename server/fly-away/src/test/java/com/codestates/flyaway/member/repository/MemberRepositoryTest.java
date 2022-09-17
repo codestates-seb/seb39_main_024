@@ -27,7 +27,7 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0);
+        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", null);
 
         Record record1 = new Record(now().toString(), 10);
         record1.setMember(member1);
@@ -43,8 +43,7 @@ class MemberRepositoryTest {
     @DisplayName("회원의 모든 정보를 가져오기 (findByIdFetch)")
     @Test
     void fetchJoinTest() {
-        Member findMember = memberRepository.findByIdFetch(1)
-                .orElseThrow(() -> new RuntimeException("error"));
+        Member findMember = memberRepository.findByIdFetch(1).get();
 
         assertThat(findMember.getRecords()).hasSize(2);
         assertThat(findMember.getEmail()).isEqualTo("member1@gmail.com");

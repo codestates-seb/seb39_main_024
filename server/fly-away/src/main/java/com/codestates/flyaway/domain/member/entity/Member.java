@@ -37,6 +37,10 @@ public class Member extends Auditable {
 
 
     public void addTotalRecord(long record) {
-        this.totalRecord += record;
+        if (this.totalRecord == null) {
+            this.totalRecord = record;
+        } else {
+            this.totalRecord += record;
+        }
     }
 }
