@@ -25,15 +25,15 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity createArticle(@Validated @RequestBody Create createDto){
+    public ResponseEntity write(@Validated @RequestBody Create createDto){
 
-        BoardResponseDto created = boardService.create(createDto);
+        BoardResponseDto wrote = boardService.create(createDto);
 
-        return new ResponseEntity(new SingleResponseDto(created), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto(wrote), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{boardId}/update")
-    public ResponseEntity updateArticle(@PathVariable("boardId") long boardId,
+    @PatchMapping("/{boardId}")
+    public ResponseEntity update(@PathVariable("boardId") Long boardId,
                                         @RequestBody Update updateDto) {
 
         BoardResponseDto updated = boardService.update(updateDto);
@@ -42,15 +42,15 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity readArticle(@PathVariable("boardId") long boardId) {
+    public ResponseEntity read(@PathVariable("boardId") Long boardId) {
 
         BoardResponseDto read = boardService.read(boardId);
 
         return new ResponseEntity(new SingleResponseDto(read), HttpStatus.OK);
     }
 
-    @GetMapping()
-    public ResponseEntity readAllArticle(@RequestParam int page,
+    @GetMapping
+    public ResponseEntity readAll(@RequestParam int page,
                                          @RequestParam int size) {
 
         Page<Board> boardPage = boardService.readAll(page, size);
@@ -61,7 +61,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity deleteArticle(@PathVariable("boardId") long boardId) {
+    public ResponseEntity delete(@PathVariable("boardId") Long boardId) {
 
         boardService.delete(boardId);
 

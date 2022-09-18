@@ -28,7 +28,7 @@ public class BoardDto {
     public static class Update {
 
         @Nullable
-        private long boardId;
+        private Long boardId;
         @NotBlank
         private String title;
         @NotBlank
@@ -40,7 +40,7 @@ public class BoardDto {
     @AllArgsConstructor
     public static class BoardResponseDto {
 
-        private long boardId;
+        private Long boardId;
         private String title;
         private String content;
         private int viewCount;
@@ -61,7 +61,7 @@ public class BoardDto {
     @AllArgsConstructor
     public static class MultiBoardDto {
 
-        private long boardId;
+        private Long boardId;
         private String title;
         private String content;
         private LocalDateTime createdAt;
