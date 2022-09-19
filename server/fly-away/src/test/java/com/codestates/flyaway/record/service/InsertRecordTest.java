@@ -30,10 +30,10 @@ class InsertRecordTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0L);
-        Member member2 = new Member(2L, new ArrayList<>(), "park","member2@gmail.com", "pw",  0L);
-        Member member3 = new Member(3L, new ArrayList<>(), "lee", "member3@gmail.com", "pw", 0L);
-        Member member4 = new Member(4L, new ArrayList<>(), "code","member4@gmail.com", "pw",  0L);
+        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw");
+        Member member2 = new Member(2L, new ArrayList<>(), "park","member2@gmail.com", "pw");
+        Member member3 = new Member(3L, new ArrayList<>(), "lee", "member3@gmail.com", "pw");
+        Member member4 = new Member(4L, new ArrayList<>(), "code","member4@gmail.com", "pw");
         memberRepository.save(member1);
         memberRepository.save(member2);
         memberRepository.save(member3);

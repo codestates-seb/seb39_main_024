@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static java.time.LocalDate.now;
@@ -26,7 +25,7 @@ class RecordRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0L);
+        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw");
 
         Record record1 = new Record(now(), 10);
         record1.setMember(member1);
@@ -40,7 +39,7 @@ class RecordRepositoryTest {
     @Test
     void findRecordTest() {
 
-        Record record = recordRepository.findByMemberIdAndDate(1L, LocalDate.now()).get();
+        Record record = recordRepository.findByMemberIdAndDate(1L, now()).get();
 
         assertThat(record.getMember().getId()).isEqualTo(1);
         assertThat(record.getRecord()).isEqualTo(10);
