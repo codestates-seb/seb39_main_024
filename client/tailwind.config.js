@@ -1,8 +1,17 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js,jsx,ts,tsx}"],
+  content: ['./src/**/*.{html,js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pink: '#FFDADA',
+      },
+    },
+    screens: {
+      sm: { max: '767px' },
+      // => @media (max: '767px') { ... }
+      md: { min: '768px' },
+    },
   },
   plugins: [],
 };
