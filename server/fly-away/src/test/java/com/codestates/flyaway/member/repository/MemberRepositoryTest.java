@@ -17,7 +17,6 @@ import static java.time.LocalDate.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Transactional
 class MemberRepositoryTest {
 
     @Autowired
@@ -27,11 +26,11 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", null);
+        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0L);
 
-        Record record1 = new Record(now().toString(), 10);
+        Record record1 = new Record(now(), 10);
         record1.setMember(member1);
-        Record record2 = new Record(now().toString(), 20);
+        Record record2 = new Record(now(), 20);
         record2.setMember(member1);
 
         memberRepository.save(member1);
@@ -46,6 +45,7 @@ class MemberRepositoryTest {
         Member findMember = memberRepository.findByIdFetch(1).get();
 
         assertThat(findMember.getRecords()).hasSize(2);
+        assertThat(findMember.getRecords().get(0).getRecord()).isEqualTo(10);
         assertThat(findMember.getEmail()).isEqualTo("member1@gmail.com");
     }
 }
