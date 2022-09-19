@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
+
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
@@ -23,12 +25,11 @@ public class Record {
     @JoinColumn(name = "member_id")
     private Member member;
 
-//    @Column(columnDefinition = "")
-    private String date;
+    private LocalDate date;
     private Long record;
 
 
-    public Record(String date, long record) {
+    public Record(LocalDate date, long record) {
         this.date = date;
         this.record = record;
     }

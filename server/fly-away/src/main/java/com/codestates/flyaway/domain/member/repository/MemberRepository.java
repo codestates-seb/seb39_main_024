@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query(value = "select distinct m from Member m join fetch m.records where m.id  = :memberId")
-    Optional<Member> findByIdFetch(@Param("memberId") long memberId);
+    @Query(value = "select distinct m from Member m left join fetch m.records where m.id = :id")
+    Optional<Member> findByIdFetch(@Param("id") long memberId);
+
+    Optional<Member> findByEmail(String email);
 
 }

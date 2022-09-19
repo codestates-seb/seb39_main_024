@@ -4,9 +4,11 @@ import com.codestates.flyaway.domain.record.entity.Record;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 @Getter
 public class RecordDto {
@@ -16,7 +18,7 @@ public class RecordDto {
     @AllArgsConstructor
     public static class InsertRequestDto {
         @Positive
-        @NotEmpty
+        @NotNull
         private long record;
     }
 
@@ -25,7 +27,7 @@ public class RecordDto {
     @AllArgsConstructor
     public static class InsertResponseDto {
         private long memberId;
-        private String date;
+        private LocalDate date;
         private long record;
 
         public static InsertResponseDto recordToInsertResponse(long memberId, Record record) {
@@ -36,11 +38,11 @@ public class RecordDto {
         }
     }
 
-    @Getter
+    @Getter@Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RecordProfileResponseDto {
-        private String date;
+        private LocalDate date;
         private long record;
     }
 }
