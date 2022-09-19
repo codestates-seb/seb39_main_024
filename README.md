@@ -26,8 +26,8 @@
 
 ## Commit Message Convention
 - FEAT : 새로운 기능의 추가
-- REFACTOR: 코드 리펙토링
-- TEST: 테스트 코트, 리펙토링 테스트 코드 추가
+- REFACTOR: 코드 리팩토링
+- TEST: 테스트 코트, 리팩토링 테스트 코드 추가
 
 ***
 - Github Project 탭의 칸반보드를 이용하여 일정관리 예정
