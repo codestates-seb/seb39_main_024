@@ -20,10 +20,20 @@ public class Comment extends Auditable {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardId")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     public Comment(String content) {
+        this.content = content;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getComments().add(this);
+    }
+
+    public void update(Long id, String content) {
+        this.id = id;
         this.content = content;
     }
 }
