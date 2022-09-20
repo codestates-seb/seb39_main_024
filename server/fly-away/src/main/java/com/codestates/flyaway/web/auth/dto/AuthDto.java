@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 
 @Getter
 public class AuthDto {
@@ -23,7 +24,7 @@ public class AuthDto {
         private String password;
         private MultipartFile image;  ////
 
-        public Member joinRequestToMember() {   ////비밀번호 암호화
+        public Member toEntity() {   ////비밀번호 암호화
             return new Member(this.getName(), this.getEmail(), this.getPassword());
         }
     }
@@ -34,6 +35,11 @@ public class AuthDto {
         private Long memberId;
         private String name;
         private String email;
+        private LocalDateTime createdAt;
+
+        public static JoinResponseDto toJoinResponse(Member member) {
+            return new JoinResponseDto(member.getId(), member.getName(), member.getEmail(), member.getCreatedAt());
+        }
     }
 
 

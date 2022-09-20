@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,7 @@ import static com.codestates.flyaway.web.record.dto.RecordDto.*;
 @Getter
 public class MemberDto {
 
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Getter @NoArgsConstructor @AllArgsConstructor
     public static class MemberProfileResponseDto {
         private long id;
         private String name;
@@ -34,6 +33,42 @@ public class MemberDto {
                             .map(record -> new RecordProfileResponseDto(record.getDate(), record.getRecord()))
                             .collect(Collectors.toList()),
                     totalRecord);
+        }
+    }
+
+    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+    public static class UpdateRequestDto {
+
+        private Long memberId;
+        private String name;
+        private String email;
+        private String password;
+
+        public Member toMember() {
+            return new Member(this.getName(), this.getEmail(), this.getPassword());
+        }
+    }
+    @Getter @NoArgsConstructor @AllArgsConstructor
+    public static class UpdateResponseDto {
+        private Long memberId;
+        private String name;
+        private String email;
+        private LocalDateTime modifiedAt;
+
+        public static UpdateResponseDto toUpdateResponse(Member member) {
+            return new UpdateResponseDto(member.getId(), member.getName(), member.getEmail(), member.getModifiedAt());
+        }
+    }
+
+    @Getter @NoArgsConstructor @AllArgsConstructor
+    public static class MemberListDto {
+        private Long memberId;
+        private String name;
+        private String email;
+        private LocalDateTime modifiedAt;
+
+        public static UpdateResponseDto toUpdateResponse(Member member) {
+            return new UpdateResponseDto(member.getId(), member.getName(), member.getEmail(), member.getModifiedAt());
         }
     }
 }
