@@ -19,7 +19,7 @@ const Home = lazy(() => import('./pages/Home'));
 const Join = lazy(() => import('./pages/auth/Join'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Footer = lazy(() => import('./containers/Footer'));
-const Main = lazy(() => import('./containers/Main'));
+const Layout = lazy(() => import('./containers/Layout'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 
 function App() {
@@ -28,16 +28,16 @@ function App() {
       <Suspense fallback={<p>로딩중</p>}>
         <Topbar />
         <Navbar />
-        <Main>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/videos/all" element={<VideosAll />} />
+            <Route path="/videos" element={<VideosAll />} />
             <Route path="/videos/popularity" element={<Popularity />} />
             <Route path="/videos/training" element={<Training />} />
             <Route path="/videos/stretching" element={<Stretching />} />
-            <Route path="/posts/all" element={<PostsAll />} />
+            <Route path="/posts" element={<PostsAll />} />
             <Route path="/posts/free" element={<Free />} />
             <Route path="/posts/meal" element={<Meal />} />
             <Route path="/posts/record" element={<Record />} />
@@ -46,7 +46,7 @@ function App() {
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
           </Routes>
-        </Main>
+        </Layout>
         <Footer />
       </Suspense>
     </RecoilRoot>

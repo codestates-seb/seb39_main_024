@@ -6,6 +6,12 @@ module.exports = {
       colors: {
         pink: '#FFDADA',
       },
+      width: {
+        768: '768px',
+      },
+    },
+    maxWidth: {
+      480: '480px',
     },
     screens: {
       sm: { max: '767px' },
