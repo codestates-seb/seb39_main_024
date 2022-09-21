@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MemberDto {
         private List<RecordProfileResponseDto> records;
         private long totalRecord;
 
-        public static MemberProfileResponseDto memberToProfileResponse(Member member, long totalRecord) {
+        public static MemberProfileResponseDto toProfileResponse(Member member, long totalRecord) {
             return new MemberProfileResponseDto(
                     member.getId(),
                     member.getName(),
@@ -38,15 +39,10 @@ public class MemberDto {
 
     @Getter @Setter @NoArgsConstructor @AllArgsConstructor
     public static class UpdateRequestDto {
-
         private Long memberId;
         private String name;
-        private String email;
         private String password;
-
-        public Member toMember() {
-            return new Member(this.getName(), this.getEmail(), this.getPassword());
-        }
+        private MultipartFile image;
     }
     @Getter @NoArgsConstructor @AllArgsConstructor
     public static class UpdateResponseDto {

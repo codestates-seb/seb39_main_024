@@ -2,8 +2,11 @@ package com.codestates.flyaway.domain.member.service;
 
 import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.domain.member.repository.MemberRepository;
+import com.codestates.flyaway.domain.memberimage.MemberImage;
+import com.codestates.flyaway.domain.memberimage.service.MemberImageService;
 import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.domain.record.repository.RecordRepository;
+import com.codestates.flyaway.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +15,11 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.auth.dto.AuthDto.*;
 import static com.codestates.flyaway.web.auth.dto.AuthDto.JoinResponseDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
@@ -26,10 +32,11 @@ import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponseDto.
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberImageService memberImageService;
     private final RecordRepository recordRepository;
 
-    private final String REG_EMAIL = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
-    private final String REG_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@!%*#?&])[A-Za-z\\d@!%*#?&]{8,}$";  // 최소 8글자, 글자, 숫자, 특수문자 1개
+    private static final String REG_EMAIL = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
+    private static final String REG_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@!%*#?&])[A-Za-z\\d@!%*#?&]{8,}$";  //비번 최소 8글자, 글자, 숫자, 특수문자 1개
 
 
     /**
@@ -40,9 +47,15 @@ public class MemberService {
 
         verifyEmail(joinRequestDto.getEmail());
         verifyPassword(joinRequestDto.getPassword());
-        joinRequestDto.setPassword(encode(joinRequestDto.getPassword()));
+        joinRequestDto.setPassword(encode(joinRequestDto.getPassword()));   //암호화 위치, 방법 리팩토링
 
         Member member = joinRequestDto.toEntity();
+
+        //이미지를 첨부했을 경우
+        if (joinRequestDto.getImage() != null) {
+            MemberImage memberImage = memberImageService.saveImage(joinRequestDto.getImage());
+            memberImage.setMember(member);
+        }
 
         Member savedMember = memberRepository.save(member);
         return toJoinResponse(savedMember);
@@ -52,21 +65,24 @@ public class MemberService {
      * 회원 정보 수정
      * @return 수정 완료된 회원의 id, name, email
      */
-     public UpdateResponseDto update(UpdateRequestDto updateRequestDto) {
+     public UpdateResponseDto update(UpdateRequestDto updateRequestDto) throws IOException {
 
          String name = updateRequestDto.getName();
-         String email = updateRequestDto.getEmail();
          String password = updateRequestDto.getPassword();
 
-         if (email != null) {
-             verifyEmail(email);
-         }
          if (password != null) {
              verifyPassword(password);
          }
 
          Member member = findById(updateRequestDto.getMemberId());
-         member.update(name, email, password);
+         member.update(name, password);
+
+         //이미지를 첨부했을 경우
+         if (updateRequestDto.getImage() != null) {
+             memberImageService.deleteImage(member.getMemberImage());
+             MemberImage memberImage = memberImageService.saveImage(updateRequestDto.getImage());
+             memberImage.setMember(member);
+         }
 
          return toUpdateResponse(member);
      }
@@ -79,7 +95,7 @@ public class MemberService {
     public MemberProfileResponseDto findByIdFetch(long memberId) {
 
         Member findMember = memberRepository.findByIdFetch(memberId)
-                .orElseThrow(() -> new RuntimeException(new Exception().getCause()));   //Custom Exception 으로 변경
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
 
         //회원의 누적 운동 기록
         long totalRecord = recordRepository.findByMemberId(memberId)
@@ -88,6 +104,13 @@ public class MemberService {
                 .sum();
 
         return toProfileResponse(findMember, totalRecord);
+    }
+
+    /**
+     * 회원 목록 조회
+     */
+    public List<Member> findAllMembers() {   ////////
+        return memberRepository.findAll();
     }
 
     /**
@@ -103,36 +126,36 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findById(long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("회원 존재하지 않음"));   // Custom Exception 으로 변경
+                .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
     }
 
     /**
      * Email 검증
      */
     @Transactional(readOnly = true)
-    private void verifyEmail(String email) {
+    public void verifyEmail(String email) {
 
         if (!Pattern.matches(REG_EMAIL, email)) {
-            throw new RuntimeException("이메일 형식이 올바르지 않습니다.");
+            throw new BusinessLogicException(EMAIL_NOT_VALID);
         }
 
         memberRepository.findByEmail(email)
-                .ifPresent(m -> {throw new RuntimeException("존재하는 이메일");});
+                .ifPresent(m -> {throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);});
     }
 
     /**
      * Password 검증
      */
-    private void verifyPassword(String password) {
+    public void verifyPassword(String password) {
         if (!Pattern.matches(REG_PASSWORD, password)) {
-            throw new RuntimeException("비밀번호 형식이 올바르지 않습니다.");
+            throw new BusinessLogicException(PASSWORD_NOT_VALID);
         }
     }
 
     /**
-     * Password 암호화   ///리팩토링 (클래스 분리)
+     * Password 암호화   //리팩토링 (클래스 분리)
      */
-    public static String encode(String password) {  //시간되면 salt 적용
+    public static String encode(String password) {
 
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -144,4 +167,15 @@ public class MemberService {
     }
 
 
+    /**
+     * 프로필 사진
+     */
+    public String getImage(long memberId) {
+
+        Member member = findById(memberId);
+        MemberImage image = Optional.ofNullable(member.getMemberImage()).
+                orElseThrow(() -> new BusinessLogicException(IMAGE_NOT_FOUND));
+
+        return "file:" + memberImageService.getFullPath(image.getFileName());
+    }
 }
