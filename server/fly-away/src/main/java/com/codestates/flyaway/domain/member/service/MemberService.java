@@ -2,6 +2,8 @@ package com.codestates.flyaway.domain.member.service;
 
 import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.domain.member.repository.MemberRepository;
+import com.codestates.flyaway.domain.record.entity.Record;
+import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import static com.codestates.flyaway.web.member.dto.MemberDto.MemberProfileRespo
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final RecordRepository recordRepository;
 
     @Transactional(readOnly = true)
     public Member findById(long memberId) {
@@ -28,6 +31,11 @@ public class MemberService {
         Member findMember = memberRepository.findByIdFetch(memberId)
                 .orElseThrow(() -> new RuntimeException("회원 존재 x"));
 
-        return memberToProfileResponse(findMember);
+        long totalRecord = recordRepository.findByMemberId(memberId)
+                .stream()
+                .mapToLong(Record::getRecord)
+                .sum();
+
+        return memberToProfileResponse(findMember, totalRecord);
     }
 }
