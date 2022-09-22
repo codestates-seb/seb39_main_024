@@ -26,7 +26,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping("/category/{categoryId}")
+    @PostMapping("/{categoryId}")
     public SingleResponseDto write(@PathVariable("categoryId") Long categoryId,
                                    @Validated @RequestBody BoardDto.Create createDto){
 
@@ -53,7 +53,7 @@ public class BoardController {
         return new SingleResponseDto(read);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public MultiResponseDto readAll(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
                                       Pageable pageable) {
 
@@ -62,6 +62,16 @@ public class BoardController {
         List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(board);
 
         return new MultiResponseDto<>(responses, boardPage);
+    }
+
+    @GetMapping
+    public MultiResponseDto readByCategory(@RequestParam Long categoryId, Pageable pageable) {
+
+        Page<Board> categoryPage = boardService.readByCategory(categoryId, pageable);
+        List<Board> boards = categoryPage.getContent();
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(boards);
+
+        return new MultiResponseDto<>(responses, categoryPage);
     }
 
     @DeleteMapping("/{boardId}")

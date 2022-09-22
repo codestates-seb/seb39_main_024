@@ -46,7 +46,7 @@ public class CommentService {
         return commentToCommentResponseDto(comment);
     }
 
-    public Page<Comment> realAll(Pageable pageable) {
+    public Page<Comment> readAll(Pageable pageable) {
 
         return commentRepository.findAll(pageable);
     }
