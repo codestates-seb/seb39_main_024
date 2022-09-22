@@ -25,7 +25,7 @@ public class MemberImageService {
     private final MemberImageRepository memberImageRepository;
 
     @Value("${file.dir}")
-    private final String fileUrl;
+    private String fileUrl;
 
     public String getFullPath(String filename) {
         return fileUrl + filename;
@@ -33,7 +33,7 @@ public class MemberImageService {
 
 
     /**
-     * 파일 저장 (DB 저장 + pc 저장)
+     * 파일 저장 (DB 저장 + 로컬 pc 저장)
      */
     public MemberImage saveImage(MultipartFile multipartFile) throws IOException {
 
@@ -71,7 +71,7 @@ public class MemberImageService {
     private String createFileName(String originalFilename) {
 
         String ext = extractExt(originalFilename);
-        String uuid = UUID.randomUUID().toString();     //pk로 관리되는데 uuid가 필요한가?
+        String uuid = UUID.randomUUID().toString();     //pk로 관리되는데 uuid가 필요할까?
         return uuid + "." + ext;
     }
 
@@ -80,6 +80,4 @@ public class MemberImageService {
         int pos = originalFilename.lastIndexOf(".");
         return originalFilename.substring(pos + 1);
     }
-
-
 }

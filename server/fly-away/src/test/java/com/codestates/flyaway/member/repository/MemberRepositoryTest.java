@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw", 0L);
+        Member member1 = new Member(1L, null, new ArrayList<>(), "kim", "member1@gmail.com", "pw");
 
         Record record1 = new Record(now(), 10);
         record1.setMember(member1);

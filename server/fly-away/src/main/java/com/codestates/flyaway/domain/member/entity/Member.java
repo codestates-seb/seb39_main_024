@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
@@ -27,7 +28,7 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.PERSIST)   /////
+    @OneToOne(fetch = LAZY, cascade = ALL)
     @JoinColumn(name = "image_id")
     private MemberImage memberImage;
 
@@ -47,6 +48,7 @@ public class Member extends Auditable {
     public void setMemberImage(MemberImage memberImage) {
         this.memberImage = memberImage;
     }
+
 
     //==================
 

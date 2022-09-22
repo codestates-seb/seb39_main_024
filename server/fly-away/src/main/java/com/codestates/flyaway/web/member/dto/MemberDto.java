@@ -44,8 +44,9 @@ public class MemberDto {
         private String password;
         private MultipartFile image;
     }
+
     @Getter @NoArgsConstructor @AllArgsConstructor
-    public static class UpdateResponseDto {
+    public static class UpdateResponseDto {  //재사용 고려
         private Long memberId;
         private String name;
         private String email;

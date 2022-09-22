@@ -3,8 +3,7 @@ package com.codestates.flyaway.web.auth.dto;
 import com.codestates.flyaway.domain.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 public class AuthDto {
 
-    @Getter
+    @Getter @Setter
     @AllArgsConstructor
     public static class JoinRequestDto {
         @NotEmpty
@@ -22,10 +21,9 @@ public class AuthDto {
         private String email;
         @NotEmpty
         private String password;
-        private MultipartFile image;  ////
 
-        public Member toEntity() {   ////비밀번호 암호화
-            return new Member(this.getName(), this.getEmail(), this.getPassword());
+        public Member toEntity() {
+            return new Member(this.name, this.email, this.password);
         }
     }
 
