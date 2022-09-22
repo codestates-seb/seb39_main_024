@@ -4,6 +4,7 @@ import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
 import com.codestates.flyaway.global.dto.MultiResponseDto;
 import com.codestates.flyaway.global.dto.SingleResponseDto;
+import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.codestates.flyaway.web.board.dto.BoardDto.*;
 
 @RestController
 @Slf4j
@@ -25,18 +25,18 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping
-    public ResponseEntity write(@Validated @RequestBody Create createDto){
+    public ResponseEntity write(@Validated @RequestBody BoardDto.Create createDto){
 
-        BoardResponseDto wrote = boardService.create(createDto);
+        BoardDto.BoardResponseDto wrote = boardService.create(createDto);
 
         return new ResponseEntity(new SingleResponseDto(wrote), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{boardId}")
     public ResponseEntity update(@PathVariable("boardId") Long boardId,
-                                        @RequestBody Update updateDto) {
+                                        @RequestBody BoardDto.Update updateDto) {
 
-        BoardResponseDto updated = boardService.update(updateDto);
+        BoardDto.BoardResponseDto updated = boardService.update(updateDto);
 
         return new ResponseEntity(new SingleResponseDto(updated), HttpStatus.OK);
     }
@@ -44,18 +44,18 @@ public class BoardController {
     @GetMapping("/{boardId}")
     public ResponseEntity read(@PathVariable("boardId") Long boardId) {
 
-        BoardResponseDto read = boardService.read(boardId);
+        BoardDto.BoardResponseDto read = boardService.read(boardId);
 
         return new ResponseEntity(new SingleResponseDto(read), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity readAll(@RequestParam int page,
-                                         @RequestParam int size) {
+                                  @RequestParam int size) {
 
         Page<Board> boardPage = boardService.readAll(page, size);
         List<Board> board = boardPage.getContent();
-        List<MultiBoardDto> responses = MultiBoardDto.boardsToResponses(board);
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponses(board);
 
         return new ResponseEntity(new MultiResponseDto<>(responses, boardPage), HttpStatus.OK);
     }
