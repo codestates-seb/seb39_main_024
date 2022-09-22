@@ -2,11 +2,14 @@ package com.codestates.flyaway.domain.board.service;
 
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.repository.BoardRepository;
+import com.codestates.flyaway.domain.category.entity.Category;
+import com.codestates.flyaway.domain.category.service.CategoryService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +24,18 @@ import static com.codestates.flyaway.web.board.dto.BoardDto.BoardResponseDto.*;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final CategoryService categoryService;
 
     @Transactional
     public BoardResponseDto create(BoardDto.Create createDto) {
 
+        Category category = categoryService.findById(createDto.getCategoryId());
+
         Board board = new Board(createDto.getTitle(), createDto.getContent());
+        board.setCategory(category);
         boardRepository.save(board);
 
-        return boardToBoardResponse(board);
+        return boardToResponseDto(board);
     }
 
     @Transactional
@@ -37,7 +44,7 @@ public class BoardService {
         final Board board = boardRepository.getReferenceById(updateDto.getBoardId());
         board.update(updateDto.getTitle(), updateDto.getContent());
 
-        return boardToBoardResponse(board);
+        return boardToResponseDto(board);
     }
 
     @Transactional
@@ -46,14 +53,12 @@ public class BoardService {
         Board board = findById(boardId);
         board.addViewCount();
 
-        return boardToBoardResponse(board);
+        return boardToResponseDto(board);
     }
 
-    public Page<Board> readAll(int page, int size) {
+    public Page<Board> readAll(Pageable pageable) {
 
-        PageRequest boardPage = PageRequest.of(page - 1, size, Sort.by("id").descending());
-
-        return boardRepository.findAll(boardPage);
+        return boardRepository.findAll(pageable);
     }
 
     @Transactional

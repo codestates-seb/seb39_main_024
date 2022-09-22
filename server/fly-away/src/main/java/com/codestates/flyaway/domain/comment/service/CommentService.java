@@ -11,8 +11,7 @@ import com.codestates.flyaway.web.comment.dto.CommentDto.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,22 +35,20 @@ public class CommentService {
         comment.setBoard(board);
         commentRepository.save(comment);
 
-        return commentToCommentResponse(comment);
+        return commentToCommentResponseDto(comment);
     }
 
-    public CommentResponseDto update(CommentDto.Update updateDto) {
+    public CommentResponseDto update(CommentDto.UpdateComment updateCommentDto) {
 
-        final Comment comment = commentRepository.getReferenceById(updateDto.getCommentId());
-        comment.update(updateDto.getCommentId(), updateDto.getContent());
+        final Comment comment = commentRepository.getReferenceById(updateCommentDto.getCommentId());
+        comment.update(updateCommentDto.getCommentId(), updateCommentDto.getContent());
 
-        return commentToCommentResponse(comment);
+        return commentToCommentResponseDto(comment);
     }
 
-    public Page<Comment> realAll(int page, int size) {
+    public Page<Comment> realAll(Pageable pageable) {
 
-        PageRequest commentPage = PageRequest.of(page - 1, size, Sort.by("id").descending());
-
-        return commentRepository.findAll(commentPage);
+        return commentRepository.findAll(pageable);
     }
     public void delete(Long commentId) {
 
