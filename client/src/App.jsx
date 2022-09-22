@@ -2,6 +2,8 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+const Create = lazy(() => import('./pages/posts/Create'));
+const Read = lazy(() => import('./pages/posts/Read'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
 const Join = lazy(() => import('./pages/auth/Join'));
@@ -49,6 +51,8 @@ function App() {
             <Route path="/mypage/calendar" element={<Calendar />} />
             <Route path="/mypage/profile_edit" element={<ProfileEdit />} />
             <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
+            <Route path="/posts/create" element={<Create />} />
+            <Route path="/posts/read" element={<Read />} />
           </Routes>
         </Layout>
         <Footer />

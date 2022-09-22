@@ -1,15 +1,20 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Button from '../components/Button';
 
 export default function Navbar() {
   const location = useLocation();
+  const navigation = useNavigate();
 
   const [path, setPath] = useState('');
 
   useEffect(() => {
     setPath(location.pathname);
   }, [location]);
+
+  const postCreateHandler = () => {
+    navigation('/posts/create');
+  };
 
   return (
     <>
@@ -35,7 +40,11 @@ export default function Navbar() {
             <Button link="/posts/free" str="자유" />
           </div>
           <div>
-            <Button link="/posts/create" str="글쓰기" />
+            <Button
+              link="/posts/create"
+              str="글쓰기"
+              onClick={postCreateHandler}
+            />
             <input placeholder="글 검색하기" />
           </div>
         </nav>
