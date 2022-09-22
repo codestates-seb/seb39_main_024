@@ -6,7 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-
 public class FlyAwayApplication {
 
 	public static void main(String[] args) {

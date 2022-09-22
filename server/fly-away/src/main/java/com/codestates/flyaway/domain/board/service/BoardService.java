@@ -8,9 +8,7 @@ import com.codestates.flyaway.global.exception.BusinessLogicException;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +57,11 @@ public class BoardService {
     public Page<Board> readAll(Pageable pageable) {
 
         return boardRepository.findAll(pageable);
+    }
+
+    public Page<Board> readByCategory(Long categoryId, Pageable pageable) {
+
+        return boardRepository.findAllByCategoryId(categoryId, pageable);
     }
 
     @Transactional

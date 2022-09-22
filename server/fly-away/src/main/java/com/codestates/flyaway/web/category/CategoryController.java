@@ -40,7 +40,7 @@ public class CategoryController {
         return new SingleResponseDto<>(updated);
     }
 
-    @GetMapping
+    @GetMapping 
     public MultiResponseDto readCategories(Pageable pageable) {
 
         Page<Category> categories = categoryService.readAll(pageable);
