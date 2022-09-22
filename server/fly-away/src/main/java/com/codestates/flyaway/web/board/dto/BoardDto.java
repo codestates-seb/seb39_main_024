@@ -3,6 +3,8 @@ package com.codestates.flyaway.web.board.dto;
 import com.codestates.flyaway.domain.board.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.NotBlank;
@@ -14,9 +16,12 @@ import java.util.stream.Collectors;
 public class BoardDto {
 
     @Getter
+    @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Create {
 
+        private Long categoryId;
         @NotBlank
         private String title;
         @NotBlank
@@ -25,6 +30,7 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Update {
 
         @Nullable
@@ -38,6 +44,7 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class BoardResponseDto {
 
         private Long boardId;
@@ -46,7 +53,7 @@ public class BoardDto {
         private int viewCount;
         private LocalDateTime createdAt;
 
-        public static BoardResponseDto boardToBoardResponse(Board board){
+        public static BoardResponseDto boardToResponseDto(Board board){
 
             return new BoardResponseDto(
                     board.getId(),
@@ -59,6 +66,7 @@ public class BoardDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class MultiBoardDto {
 
         private Long boardId;
@@ -67,7 +75,7 @@ public class BoardDto {
         private LocalDateTime createdAt;
         private int viewCount;
 
-        public static List<MultiBoardDto> boardsToResponses(List<Board> boards) {
+        public static List<MultiBoardDto> boardsToResponsesDto(List<Board> boards) {
 
             return boards.stream()
                     .map(board -> new MultiBoardDto(

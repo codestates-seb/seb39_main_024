@@ -7,8 +7,10 @@ import com.codestates.flyaway.global.dto.SingleResponseDto;
 import com.codestates.flyaway.web.comment.dto.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,43 +23,43 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{boardId}/comment")
-    public ResponseEntity writeComment(@PathVariable("boardId") Long boardId,
+    public SingleResponseDto writeComment(@PathVariable("boardId") Long boardId,
                                        @RequestBody CommentDto.Write writeDto) {
 
         writeDto.setBoardId(boardId);
         CommentDto.CommentResponseDto wrote = commentService.write(writeDto);
 
-        return new ResponseEntity(new SingleResponseDto<>(wrote), HttpStatus.CREATED);
+        return new SingleResponseDto<>(wrote);
     }
 
     @PatchMapping("/{boardId}/comment/{commentId}")
-    public ResponseEntity updateComment(@PathVariable("boardId") Long boardId,
+    public SingleResponseDto updateComment(@PathVariable("boardId") Long boardId,
                                         @PathVariable("commentId") Long commentId,
-                                        @RequestBody CommentDto.Update updateDto) {
+                                        @RequestBody CommentDto.UpdateComment updateCommentDto) {
 
-        updateDto.setCommentId(commentId);
-        CommentDto.CommentResponseDto updated = commentService.update(updateDto);
+        updateCommentDto.setCommentId(commentId);
+        CommentDto.CommentResponseDto updated = commentService.update(updateCommentDto);
 
-        return new ResponseEntity(new SingleResponseDto<>(updated), HttpStatus.OK);
+        return new SingleResponseDto<>(updated);
     }
 
     @GetMapping("/{boardId}/comment")
-    public ResponseEntity readAllComment(@PathVariable("boardId") Long boardId,
-                                         @RequestParam int page,
-                                         @RequestParam int size) {
+    public MultiResponseDto readAllComment(@PathVariable("boardId") Long boardId,
+                                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+                                         Pageable pageable) {
 
-        Page<Comment> commentPage = commentService.realAll(page, size);
-        List<Comment> comments = commentPage.getContent();
-        List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.commentToResponses(comments);
+        Page<Comment> comments = commentService.realAll(pageable);
+        List<Comment> commentList = comments.getContent();
+        List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.commentToResponsesDto(commentList);
 
-        return new ResponseEntity(new MultiResponseDto<>(responses, commentPage), HttpStatus.OK);
+        return new MultiResponseDto<>(responses, comments);
     }
 
     @DeleteMapping("/{boardId}/comment/{commentId}")
-    public ResponseEntity deleteComment(@PathVariable("commentId") Long commentId) {
+    public HttpStatus deleteComment(@PathVariable("commentId") Long commentId) {
 
         commentService.delete(commentId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return HttpStatus.NO_CONTENT;
     }
 }

@@ -1,9 +1,9 @@
 package com.codestates.flyaway.web.comment.dto;
 
 import com.codestates.flyaway.domain.comment.entity.Comment;
-import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.lang.Nullable;
 
@@ -18,6 +18,7 @@ public class CommentDto {
     @Getter
     @Setter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class Write {
 
         private Long boardId;
@@ -28,7 +29,8 @@ public class CommentDto {
     @Getter
     @Setter
     @AllArgsConstructor
-    public static class Update {
+    @NoArgsConstructor
+    public static class UpdateComment {
 
         @Nullable
         private Long commentId;
@@ -38,13 +40,14 @@ public class CommentDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CommentResponseDto {
 
         private Long commentId;
         private String content;
         private LocalDateTime createdAt;
 
-        public static CommentDto.CommentResponseDto commentToCommentResponse(Comment comment) {
+        public static CommentDto.CommentResponseDto commentToCommentResponseDto(Comment comment) {
 
             return new CommentDto.CommentResponseDto(
                     comment.getId(),
@@ -55,13 +58,14 @@ public class CommentDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class MultiCommentDto {
 
-        private Long commentid;
+        private Long commentId;
         private String content;
         private LocalDateTime createdAt;
 
-        public static List<MultiCommentDto> commentToResponses(List<Comment> comments) {
+        public static List<MultiCommentDto> commentToResponsesDto(List<Comment> comments) {
 
             return comments.stream()
                     .map(comment -> new MultiCommentDto(
