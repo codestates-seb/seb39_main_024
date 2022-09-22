@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+const Create = lazy(() => import('./pages/posts/Create'));
 const Calendar = lazy(() => import('./pages/mypage/Calendar'));
 const DeleteAccount = lazy(() => import('./pages/mypage/DeleteAccount'));
 const Edit = lazy(() => import('./pages/mypage/Edit'));
@@ -11,6 +12,7 @@ const VideosAll = lazy(() => import('./pages/videos/All'));
 const Free = lazy(() => import('./pages/posts/Free'));
 const Meal = lazy(() => import('./pages/posts/Meal'));
 const Record = lazy(() => import('./pages/posts/Record'));
+const Read = lazy(() => import('./pages/posts/Read'));
 const Popularity = lazy(() => import('./pages/videos/Popularity'));
 const Stretching = lazy(() => import('./pages/videos/Stretching'));
 const Training = lazy(() => import('./pages/videos/Training'));
@@ -41,10 +43,12 @@ function App() {
             <Route path="/posts/free" element={<Free />} />
             <Route path="/posts/meal" element={<Meal />} />
             <Route path="/posts/record" element={<Record />} />
+            <Route path="/posts/create" element={<Create />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/calendar" element={<Calendar />} />
             <Route path="/mypage/edit" element={<Edit />} />
             <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
+            <Route path="/posts/read" element={<Read />} />
           </Routes>
         </Layout>
         <Footer />
