@@ -26,7 +26,6 @@ const ProfileEdit = lazy(() => import('./pages/mypage/ProfileEdit'));
 const DeleteAccount = lazy(() => import('./pages/mypage/DeleteAccount'));
 const Footer = lazy(() => import('./containers/Footer'));
 
-
 function App() {
   return (
     <RecoilRoot>
