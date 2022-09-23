@@ -34,6 +34,7 @@ public class MemberImageService {
 
     /**
      * 파일 저장 (DB 저장 + 로컬 pc 저장)
+     * @return 생성된 memberImage
      */
     public MemberImage saveImage(MultipartFile multipartFile) throws IOException {
 
@@ -70,7 +71,7 @@ public class MemberImageService {
     private String createFileName(String originalFilename) {
 
         String ext = extractExt(originalFilename);
-        String uuid = UUID.randomUUID().toString();     //pk로 관리되는데 uuid가 필요할까?
+        String uuid = UUID.randomUUID().toString();     //todo : pk로 관리되는데 uuid가 필요할까?
         return uuid + "." + ext;
     }
 

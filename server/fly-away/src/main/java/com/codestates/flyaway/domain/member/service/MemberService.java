@@ -54,25 +54,16 @@ public class MemberService {
      */
      public UpdateResponseDto update(UpdateRequestDto updateRequestDto) throws IOException {
 
+         Optional.ofNullable(updateRequestDto.getPassword())
+                 .ifPresent(pw -> updateRequestDto.setPassword(encode(pw)));
+
          String name = updateRequestDto.getName();
          String password = updateRequestDto.getPassword();
-
-         Optional.ofNullable(password)
-                 .ifPresent(pw -> updateRequestDto.setPassword(encode(pw)));
 
          Member member = findById(updateRequestDto.getMemberId());
          member.update(name, password);
 
-         //이미지를 첨부했을 경우
-         if (!updateRequestDto.getImage().isEmpty()) {
-             //기존에 이미지가 있을 경우 삭제
-             if (member.getMemberImage() != null) {
-                 memberImageService.deleteImage(member.getMemberImage());   /////삭제 시 pk 오류
-             }
-             MemberImage memberImage = memberImageService.saveImage(updateRequestDto.getImage());
-             memberImage.setMember(member);
-         }
-
+         saveImage(updateRequestDto, member);
          return toUpdateResponse(member);
      }
 
@@ -81,7 +72,7 @@ public class MemberService {
      * @return 회원 프로필 정보
      */
     @Transactional(readOnly = true)
-    public MemberProfileResponseDto findByIdFetch(long memberId) { //테스트 코드에서 오류
+    public MemberProfileResponseDto findByIdFetch(long memberId) { //todo : 테스트 코드에서의 오류 해결
 
         Member findMember = memberRepository.findByIdFetch(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
@@ -124,8 +115,8 @@ public class MemberService {
 
     /**
      * Password 암호화
+     * @return 암호화된 비밀번호
      */
-    @Transactional(readOnly = true)
     public static String encode(String password) {  //시간되면 salt 적용
 
         try {
@@ -135,11 +126,28 @@ public class MemberService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e.getMessage());
         }
+
+    }
+
+    /**
+     * 이미지 저장 메서드
+     */
+    private void saveImage(UpdateRequestDto updateRequestDto, Member member) throws IOException {
+
+        if (updateRequestDto.getImage().isEmpty()) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
+            return;
+        }
+        Optional.ofNullable(member.getMemberImage())
+                .ifPresent(memberImageService::deleteImage);
+
+        MemberImage memberImage = memberImageService.saveImage(updateRequestDto.getImage());
+        memberImage.setMember(member);
     }
 
 
     /**
-     * 프로필 사진 V1
+     * 프로필 이미지 V1
+     * @return 이미지 경로
      */
     @Transactional(readOnly = true)
     public String getImage(long memberId) {
