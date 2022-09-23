@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.net.MalformedURLException;
 
-import static com.codestates.flyaway.web.auth.dto.AuthDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
 import static org.springframework.http.HttpStatus.*;
 

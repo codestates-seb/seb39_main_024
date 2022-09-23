@@ -18,9 +18,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
-import static com.codestates.flyaway.web.login.dto.LoginDto.*;
-import static com.codestates.flyaway.web.login.dto.LoginDto.JoinResponseDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
+import static com.codestates.flyaway.web.member.dto.MemberDto.JoinResponseDto.toJoinResponse;
 import static com.codestates.flyaway.web.member.dto.MemberDto.MemberProfileResponseDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponseDto.*;
 

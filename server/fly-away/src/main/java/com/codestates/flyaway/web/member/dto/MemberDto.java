@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +18,35 @@ import static com.codestates.flyaway.web.record.dto.RecordDto.*;
 @Getter
 public class MemberDto {
 
-    @Getter @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    @AllArgsConstructor
+    public static class JoinRequestDto {
+        @NotEmpty
+        private String name;
+        @NotEmpty @Email
+        private String email;
+        @NotEmpty
+        private String password;
+
+        public Member toEntity() {
+            return new Member(this.name, this.email, this.password);
+        }
+    }
+    @Getter
+    @AllArgsConstructor
+    public static class JoinResponseDto {
+        private Long memberId;
+        private String name;
+        private String email;
+        private LocalDateTime createdAt;
+
+        public static JoinResponseDto toJoinResponse(Member member) {
+            return new JoinResponseDto(member.getId(), member.getName(), member.getEmail(), member.getCreatedAt());
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor @AllArgsConstructor
     public static class MemberProfileResponseDto {
         private long id;
         private String name;

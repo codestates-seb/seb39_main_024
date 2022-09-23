@@ -46,7 +46,6 @@ public class MemberImageService {
         return new MemberImage(fileOriName, fileUrl, fileName);
     }
 
-
     /**
      * 파일 삭제 (DB 삭제, pc 파일 삭제)
      */
