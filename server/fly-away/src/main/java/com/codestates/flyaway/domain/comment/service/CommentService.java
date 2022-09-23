@@ -46,9 +46,9 @@ public class CommentService {
         return commentToCommentResponseDto(comment);
     }
 
-    public Page<Comment> readAll(Pageable pageable) {
+    public Page<Comment> readByBoardId(Long boardId, Pageable pageable) {
 
-        return commentRepository.findAll(pageable);
+        return commentRepository.findByBoardId(boardId, pageable);
     }
     public void delete(Long commentId) {
 

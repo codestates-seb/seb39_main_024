@@ -48,7 +48,7 @@ public class CommentController {
                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
                                          Pageable pageable) {
 
-        Page<Comment> comments = commentService.readAll(pageable);
+        Page<Comment> comments = commentService.readByBoardId(boardId, pageable);
         List<Comment> commentList = comments.getContent();
         List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.commentToResponsesDto(commentList);
 
