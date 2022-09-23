@@ -17,15 +17,13 @@ public class RecordController {
 
     private final RecordService recordService;
 
-    //영상시청 후 운동시간 저장 요청
     @ApiOperation(value = "운동 시간 기록", notes = "운동영상 시청 시간을 회원의 운동 기록에 반영")
     @ResponseStatus(value = CREATED)
-    @PostMapping("/{memberId}")      //memberController에서 처리하는 게 맞을까?
+    @PostMapping("/{memberId}")      // todo : memberController에서 처리하는 게 맞는지 고민
     public SingleResponseDto insertRecord(@PathVariable long memberId,
-                                       @Validated @RequestBody InsertRequestDto recordDto) {
+                                          @Validated @RequestBody InsertRequestDto recordDto) {
 
         InsertResponseDto insertResponseDto = recordService.insertRecord(memberId, recordDto);
-
         return new SingleResponseDto(insertResponseDto);
     }
 }

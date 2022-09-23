@@ -34,7 +34,7 @@ public class MemberImage {
 
     //=====================
 
-    //연관관계
+
     public void setMember(Member member) {
         this.member = member;
         member.setMemberImage(this);
