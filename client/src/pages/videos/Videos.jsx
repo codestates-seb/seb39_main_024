@@ -1,17 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { videoState } from '../../recoil/atoms/Atom';
+import { videosState } from '../../recoil/atoms/Atom';
 import VideoList from './VideoList';
 import VideoDetail from './VideoDetail';
 import Youtube from '../../service/youtube';
-
-// type Youtube = {
-//   key: string;
-//   getRequestOptions: object;
-//   // search: () => Promise<object>;
-//   workout: () => Promise<JSON>;
-// };
 
 export default function Videos() {
   const httpClient = axios.create({
@@ -20,7 +13,7 @@ export default function Videos() {
   });
   const youtube = new Youtube(httpClient);
 
-  const [videos, setVideos] = useRecoilState(videoState);
+  const [videos, setVideos] = useRecoilState(videosState);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
   const selectVideo = (video) => {
@@ -32,6 +25,7 @@ export default function Videos() {
       .workout() //
       .then((videos) => {
         setVideos(videos);
+        console.log(videos);
       });
   }, []);
   return (

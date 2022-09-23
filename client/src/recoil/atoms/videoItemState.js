@@ -3,9 +3,9 @@ import { recoilPersist } from 'recoil-persist';
 
 const { persistAtom } = recoilPersist();
 
-//videos
-export const videosState = atom({
-  key: 'videosState',
-  default: [],
+//videoItem
+export const videoItemState = atom({
+  key: 'videoItemState',
+  default: {},
   effects_UNSTABLE: [persistAtom],
 });

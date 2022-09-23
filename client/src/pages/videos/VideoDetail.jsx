@@ -9,7 +9,7 @@ export default function VideoDetail({ video, video: { snippet } }) {
         height="500px"
         src={`https://www.youtube.com/embed/${video.id}`}
         frameBorder="0"
-        allowfullscreen
+        allowFullScreen
       ></iframe>
       <h2>{snippet.title}</h2>
       <h3>{snippet.channelTitle}</h3>

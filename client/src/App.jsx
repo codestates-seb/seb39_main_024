@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-const Create = lazy(() => import('./pages/posts/Create'));
 const Read = lazy(() => import('./pages/posts/Read'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
@@ -11,9 +10,9 @@ const Login = lazy(() => import('./pages/auth/Login'));
 const Layout = lazy(() => import('./containers/Layout'));
 const Home = lazy(() => import('./pages/Home'));
 const VideosALL = lazy(() => import('./pages/videos/Videos'));
-// const Popularity = lazy(() => import('./pages/videos/Popularity'));
-// const Training = lazy(() => import('./pages/videos/Training'));
-// const Stretching = lazy(() => import('./pages/videos/Stretching'));
+const Popularity = lazy(() => import('./pages/videos/Popularity'));
+const Training = lazy(() => import('./pages/videos/Training'));
+const Stretching = lazy(() => import('./pages/videos/Stretching'));
 const PostsAll = lazy(() => import('./pages/posts/All'));
 const Record = lazy(() => import('./pages/posts/Record'));
 const Meal = lazy(() => import('./pages/posts/Meal'));
@@ -38,9 +37,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path="/videos" element={<VideosALL />} />
-            {/* <Route path="/videos/popularity" element={<Popularity />} />
+            <Route path="/videos/popularity" element={<Popularity />} />
             <Route path="/videos/training" element={<Training />} />
-            <Route path="/videos/stretching" element={<Stretching />} /> */}
+            <Route path="/videos/stretching" element={<Stretching />} />
             <Route path="/posts" element={<PostsAll />} />
             <Route path="/posts/free" element={<Free />} />
             <Route path="/posts/meal" element={<Meal />} />
