@@ -36,13 +36,17 @@ public class MemberImageService {
      * 파일 저장 (DB 저장 + 로컬 pc 저장)
      * @return 생성된 memberImage
      */
-    public MemberImage saveImage(MultipartFile multipartFile) throws IOException {
+    public MemberImage save(MultipartFile multipartFile) {
 
         String fileOriName = multipartFile.getOriginalFilename();
         String fileName = createFileName(fileOriName);
 
-        multipartFile.transferTo(new File(getFullPath(fileName)));
-        log.info("파일 저장 성공 = {}", fileName);
+        try {
+            multipartFile.transferTo(new File(getFullPath(fileName)));
+            log.info("파일 저장 성공 = {}", fileName);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
 
         return new MemberImage(fileOriName, fileUrl, fileName);
     }
@@ -50,7 +54,7 @@ public class MemberImageService {
     /**
      * 파일 삭제 (DB 삭제, pc 파일 삭제)
      */
-    public void deleteImage(MemberImage image) {
+    public void delete(MemberImage image) {
         String fullPath = getFullPath(image.getFileName());
         File file = new File(fullPath);
 

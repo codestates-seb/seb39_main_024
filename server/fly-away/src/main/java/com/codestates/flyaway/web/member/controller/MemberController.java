@@ -24,28 +24,23 @@ public class MemberController {
 
     @ApiOperation(value = "회원 가입", notes = "이메일 중복 확인")
     @ResponseStatus(value = CREATED)
-    @PostMapping("/join")  //// Auth api 로 분리 고려
-    public SingleResponseDto join(JoinRequestDto joinRequestDto)  {
+    @PostMapping("/join")
+    public SingleResponseDto join(JoinRequestDto joinRequestDto) { // todo : Auth api 로 분리 고려
 
         JoinResponseDto joinResponse = memberService.join(joinRequestDto);
         return new SingleResponseDto<>(joinResponse);
     }
 
-    /**
-     * 프로필 사진 API V1
-     */
     @ApiOperation(value = "회원 프로필 이미지 API")
     @GetMapping(value = "/{memberId}/image")
-    public Resource getImage(@PathVariable long memberId) throws MalformedURLException {
-
-        String path = memberService.getImage(memberId);
-        return new UrlResource(path);
+    public Resource getImage(@PathVariable long memberId) {
+        return memberService.getImage(memberId);
     }
 
     @ApiOperation(value = "회원 정보 수정", notes = "이메일이 존재할 경우 중복 확인")
     @PatchMapping("/{memberId}")
     public SingleResponseDto update(@PathVariable long memberId,
-                                 UpdateRequestDto updateRequestDto) throws IOException {
+                                 UpdateRequestDto updateRequestDto) {
 
         updateRequestDto.setMemberId(memberId);
         UpdateResponseDto updated = memberService.update(updateRequestDto);

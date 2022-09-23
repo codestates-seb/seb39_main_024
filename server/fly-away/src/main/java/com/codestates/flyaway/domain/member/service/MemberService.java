@@ -8,11 +8,14 @@ import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
@@ -32,12 +35,14 @@ public class MemberService {
     private final MemberImageService memberImageService;
     private final RecordRepository recordRepository;
 
+    private static String ALGORITHM = "SHA-512";
 
     /**
      * 회원가입
+     *
      * @return 가입 완료된 회원의 id, name, email, createdAt
      */
-    public JoinResponseDto join(JoinRequestDto joinRequestDto){
+    public JoinResponseDto join(JoinRequestDto joinRequestDto) {
 
         verifyEmail(joinRequestDto.getEmail());
         joinRequestDto.setPassword(encode(joinRequestDto.getPassword()));
@@ -50,25 +55,27 @@ public class MemberService {
 
     /**
      * 회원 정보 수정
+     *
      * @return 수정 완료된 회원의 id, name, email, modifiedAt
      */
-     public UpdateResponseDto update(UpdateRequestDto updateRequestDto) throws IOException {
+    public UpdateResponseDto update(UpdateRequestDto updateRequestDto) {
 
-         Optional.ofNullable(updateRequestDto.getPassword())
-                 .ifPresent(pw -> updateRequestDto.setPassword(encode(pw)));
+        Optional.ofNullable(updateRequestDto.getPassword())
+                .ifPresent(pw -> updateRequestDto.setPassword(encode(pw)));
 
-         String name = updateRequestDto.getName();
-         String password = updateRequestDto.getPassword();
+        String name = updateRequestDto.getName();
+        String password = updateRequestDto.getPassword();
 
-         Member member = findById(updateRequestDto.getMemberId());
-         member.update(name, password);
+        Member member = findById(updateRequestDto.getMemberId());
+        member.update(name, password);
 
-         saveImage(updateRequestDto, member);
-         return toUpdateResponse(member);
-     }
+        saveImage(updateRequestDto, member);
+        return toUpdateResponse(member);
+    }
 
     /**
      * 회원 프로필 (특정 회원을 모든 운동기록과 함께 조회)
+     *
      * @return 회원 프로필 정보
      */
     @Transactional(readOnly = true)
@@ -110,17 +117,20 @@ public class MemberService {
     @Transactional(readOnly = true)
     public void verifyEmail(String email) {
         memberRepository.findByEmail(email)
-                .ifPresent(m -> {throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);});
+                .ifPresent(m -> {
+                    throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);
+                });
     }
 
     /**
      * Password 암호화
+     *
      * @return 암호화된 비밀번호
      */
     public static String encode(String password) {  //시간되면 salt 적용
 
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            MessageDigest md = MessageDigest.getInstance(ALGORITHM);
             md.update(password.getBytes());
             return String.format("%0128x", new BigInteger(1, md.digest()));
         } catch (NoSuchAlgorithmException e) {
@@ -132,15 +142,15 @@ public class MemberService {
     /**
      * 이미지 저장 메서드
      */
-    private void saveImage(UpdateRequestDto updateRequestDto, Member member) throws IOException {
+    private void saveImage(UpdateRequestDto updateRequestDto, Member member) {
 
         if (updateRequestDto.getImage().isEmpty()) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
             return;
         }
         Optional.ofNullable(member.getMemberImage())
-                .ifPresent(memberImageService::deleteImage);
+                .ifPresent(memberImageService::delete);
 
-        MemberImage memberImage = memberImageService.saveImage(updateRequestDto.getImage());
+        MemberImage memberImage = memberImageService.save(updateRequestDto.getImage());
         memberImage.setMember(member);
     }
 
@@ -150,12 +160,18 @@ public class MemberService {
      * @return 이미지 경로
      */
     @Transactional(readOnly = true)
-    public String getImage(long memberId) {
+    public Resource getImage(long memberId) {
 
         Member member = findById(memberId);
         MemberImage image = Optional.ofNullable(member.getMemberImage()).
                 orElseThrow(() -> new BusinessLogicException(IMAGE_NOT_FOUND));
 
-        return "file:" + memberImageService.getFullPath(image.getFileName());
+        String path = "file:" + memberImageService.getFullPath(image.getFileName());
+
+        try {
+            return new UrlResource(path);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
