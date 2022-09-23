@@ -7,6 +7,8 @@ import com.codestates.flyaway.domain.memberimage.service.MemberImageService;
 import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
+import com.codestates.flyaway.domain.record.entity.Record;
+import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +70,7 @@ public class MemberService {
          if (!updateRequestDto.getImage().isEmpty()) {
              //기존에 이미지가 있을 경우 삭제
              if (member.getMemberImage() != null) {
-                 memberImageService.deleteImage(member.getMemberImage());   /////삭제 시 pk 오류
+                 memberImageService.deleteImage(member.getMemberImage());
              }
              MemberImage memberImage = memberImageService.saveImage(updateRequestDto.getImage());
              memberImage.setMember(member);

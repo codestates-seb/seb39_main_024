@@ -1,0 +1,64 @@
+package com.codestates.flyaway.domain.comment.service;
+
+import com.codestates.flyaway.domain.board.entity.Board;
+import com.codestates.flyaway.domain.board.service.BoardService;
+import com.codestates.flyaway.domain.comment.entity.Comment;
+import com.codestates.flyaway.domain.comment.repository.CommentRepository;
+import com.codestates.flyaway.global.exception.BusinessLogicException;
+import com.codestates.flyaway.global.exception.ExceptionCode;
+import com.codestates.flyaway.web.comment.dto.CommentDto;
+import com.codestates.flyaway.web.comment.dto.CommentDto.CommentResponseDto;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import static com.codestates.flyaway.web.comment.dto.CommentDto.CommentResponseDto.*;
+
+@RequiredArgsConstructor
+@Service
+@Transactional
+@Slf4j
+public class CommentService {
+
+    private final CommentRepository commentRepository;
+    private final BoardService boardService;
+
+    public CommentResponseDto write(CommentDto.Write writeDto) {
+
+        Board board = boardService.findById(writeDto.getBoardId());
+        board.addCommentCount();
+
+        Comment comment = new Comment(writeDto.getContent());
+        comment.setBoard(board);
+        commentRepository.save(comment);
+
+        return commentToCommentResponseDto(comment);
+    }
+
+    public CommentResponseDto update(CommentDto.UpdateComment updateCommentDto) {
+
+        final Comment comment = commentRepository.getReferenceById(updateCommentDto.getCommentId());
+        comment.update(updateCommentDto.getCommentId(), updateCommentDto.getContent());
+
+        return commentToCommentResponseDto(comment);
+    }
+
+    public Page<Comment> readAll(Pageable pageable) {
+
+        return commentRepository.findAll(pageable);
+    }
+    public void delete(Long commentId) {
+
+        Comment comment = findById(commentId);
+        commentRepository.delete(comment);
+    }
+
+    public Comment findById(Long commentId) {
+
+        return commentRepository.findById(commentId).orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+    }
+}

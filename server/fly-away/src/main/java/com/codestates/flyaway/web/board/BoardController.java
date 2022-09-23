@@ -4,17 +4,19 @@ import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
 import com.codestates.flyaway.global.dto.MultiResponseDto;
 import com.codestates.flyaway.global.dto.SingleResponseDto;
+import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.codestates.flyaway.web.board.dto.BoardDto.*;
 
 @RestController
 @Slf4j
@@ -24,47 +26,59 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @PostMapping
-    public ResponseEntity write(@Validated @RequestBody Create createDto){
+    @PostMapping("/{categoryId}")
+    public SingleResponseDto write(@PathVariable("categoryId") Long categoryId,
+                                   @Validated @RequestBody BoardDto.Create createDto){
 
-        BoardResponseDto wrote = boardService.create(createDto);
+        createDto.setCategoryId(categoryId);
+        BoardDto.BoardResponseDto wrote = boardService.create(createDto);
 
-        return new ResponseEntity(new SingleResponseDto(wrote), HttpStatus.CREATED);
+        return new SingleResponseDto(wrote);
     }
 
     @PatchMapping("/{boardId}")
-    public ResponseEntity update(@PathVariable("boardId") Long boardId,
-                                        @RequestBody Update updateDto) {
+    public SingleResponseDto update(@PathVariable("boardId") Long boardId,
+                                        @RequestBody BoardDto.Update updateDto) {
 
-        BoardResponseDto updated = boardService.update(updateDto);
+        BoardDto.BoardResponseDto updated = boardService.update(updateDto);
 
-        return new ResponseEntity(new SingleResponseDto(updated), HttpStatus.OK);
+        return new SingleResponseDto(updated);
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity read(@PathVariable("boardId") Long boardId) {
+    public SingleResponseDto read(@PathVariable("boardId") Long boardId) {
 
-        BoardResponseDto read = boardService.read(boardId);
+        BoardDto.BoardResponseDto read = boardService.read(boardId);
 
-        return new ResponseEntity(new SingleResponseDto(read), HttpStatus.OK);
+        return new SingleResponseDto(read);
+    }
+
+    @GetMapping("/all")
+    public MultiResponseDto readAll(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+                                      Pageable pageable) {
+
+        Page<Board> boardPage = boardService.readAll(pageable);
+        List<Board> board = boardPage.getContent();
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(board);
+
+        return new MultiResponseDto<>(responses, boardPage);
     }
 
     @GetMapping
-    public ResponseEntity readAll(@RequestParam int page,
-                                         @RequestParam int size) {
+    public MultiResponseDto readByCategory(@RequestParam Long categoryId, Pageable pageable) {
 
-        Page<Board> boardPage = boardService.readAll(page, size);
-        List<Board> board = boardPage.getContent();
-        List<MultiBoardDto> responses = MultiBoardDto.boardsToResponses(board);
+        Page<Board> categoryPage = boardService.readByCategory(categoryId, pageable);
+        List<Board> boards = categoryPage.getContent();
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(boards);
 
-        return new ResponseEntity(new MultiResponseDto<>(responses, boardPage), HttpStatus.OK);
+        return new MultiResponseDto<>(responses, categoryPage);
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity delete(@PathVariable("boardId") Long boardId) {
+    public HttpStatus delete(@PathVariable("boardId") Long boardId) {
 
         boardService.delete(boardId);
 
-        return new ResponseEntity(HttpStatus.OK);
+        return HttpStatus.NO_CONTENT;
     }
 }
