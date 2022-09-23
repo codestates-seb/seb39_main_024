@@ -36,8 +36,8 @@ public class RecordDto {
         }
     }
 
-    @Getter@Setter
-    @NoArgsConstructor@AllArgsConstructor
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
     public static class RecordProfileResponseDto {
         private LocalDate date;
         private long record;

@@ -67,7 +67,8 @@ public class MemberDto {
         }
     }
 
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
     public static class UpdateRequestDto {
         private Long memberId;
         private String name;
@@ -75,8 +76,9 @@ public class MemberDto {
         private MultipartFile image;
     }
 
-    @Getter @NoArgsConstructor @AllArgsConstructor
-    public static class UpdateResponseDto {  //재사용 고려
+    @Getter
+    @NoArgsConstructor @AllArgsConstructor
+    public static class UpdateResponseDto {  // todo : 재사용 고려
         private Long memberId;
         private String name;
         private String email;
@@ -87,7 +89,8 @@ public class MemberDto {
         }
     }
 
-    @Getter @NoArgsConstructor @AllArgsConstructor
+    @Getter
+    @NoArgsConstructor @AllArgsConstructor
     public static class MemberListDto {
         private Long memberId;
         private String name;
