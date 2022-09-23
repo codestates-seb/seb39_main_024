@@ -18,8 +18,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
-import static com.codestates.flyaway.web.auth.dto.AuthDto.*;
-import static com.codestates.flyaway.web.auth.dto.AuthDto.JoinResponseDto.*;
+import static com.codestates.flyaway.web.login.dto.LoginDto.*;
+import static com.codestates.flyaway.web.login.dto.LoginDto.JoinResponseDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.MemberProfileResponseDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponseDto.*;
@@ -126,6 +126,7 @@ public class MemberService {
     /**
      * Password 암호화
      */
+    @Transactional(readOnly = true)
     public static String encode(String password) {  //시간되면 salt 적용
 
         try {
@@ -141,7 +142,8 @@ public class MemberService {
     /**
      * 프로필 사진 V1
      */
-    public String getImage(long memberId) {   ///리팩토링 (메서드 위치, 의미없는 +1 쿼리)
+    @Transactional(readOnly = true)
+    public String getImage(long memberId) {
 
         Member member = findById(memberId);
         MemberImage image = Optional.ofNullable(member.getMemberImage()).
