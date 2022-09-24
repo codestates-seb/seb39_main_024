@@ -48,6 +48,8 @@ public class CommentService {
 
     public Page<Comment> readByBoardId(Long boardId, Pageable pageable) {
 
+        boardService.findById(boardId);
+
         return commentRepository.findByBoardId(boardId, pageable);
     }
     public void delete(Long commentId) {
