@@ -22,7 +22,7 @@ public class MemberController {
     @ApiOperation(value = "회원 가입", notes = "이메일 중복 확인")
     @ResponseStatus(value = CREATED)
     @PostMapping("/join")
-    public SingleResponseDto join(@Validated JoinRequestDto joinRequestDto) { // todo : Auth api 로 분리 고려
+    public SingleResponseDto join(@Validated @RequestBody JoinRequestDto joinRequestDto) { // todo : Auth api 로 분리 고려
 
         JoinResponseDto joinResponse = memberService.join(joinRequestDto);
         return new SingleResponseDto<>(joinResponse);
