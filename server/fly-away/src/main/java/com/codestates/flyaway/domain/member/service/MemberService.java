@@ -13,11 +13,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.math.BigInteger;
 import java.net.MalformedURLException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
@@ -35,17 +31,14 @@ public class MemberService {
     private final MemberImageService memberImageService;
     private final RecordRepository recordRepository;
 
-    private static String ALGORITHM = "SHA-512";
 
     /**
      * 회원가입
-     *
      * @return 가입 완료된 회원의 id, name, email, createdAt
      */
     public JoinResponseDto join(JoinRequestDto joinRequestDto) {
 
         verifyEmail(joinRequestDto.getEmail());
-        joinRequestDto.setPassword(encode(joinRequestDto.getPassword()));
 
         Member member = joinRequestDto.toEntity();
         Member savedMember = memberRepository.save(member);
@@ -55,13 +48,9 @@ public class MemberService {
 
     /**
      * 회원 정보 수정
-     *
      * @return 수정 완료된 회원의 id, name, email, modifiedAt
      */
     public UpdateResponseDto update(UpdateRequestDto updateRequestDto) {
-
-        Optional.ofNullable(updateRequestDto.getPassword())
-                .ifPresent(pw -> updateRequestDto.setPassword(encode(pw)));
 
         String name = updateRequestDto.getName();
         String password = updateRequestDto.getPassword();
@@ -75,7 +64,6 @@ public class MemberService {
 
     /**
      * 회원 프로필 (특정 회원을 모든 운동기록과 함께 조회)
-     *
      * @return 회원 프로필 정보
      */
     @Transactional(readOnly = true)
@@ -116,27 +104,9 @@ public class MemberService {
      */
     @Transactional(readOnly = true)
     public void verifyEmail(String email) {
-        memberRepository.findByEmail(email)
-                .ifPresent(m -> {
-                    throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);
-                });
-    }
-
-    /**
-     * Password 암호화
-     *
-     * @return 암호화된 비밀번호
-     */
-    public static String encode(String password) {  //시간되면 salt 적용
-
-        try {
-            MessageDigest md = MessageDigest.getInstance(ALGORITHM);
-            md.update(password.getBytes());
-            return String.format("%0128x", new BigInteger(1, md.digest()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e.getMessage());
+        if (memberRepository.existsByEmail(email)) {
+            throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);
         }
-
     }
 
     /**
@@ -153,7 +123,6 @@ public class MemberService {
         MemberImage memberImage = memberImageService.save(updateRequestDto.getImage());
         memberImage.setMember(member);
     }
-
 
     /**
      * 프로필 이미지 V1

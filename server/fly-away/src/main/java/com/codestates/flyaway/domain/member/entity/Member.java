@@ -1,5 +1,6 @@
 package com.codestates.flyaway.domain.member.entity;
 
+import com.codestates.flyaway.domain.member.util.PasswordConverter;
 import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.global.audit.Auditable;
@@ -37,6 +38,8 @@ public class Member extends Auditable {
 
     private String name;
     private String email;
+
+    @Convert(converter = PasswordConverter.class)
     private String password;
 
     public Member(String name, String email, String password) {
