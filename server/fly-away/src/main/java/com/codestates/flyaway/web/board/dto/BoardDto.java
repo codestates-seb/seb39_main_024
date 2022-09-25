@@ -29,6 +29,7 @@ public class BoardDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Update {

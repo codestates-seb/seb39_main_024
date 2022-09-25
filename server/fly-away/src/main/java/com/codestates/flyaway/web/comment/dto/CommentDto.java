@@ -30,7 +30,7 @@ public class CommentDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UpdateComment {
+    public static class Update {
 
         @Nullable
         private Long commentId;
@@ -47,7 +47,7 @@ public class CommentDto {
         private String content;
         private LocalDateTime createdAt;
 
-        public static CommentDto.CommentResponseDto commentToCommentResponseDto(Comment comment) {
+        public static CommentDto.CommentResponseDto toResponseDto(Comment comment) {
 
             return new CommentDto.CommentResponseDto(
                     comment.getId(),
@@ -65,7 +65,7 @@ public class CommentDto {
         private String content;
         private LocalDateTime createdAt;
 
-        public static List<MultiCommentDto> commentToResponsesDto(List<Comment> comments) {
+        public static List<MultiCommentDto> toResponsesDto(List<Comment> comments) {
 
             return comments.stream()
                     .map(comment -> new MultiCommentDto(

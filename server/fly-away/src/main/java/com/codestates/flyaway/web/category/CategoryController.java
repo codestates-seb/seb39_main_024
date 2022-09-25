@@ -35,6 +35,7 @@ public class CategoryController {
     public SingleResponseDto update(@PathVariable("categoryId") Long categoryId,
                                  @RequestBody CategoryDto.UpdateCategory updateCategoryDto) {
 
+        updateCategoryDto.setCategoryId(categoryId);
         CategoryDto.CategoryResponseDto updated = categoryService.update(updateCategoryDto);
 
         return new SingleResponseDto<>(updated);

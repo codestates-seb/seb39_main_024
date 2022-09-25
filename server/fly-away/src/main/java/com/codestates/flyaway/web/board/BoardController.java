@@ -40,6 +40,7 @@ public class BoardController {
     public SingleResponseDto update(@PathVariable("boardId") Long boardId,
                                         @RequestBody BoardDto.Update updateDto) {
 
+        updateDto.setBoardId(boardId);
         BoardDto.BoardResponseDto updated = boardService.update(updateDto);
 
         return new SingleResponseDto(updated);

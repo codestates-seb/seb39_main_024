@@ -35,15 +35,15 @@ public class CommentService {
         comment.setBoard(board);
         commentRepository.save(comment);
 
-        return commentToCommentResponseDto(comment);
+        return toResponseDto(comment);
     }
 
-    public CommentResponseDto update(CommentDto.UpdateComment updateCommentDto) {
+    public CommentResponseDto update(CommentDto.Update updateDto) {
 
-        final Comment comment = commentRepository.getReferenceById(updateCommentDto.getCommentId());
-        comment.update(updateCommentDto.getCommentId(), updateCommentDto.getContent());
+        final Comment comment = commentRepository.getReferenceById(updateDto.getCommentId());
+        comment.update(updateDto.getCommentId(), updateDto.getContent());
 
-        return commentToCommentResponseDto(comment);
+        return toResponseDto(comment);
     }
 
     public Page<Comment> readByBoardId(Long boardId, Pageable pageable) {
