@@ -46,7 +46,7 @@ public class CategoryController {
 
         Page<Category> categories = categoryService.readAll(pageable);
         List<Category> category = categories.getContent();
-        List<CategoryDto.MultiCategoryDto> responses = CategoryDto.MultiCategoryDto.responsesDto(category);
+        List<CategoryDto.MultiCategoryDto> responses = CategoryDto.MultiCategoryDto.toResponsesDto(category);
 
         return new MultiResponseDto<>(responses, categories);
     }

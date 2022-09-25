@@ -33,7 +33,7 @@ public class BoardService {
         board.setCategory(category);
         boardRepository.save(board);
 
-        return boardToResponseDto(board);
+        return toResponseDto(board);
     }
 
     @Transactional
@@ -42,7 +42,7 @@ public class BoardService {
         final Board board = boardRepository.getReferenceById(updateDto.getBoardId());
         board.update(updateDto.getTitle(), updateDto.getContent());
 
-        return boardToResponseDto(board);
+        return toResponseDto(board);
     }
 
     @Transactional
@@ -51,7 +51,7 @@ public class BoardService {
         Board board = findById(boardId);
         board.addViewCount();
 
-        return boardToResponseDto(board);
+        return toResponseDto(board);
     }
 
     public Page<Board> readAll(Pageable pageable) {

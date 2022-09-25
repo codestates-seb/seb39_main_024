@@ -27,13 +27,13 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/{categoryId}")
-    public SingleResponseDto write(@PathVariable("categoryId") Long categoryId,
+    public SingleResponseDto create(@PathVariable("categoryId") Long categoryId,
                                    @Validated @RequestBody BoardDto.Create createDto){
 
         createDto.setCategoryId(categoryId);
-        BoardDto.BoardResponseDto wrote = boardService.create(createDto);
+        BoardDto.BoardResponseDto created = boardService.create(createDto);
 
-        return new SingleResponseDto(wrote);
+        return new SingleResponseDto(created);
     }
 
     @PatchMapping("/{boardId}")
@@ -60,7 +60,7 @@ public class BoardController {
 
         Page<Board> boardPage = boardService.readAll(pageable);
         List<Board> board = boardPage.getContent();
-        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(board);
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.toResponsesDto(board);
 
         return new MultiResponseDto<>(responses, boardPage);
     }
@@ -70,7 +70,7 @@ public class BoardController {
 
         Page<Board> categoryPage = boardService.readByCategory(categoryId, pageable);
         List<Board> boards = categoryPage.getContent();
-        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.boardsToResponsesDto(boards);
+        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.toResponsesDto(boards);
 
         return new MultiResponseDto<>(responses, categoryPage);
     }

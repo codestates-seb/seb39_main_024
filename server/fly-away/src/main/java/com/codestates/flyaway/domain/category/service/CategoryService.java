@@ -26,7 +26,7 @@ public class CategoryService {
         Category category = new Category(createCategoryDto.getCategoryName());
         categoryRepository.save(category);
 
-        return categoryToResponseDto(category);
+        return toResponseDto(category);
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class CategoryService {
         final Category category = categoryRepository.getReferenceById(updateCategoryDto.getCategoryId());
         category.update(category.getCategoryName());
 
-        return categoryToResponseDto(category);
+        return toResponseDto(category);
     }
 
     @Transactional
