@@ -30,7 +30,7 @@ export default function MyPage(props) {
           <Button link="/mypage/deleteaccount" str="회원 탈퇴" />
         </div>
       </section>
-      <section>
+      <section className="sm:bg-pink">
         {path === '/mypage' ? <Summary /> : <>{props.children}</>}
       </section>
     </main>
