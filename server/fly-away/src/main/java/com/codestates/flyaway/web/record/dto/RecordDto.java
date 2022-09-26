@@ -14,8 +14,7 @@ import java.time.LocalDate;
 public class RecordDto {
 
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @NoArgsConstructor @AllArgsConstructor
     public static class InsertRequestDto {
         @Positive
         @NotNull
@@ -23,8 +22,7 @@ public class RecordDto {
     }
 
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @NoArgsConstructor @AllArgsConstructor
     public static class InsertResponseDto {
         private long memberId;
         private LocalDate date;
@@ -38,9 +36,8 @@ public class RecordDto {
         }
     }
 
-    @Getter@Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Getter @Setter
+    @NoArgsConstructor @AllArgsConstructor
     public static class RecordProfileResponseDto {
         private LocalDate date;
         private long record;
