@@ -1,11 +1,6 @@
 import Button from './Button';
 
-type MenuProps = {
-  className?: string;
-  onMenu: () => void;
-};
-
-export default function Modal(props: MenuProps) {
+export default function Modal(props) {
   return (
     <div
       className={`flex flex-col fixed w-40 h-full bg-red-100 text-xl ${props.className}`}

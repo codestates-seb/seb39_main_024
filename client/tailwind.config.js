@@ -5,8 +5,13 @@ module.exports = {
     extend: {
       colors: {
         pink: '#FFDADA',
+        green: '#A9F1DF',
+        yellow: '#FFF9D7',
       },
       width: {
+        768: '768px',
+      },
+      height: {
         768: '768px',
       },
     },
