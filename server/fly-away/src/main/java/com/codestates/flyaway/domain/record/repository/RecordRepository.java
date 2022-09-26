@@ -11,6 +11,6 @@ public interface RecordRepository extends JpaRepository<Record, Long> {
 
     Optional<Record> findByMemberIdAndDate(long memberId, LocalDate date);
 
-    List<Record> findByMemberId(long memberId);
+    List<Record> findByMemberId(long memberId);    // record 값만 불러오도록 리팩토링
 }
 

@@ -1,5 +1,7 @@
 package com.codestates.flyaway.domain.member.entity;
 
+import com.codestates.flyaway.domain.member.util.PasswordConverter;
+import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.global.audit.Auditable;
 import lombok.AllArgsConstructor;
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static javax.persistence.CascadeType.*;
+import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 import static lombok.AccessLevel.*;
 
@@ -25,11 +29,17 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @OneToOne(fetch = LAZY, cascade = ALL)
+    @JoinColumn(name = "image_id")
+    private MemberImage memberImage;
+
     @OneToMany(mappedBy = "member")
     private List<Record> records = new ArrayList<>();
 
     private String name;
     private String email;
+
+    @Convert(converter = PasswordConverter.class)
     private String password;
 
     public Member(String name, String email, String password) {
@@ -38,14 +48,17 @@ public class Member extends Auditable {
         this.password = password;
     }
 
+    public void setMemberImage(MemberImage memberImage) {
+        this.memberImage = memberImage;
+    }
+
+
     //==================
 
 
-    public void update(String name, String email, String password) {
+    public void update(String name, String password) {
         Optional.ofNullable(name)
                 .ifPresent(n -> this.name = n);
-        Optional.ofNullable(email)
-                .ifPresent(e -> this.email = e);
         Optional.ofNullable(password)
                 .ifPresent(p -> this.password = p);
     }
