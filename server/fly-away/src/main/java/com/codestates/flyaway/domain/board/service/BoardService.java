@@ -5,6 +5,7 @@ import com.codestates.flyaway.domain.board.repository.BoardRepository;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.category.service.CategoryService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
+import com.codestates.flyaway.global.util.FileStore;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

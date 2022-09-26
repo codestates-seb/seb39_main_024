@@ -1,6 +1,7 @@
 package com.codestates.flyaway.domain.comment.service;
 
 import com.codestates.flyaway.domain.board.entity.Board;
+import com.codestates.flyaway.domain.board.repository.BoardRepository;
 import com.codestates.flyaway.domain.board.service.BoardService;
 import com.codestates.flyaway.domain.comment.entity.Comment;
 import com.codestates.flyaway.domain.comment.repository.CommentRepository;

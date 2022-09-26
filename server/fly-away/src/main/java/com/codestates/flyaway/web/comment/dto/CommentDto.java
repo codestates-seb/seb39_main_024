@@ -32,6 +32,7 @@ public class CommentDto {
     @NoArgsConstructor
     public static class Update {
 
+        private Long boardId;
         @Nullable
         private Long commentId;
         @NotBlank
