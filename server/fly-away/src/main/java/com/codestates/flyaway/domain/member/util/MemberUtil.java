@@ -37,8 +37,9 @@ public class MemberUtil {  //todo : 다른 네이밍 방법 고려
 
     /**
      * Password 암호화
+     * @return 암호화된 password
      */
-    public static String encode(String password) {  //시간되면 salt 적용 (salt 컬럼 추가)
+    public static String encode(String password) {  // todo : salt 적용 (salt 컬럼 추가)
 
         try {
             MessageDigest md = MessageDigest.getInstance(ALGORITHM);
