@@ -1,5 +1,6 @@
 import React from 'react';
+import MyPage from './MyPage';
 
 export default function DeleteAccount() {
-  return <div>DeleteAccount</div>;
+  return <MyPage>DeleteAccount</MyPage>;
 }
