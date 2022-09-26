@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-// import { useEffect, useState } from 'react';
-// import { useRecoilState } from 'recoil';
-// import { videoItemState } from '../../recoil/atoms/videoItemState';
+import { memo } from 'react';
 
-export default function VideoItem({ video, video: { snippet }, onVideoClick }) {
+export default memo(function VideoItem({
+  video,
+  video: { snippet },
+  onVideoClick,
+}) {
   return (
-    <li onClick={() => onVideoClick(video)}>
+    <li className="cursor-pointer" onClick={() => onVideoClick(video.id)}>
       <div className="my-5 sm:my-2">
         <img
           className="w-full"
@@ -20,4 +22,4 @@ export default function VideoItem({ video, video: { snippet }, onVideoClick }) {
       </div>
     </li>
   );
-}
+});

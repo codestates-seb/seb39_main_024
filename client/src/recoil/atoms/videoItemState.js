@@ -6,6 +6,6 @@ const { persistAtom } = recoilPersist();
 //videoItem
 export const videoItemState = atom({
   key: 'videoItemState',
-  default: {},
+  default: [],
   effects_UNSTABLE: [persistAtom],
 });
