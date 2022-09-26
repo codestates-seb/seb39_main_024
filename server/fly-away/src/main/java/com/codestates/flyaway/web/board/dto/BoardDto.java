@@ -29,6 +29,7 @@ public class BoardDto {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Update {
@@ -53,7 +54,7 @@ public class BoardDto {
         private int viewCount;
         private LocalDateTime createdAt;
 
-        public static BoardResponseDto boardToResponseDto(Board board){
+        public static BoardResponseDto toResponseDto(Board board){
 
             return new BoardResponseDto(
                     board.getId(),
@@ -75,7 +76,7 @@ public class BoardDto {
         private LocalDateTime createdAt;
         private int viewCount;
 
-        public static List<MultiBoardDto> boardsToResponsesDto(List<Board> boards) {
+        public static List<MultiBoardDto> toResponsesDto(List<Board> boards) {
 
             return boards.stream()
                     .map(board -> new MultiBoardDto(

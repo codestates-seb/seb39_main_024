@@ -35,6 +35,7 @@ public class CategoryController {
     public SingleResponseDto update(@PathVariable("categoryId") Long categoryId,
                                  @RequestBody CategoryDto.UpdateCategory updateCategoryDto) {
 
+        updateCategoryDto.setCategoryId(categoryId);
         CategoryDto.CategoryResponseDto updated = categoryService.update(updateCategoryDto);
 
         return new SingleResponseDto<>(updated);
@@ -45,7 +46,7 @@ public class CategoryController {
 
         Page<Category> categories = categoryService.readAll(pageable);
         List<Category> category = categories.getContent();
-        List<CategoryDto.MultiCategoryDto> responses = CategoryDto.MultiCategoryDto.responsesDto(category);
+        List<CategoryDto.MultiCategoryDto> responses = CategoryDto.MultiCategoryDto.toResponsesDto(category);
 
         return new MultiResponseDto<>(responses, categories);
     }

@@ -35,22 +35,22 @@ public class CommentController {
     @PatchMapping("/{boardId}/comment/{commentId}")
     public SingleResponseDto updateComment(@PathVariable("boardId") Long boardId,
                                         @PathVariable("commentId") Long commentId,
-                                        @RequestBody CommentDto.UpdateComment updateCommentDto) {
+                                        @RequestBody CommentDto.Update updateDto) {
 
-        updateCommentDto.setCommentId(commentId);
-        CommentDto.CommentResponseDto updated = commentService.update(updateCommentDto);
+        updateDto.setCommentId(commentId);
+        CommentDto.CommentResponseDto updated = commentService.update(updateDto);
 
         return new SingleResponseDto<>(updated);
     }
 
     @GetMapping("/{boardId}/comment")
-    public MultiResponseDto readAllComment(@PathVariable("boardId") Long boardId,
+    public MultiResponseDto readComment(@PathVariable("boardId") Long boardId,
                                          @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
                                          Pageable pageable) {
 
-        Page<Comment> comments = commentService.readAll(pageable);
+        Page<Comment> comments = commentService.readByBoardId(boardId, pageable);
         List<Comment> commentList = comments.getContent();
-        List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.commentToResponsesDto(commentList);
+        List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.toResponsesDto(commentList);
 
         return new MultiResponseDto<>(responses, comments);
     }
