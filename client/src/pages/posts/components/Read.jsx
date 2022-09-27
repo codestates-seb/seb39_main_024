@@ -1,5 +1,6 @@
 import { lazy, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { postReadState } from '../../../recoil/posts/selectors/postReadState';
 import { commentReadState } from '../../../recoil/posts/selectors/commentReadState';
@@ -10,7 +11,18 @@ export default function Read() {
   const postRead = useRecoilValue(postReadState);
   const commentRead = useRecoilValue(commentReadState);
 
+  const navigation = useNavigate();
+
   const [commentValue, setCommentValue] = useState('');
+  const [modal, setModal] = useState(false);
+
+  const modalHandler = () => {
+    setModal((prev) => !prev);
+  };
+
+  const editHandler = () => {
+    navigation('/posts/edit');
+  };
 
   const commentHandler = (e) => {
     setCommentValue(e.target.value);
@@ -41,7 +53,18 @@ export default function Read() {
 
   return (
     <main className="flex flex-col justify-center py-5 px-5 bg-pink">
-      <p className="text-start">{postRead.title}</p>
+      <section className="flex justify-between">
+        <p className="text-start">{postRead.title}</p>
+        <div className="flex">
+          {modal && (
+            <>
+              <button onClick={editHandler}>수정</button>
+              <button>삭제</button>
+            </>
+          )}
+          <button onClick={modalHandler}>&#65049;</button>
+        </div>
+      </section>
       <section className="bg-yellow w-full flex justify-center py-5">
         <div className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white">
           사진
