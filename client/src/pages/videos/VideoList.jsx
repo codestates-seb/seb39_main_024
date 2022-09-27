@@ -1,15 +1,10 @@
 import VideoItem from './VideoItem';
 
-export default function VideoList({ videos, onVideoClick, display }) {
+export default function VideoList({ videos, onVideoClick }) {
   return (
     <ul>
       {videos.map((video) => (
-        <VideoItem
-          key={video.id}
-          video={video}
-          onVideoClick={onVideoClick}
-          display={display}
-        />
+        <VideoItem key={video.etag} video={video} onVideoClick={onVideoClick} />
       ))}
     </ul>
   );

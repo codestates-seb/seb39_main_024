@@ -1,5 +1,5 @@
-import React from 'react';
+import Videos from './Videos';
 
 export default function Stretching() {
-  return <div>Stretching</div>;
+  return <Videos query={'스트레칭'} />;
 }

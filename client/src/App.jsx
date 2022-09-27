@@ -2,23 +2,24 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-const Read = lazy(() => import('./pages/posts/components/Read'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
 const Join = lazy(() => import('./pages/auth/Join'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Layout = lazy(() => import('./containers/Layout'));
 const Home = lazy(() => import('./pages/Home'));
-const VideosALL = lazy(() => import('./pages/videos/Videos'));
-// const Popularity = lazy(() => import('./pages/videos/Popularity'));
-// const Training = lazy(() => import('./pages/videos/Training'));
-// const Stretching = lazy(() => import('./pages/videos/Stretching'));
-const PostsAll = lazy(() => import('./pages/posts/category/All'));
-const Record = lazy(() => import('./pages/posts/category/Record'));
-const Meal = lazy(() => import('./pages/posts/category/Meal'));
+const VideosALL = lazy(() => import('./pages/videos/VideosAll'));
+const Popularity = lazy(() => import('./pages/videos/Popularity'));
+const Training = lazy(() => import('./pages/videos/Training'));
+const Stretching = lazy(() => import('./pages/videos/Stretching'));
+const VideoDetail = lazy(() => import('./pages/videos/VideoDetail'));
+const PostsAll = lazy(() => import('./pages/posts/All'));
+const Record = lazy(() => import('./pages/posts/Record'));
+const Free = lazy(() => import('./pages/posts/Free'));
+const Meal = lazy(() => import('./pages/posts/Meal'));
+const Read = lazy(() => import('./pages/posts/Read'));
+const Create = lazy(() => import('./pages/posts/Create'));
 const Edit = lazy(() => import('./pages/mypage/ProfileEdit'));
-const Create = lazy(() => import('./pages/posts/create/Create'));
-const Free = lazy(() => import('./pages/posts/category/Free'));
 const MyPage = lazy(() => import('./pages/mypage/MyPage'));
 const Calendar = lazy(() => import('./pages/mypage/Calendar'));
 const ProfileEdit = lazy(() => import('./pages/mypage/ProfileEdit'));
@@ -37,9 +38,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path="/videos" element={<VideosALL />} />
-            {/* <Route path="/videos/popularity" element={<Popularity />} />
+            <Route path="/videos/popularity" element={<Popularity />} />
             <Route path="/videos/training" element={<Training />} />
-            <Route path="/videos/stretching" element={<Stretching />} /> */}
+            <Route path="/videos/stretching" element={<Stretching />} />
+            <Route path="/videos/detail" element={<VideoDetail />} />
             <Route path="/posts" element={<PostsAll />} />
             <Route path="/posts/free" element={<Free />} />
             <Route path="/posts/meal" element={<Meal />} />
