@@ -7,6 +7,7 @@ export default memo(function VideoItem({
   video: { snippet },
   onVideoClick,
 }) {
+  console.log(video);
   return (
     <li className="cursor-pointer" onClick={() => onVideoClick(video.id)}>
       <div className="my-5 sm:my-2">
