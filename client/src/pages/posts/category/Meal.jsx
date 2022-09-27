@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 
-import { postsCategoryState } from '../../../recoil/posts/selectors/postsCategoryState';
-import Post from '../components/Post';
+import { postsCategoryState } from '../../../recoil/selectors/postsCategoryState';
+import Post from '../common/Post';
 
 export default function Meal() {
   const posts = useRecoilValue(postsCategoryState);

@@ -2,8 +2,8 @@ import { lazy, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { postReadState } from '../../../recoil/posts/selectors/postReadState';
-import { commentReadState } from '../../../recoil/posts/selectors/commentReadState';
+import { postReadState } from '../../../recoil/selectors/postReadState';
+import { commentReadState } from '../../../recoil/selectors/commentReadState';
 
 const Comment = lazy(() => import('./Comment'));
 

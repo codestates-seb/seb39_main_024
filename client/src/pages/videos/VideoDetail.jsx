@@ -1,5 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import { selectedVideoState } from '../../recoil/atoms/Atom';
+import { selectedVideoState } from '../../recoil/atoms/videoState';
 import YouTube from 'react-youtube';
 import axios from 'axios';
 // import Timer from '../../service/timer';

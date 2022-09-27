@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { selectedVideoState } from '../../recoil/atoms/Atom';
+import { selectedVideoState } from '../../recoil/atoms/videoState';
 import VideoList from './VideoList';
 import Youtube from '../../service/youtube';
 

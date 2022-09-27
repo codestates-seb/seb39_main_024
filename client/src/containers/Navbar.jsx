@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { categoryIdState } from '../recoil/posts/atoms/categoryIdState';
+import { categoryIdState } from '../recoil/atoms/categoryIdState';
 
 import Button from '../components/Button';
 

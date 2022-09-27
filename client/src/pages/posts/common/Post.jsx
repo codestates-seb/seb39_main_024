@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-import { boardIdState } from '../../../recoil/posts/atoms/boardIdState';
+import { boardIdState } from '../../../recoil/atoms/boardIdState';
 
 export default function Post({ items }) {
   const navigation = useNavigate();

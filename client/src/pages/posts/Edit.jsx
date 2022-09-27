@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { postReadState } from '../../recoil/posts/selectors/postReadState';
+import { postReadState } from '../../recoil/selectors/postReadState';
 
 import Image from './create/Image';
 import Category from './create/Category';

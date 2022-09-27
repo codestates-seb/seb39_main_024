@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 export default function Layout(props) {
   return (
     <main className="flex justify-center items-center h-full">

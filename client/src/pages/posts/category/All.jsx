@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 
-import { postsAllState } from '../../../recoil/posts/selectors/postsAllState';
-import Post from '../components/Post';
+import { postsAllState } from '../../../recoil/selectors/postsAllState';
+import Post from '../common/Post';
 
 export default function All() {
   const posts = useRecoilValue(postsAllState);
