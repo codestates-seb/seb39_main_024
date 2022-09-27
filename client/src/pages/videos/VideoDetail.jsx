@@ -1,6 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { selectedVideoState } from '../../recoil/atoms/Atom';
 import YouTube from 'react-youtube';
+import axios from 'axios';
 // import Timer from '../../service/timer';
 
 // { video, video: { snippet } }
@@ -47,6 +48,7 @@ export default function VideoDetail() {
     stopDate = new Date();
     sec = (stopDate.getTime() - startDate.getTime()) / 1000;
     console.log(`실행시간: ${sec}`);
+    axios.post(`http://211.41.205.19:8080/record`);
   }
   function onEnd() {
     stopDate = new Date();
