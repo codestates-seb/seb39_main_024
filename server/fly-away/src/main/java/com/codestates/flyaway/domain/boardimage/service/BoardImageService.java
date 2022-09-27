@@ -1,5 +1,6 @@
 package com.codestates.flyaway.domain.boardimage.service;
 
+import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.boardimage.repository.BoardImageRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
@@ -36,7 +37,7 @@ public class BoardImageService {
         return fileDir + fileName;
     }
 
-    public BoardImage saveFile(MultipartFile multipartFile) throws IOException {
+    public BoardImage saveFile(MultipartFile multipartFile, Board board) throws IOException {
         //Todo 파일이 비어있을 때 defaultImage 추가
         if(multipartFile.isEmpty()) {
             return null;
@@ -46,21 +47,23 @@ public class BoardImageService {
         multipartFile.transferTo(new File(getFullPath(fileName)));
         BoardImage boardImage = new BoardImage(originalFileName, fileDir, fileName);
         boardImageRepository.save(boardImage);
+        boardImage.setBoard(board);
 
         return boardImage;
     }
 
-    public List<BoardImage> saveFiles(List<MultipartFile> multipartFiles) {
+    public List<BoardImage> saveFiles(List<MultipartFile> multipartFiles, Board board) {
 
         List<BoardImage> saveFileResult = new ArrayList<>();
         for(MultipartFile multipartFile : multipartFiles) {
             try {
-                BoardImage storedFile = saveFile(multipartFile);
+                BoardImage storedFile = saveFile(multipartFile, board);
                 saveFileResult.add(storedFile);
             }catch(IOException e) {
                 throw new BusinessLogicException(FILE_NOT_FOUND);
             }
         }
+
 
         return saveFileResult;
     }

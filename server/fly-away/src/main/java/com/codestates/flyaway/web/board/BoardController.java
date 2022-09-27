@@ -28,7 +28,6 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardImageService boardImageService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{categoryId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -37,8 +36,7 @@ public class BoardController {
                                    @Validated @RequestPart BoardDto.Create createDto) {
 
         createDto.setCategoryId(categoryId);
-        BoardDto.BoardResponseDto created = boardService.create(createDto);
-        boardImageService.saveFiles(images);
+        BoardDto.BoardResponseDto created = boardService.create(images, createDto);
 
         return new SingleResponseDto(created);
     }

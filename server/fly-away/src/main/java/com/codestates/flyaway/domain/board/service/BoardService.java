@@ -2,6 +2,7 @@ package com.codestates.flyaway.domain.board.service;
 
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.repository.BoardRepository;
+import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.category.service.CategoryService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.board.dto.BoardDto.*;
@@ -23,15 +27,16 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final CategoryService categoryService;
+    private final BoardImageService boardImageService;
 
     @Transactional
-    public BoardResponseDto create(BoardDto.Create createDto) {
+    public BoardResponseDto create(List<MultipartFile> images, BoardDto.Create createDto) {
 
         Category category = categoryService.findById(createDto.getCategoryId());
-
         Board board = new Board(createDto.getTitle(), createDto.getContent());
         board.setCategory(category);
         boardRepository.save(board);
+        boardImageService.saveFiles(images, board);
 
         return toResponseDto(board);
     }
