@@ -33,7 +33,7 @@ public class Member extends Auditable {
     @JoinColumn(name = "image_id")
     private MemberImage memberImage;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Record> records = new ArrayList<>();
 
     private String name;
