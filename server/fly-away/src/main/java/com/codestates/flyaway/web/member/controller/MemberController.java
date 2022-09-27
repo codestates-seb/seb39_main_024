@@ -5,7 +5,6 @@ import com.codestates.flyaway.global.dto.SingleResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,7 +56,6 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 탈퇴")
-    @ResponseStatus(NO_CONTENT)
     @DeleteMapping("/{memberId}")
     public String delete(@PathVariable long memberId, HttpServletRequest request) {
         memberService.delete(memberId);
