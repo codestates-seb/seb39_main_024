@@ -18,39 +18,6 @@ class Youtube {
   //   return response.data.items;
   // }
 
-  // async popular() {
-  //   const response = await this.youtube.get('search', {
-  //     params: {
-  //       part: 'snippet',
-  //       maxResults: 1,
-  //       q: '홈트레이닝',
-  //     },
-  //   });
-  //   return response.data.items;
-  // }
-
-  // async training() {
-  //   const response = await this.youtube.get('search', {
-  //     params: {
-  //       part: 'snippet',
-  //       maxResults: 1,
-  //       q: '홈트레이닝',
-  //     },
-  //   });
-  //   return response.data.items;
-  // }
-
-  // async stretching() {
-  //   const response = await this.youtube.get('search', {
-  //     params: {
-  //       part: 'snippet',
-  //       maxResults: 1,
-  //       q: '스트레칭',
-  //     },
-  //   });
-  //   return response.data.items;
-  // }
-
   // , contentDetails, statistics
   async videoData(id) {
     const response = await this.youtube.get('videos', {
