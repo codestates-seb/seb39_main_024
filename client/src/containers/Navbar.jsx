@@ -1,19 +1,22 @@
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { categoryIdState } from '../recoil/posts/atoms/categoryIdState';
+
 import Button from '../components/Button';
 
 export default function Navbar() {
   const location = useLocation();
-  const navigation = useNavigate();
 
   const [path, setPath] = useState('');
+  const setCategoryId = useSetRecoilState(categoryIdState);
 
   useEffect(() => {
     setPath(location.pathname);
   }, [location]);
 
-  const postCreateHandler = () => {
-    navigation('/posts/create');
+  const navHandler = (e) => {
+    setCategoryId(Number(e.target.value));
   };
 
   return (
@@ -35,16 +38,27 @@ export default function Navbar() {
         <nav className="flex sm:text-xs flex-row items-center justify-between">
           <div>
             <Button link="/posts" str="전체" />
-            <Button link="/posts/record" str="운동 기록" />
-            <Button link="/posts/meal" str="다이어트 식단" />
-            <Button link="/posts/free" str="자유" />
+            <Button
+              link="/posts/record"
+              str="운동 기록"
+              value="1"
+              onClick={navHandler}
+            />
+            <Button
+              link="/posts/meal"
+              str="다이어트 식단"
+              value="2"
+              onClick={navHandler}
+            />
+            <Button
+              link="/posts/free"
+              str="자유"
+              value="3"
+              onClick={navHandler}
+            />
           </div>
           <div>
-            <Button
-              link="/posts/create"
-              str="글쓰기"
-              onClick={postCreateHandler}
-            />
+            <Button link="/posts/create" str="글쓰기" />
             <input placeholder="글 검색하기" />
           </div>
         </nav>

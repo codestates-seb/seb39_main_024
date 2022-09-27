@@ -18,6 +18,7 @@
     "react-youtube": "^10.0.0",
     "recoil": "^0.7.5",
     "recoil-persist": "^4.2.0",
+    "swiper": "^6.8.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

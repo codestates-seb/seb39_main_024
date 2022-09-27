@@ -1,5 +1,6 @@
 import React from 'react';
+import MyPage from './MyPage';
 
 export default function Calendar() {
-  return <div>Calendar</div>;
+  return <MyPage>Calendar</MyPage>;
 }
