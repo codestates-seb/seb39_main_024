@@ -19,7 +19,7 @@ const Free = lazy(() => import('./pages/posts/category/Free'));
 const Meal = lazy(() => import('./pages/posts/category/Meal'));
 const Read = lazy(() => import('./pages/posts/common/Read'));
 const Create = lazy(() => import('./pages/posts/create/Create'));
-const Edit = lazy(() => import('./pages/mypage/ProfileEdit'));
+const Edit = lazy(() => import('./pages/posts/create/Edit'));
 const MyPage = lazy(() => import('./pages/mypage/MyPage'));
 const Calendar = lazy(() => import('./pages/mypage/Calendar'));
 const ProfileEdit = lazy(() => import('./pages/mypage/ProfileEdit'));
@@ -46,7 +46,7 @@ function App() {
             <Route path="/posts/free" element={<Free />} />
             <Route path="/posts/meal" element={<Meal />} />
             <Route path="/posts/record" element={<Record />} />
-            <Route path="/posts/edit" element={<Create />} />
+            <Route path="/posts/create" element={<Create />} />
             <Route path="/posts/edit" element={<Edit />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/calendar" element={<Calendar />} />

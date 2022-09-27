@@ -11,23 +11,38 @@ export default function Read() {
   const postRead = useRecoilValue(postReadState);
   const commentRead = useRecoilValue(commentReadState);
 
-  const navigation = useNavigate();
-
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
 
+  const navigation = useNavigate();
+
+  // 수정, 삭제 모달
   const modalHandler = () => {
     setModal((prev) => !prev);
   };
 
+  // 수정하기 버튼
   const editHandler = () => {
     navigation('/posts/edit');
   };
 
+  // 삭제하기 버튼
+  const deleteHandler = async () => {
+    try {
+      await axios.delete(`http://211.41.205.19:8080/board/${postRead.boardId}`),
+        alert('해당 글이 삭제되었습니다.');
+      window.location.replace('/posts');
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  // 댓글 인풋 값 핸들러
   const commentHandler = (e) => {
     setCommentValue(e.target.value);
   };
 
+  // 댓글 달기 버튼
   const submitHandler = async () => {
     const item = {
       boardId: postRead.boardId,
@@ -59,7 +74,7 @@ export default function Read() {
           {modal && (
             <>
               <button onClick={editHandler}>수정</button>
-              <button>삭제</button>
+              <button onClick={deleteHandler}>삭제</button>
             </>
           )}
           <button onClick={modalHandler}>&#65049;</button>

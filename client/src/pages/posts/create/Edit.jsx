@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { postReadState } from '../../recoil/selectors/postReadState';
+import { postReadState } from '../../../recoil/selectors/postReadState';
+import { categoryIdState } from '../../../recoil/atoms/categoryIdState';
 
-import Image from './create/Image';
-import Category from './create/Category';
+import Image from './Image';
+import Category from './Category';
 
 export default function Edit() {
   const postRead = useRecoilValue(postReadState);
-  console.log(postRead);
+  const categoryRead = useRecoilValue(categoryIdState);
 
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(categoryRead);
 
   const [inputValue, setInputValue] = useState({
-    title: '',
-    content: '',
+    title: postRead.title,
+    content: postRead.content,
   });
 
   const [imgFile, setImgFile] = useState([]);
@@ -33,20 +34,25 @@ export default function Edit() {
 
     const categoryId = Number(category);
 
-    const item = {
+    let data = {
       categoryId: categoryId,
+      boardId: postRead.boardId,
       title: inputValue.title,
       content: inputValue.content,
     };
 
     try {
-      await axios.post(`http://211.41.205.19:8080/board/${categoryId}`, item, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      alert('글이 등록되었습니다 !');
-      window.location.replace('/posts');
+      await axios.patch(
+        `http://211.41.205.19:8080/board/${postRead.boardId}`,
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      alert('글이 수정되었습니다 !');
+      window.location.replace('/posts/read');
     } catch (err) {
       console.log('err', err);
     }
@@ -60,7 +66,7 @@ export default function Edit() {
       <section className="flex justify-between">
         <Category category={category} setCategory={setCategory} />
         <button type="submit" className="bg-pink px-2.5 rounded">
-          글 등록
+          글 수정
         </button>
       </section>
       <input
