@@ -34,8 +34,23 @@ export default function Edit() {
 
     const categoryId = Number(category);
 
+    if (categoryId === 0) {
+      alert('카테고리를 선택해주세요 !');
+      return;
+    }
+
+    if (inputValue.title.trim() === '') {
+      alert('제목은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
+    if (inputValue.content.trim() === '') {
+      alert('내용은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
     let data = {
-      categoryId: categoryId,
+      categoryId: category,
       boardId: postRead.boardId,
       title: inputValue.title,
       content: inputValue.content,

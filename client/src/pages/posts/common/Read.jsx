@@ -44,6 +44,11 @@ export default function Read() {
 
   // 댓글 달기 버튼
   const submitHandler = async () => {
+    if (commentValue.trim() === '') {
+      alert('최소 한 글자 이상 작성해주세요 !');
+      return;
+    }
+
     const item = {
       boardId: postRead.boardId,
       content: commentValue,
@@ -106,7 +111,7 @@ export default function Read() {
         <button onClick={submitHandler}>댓글 달기 &rarr;</button>
       </div>
       {commentRead.map((comment) => (
-        <Comment key={comment.commentId} items={comment} />
+        <Comment key={comment.commentId} items={comment} postRead={postRead} />
       ))}
     </main>
   );

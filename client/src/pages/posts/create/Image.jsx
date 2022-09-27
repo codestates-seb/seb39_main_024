@@ -37,7 +37,7 @@ export default function Image({ imgFile, setImgFile }) {
     <Fragment>
       <section className="mt-7">
         <label
-          className="bg-pink p-1.5  rounded"
+          className="bg-pink p-1.5 rounded cursor-pointer"
           htmlFor="input-file"
           onChange={imgAddHandler}
         >

@@ -5,7 +5,7 @@ import Image from './Image';
 import Category from './Category';
 
 export default function Create() {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(0);
 
   const [inputValue, setInputValue] = useState({
     title: '',
@@ -28,8 +28,23 @@ export default function Create() {
 
     const categoryId = Number(category);
 
+    if (categoryId === 0) {
+      alert('카테고리를 선택해주세요 !');
+      return;
+    }
+
+    if (inputValue.title.trim() === '') {
+      alert('제목은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
+    if (inputValue.content.trim() === '') {
+      alert('내용은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
     const item = {
-      categoryId: categoryId,
+      categoryId: category,
       title: inputValue.title,
       content: inputValue.content,
     };
