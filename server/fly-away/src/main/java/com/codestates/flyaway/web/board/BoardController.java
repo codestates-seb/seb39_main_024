@@ -2,6 +2,7 @@ package com.codestates.flyaway.web.board;
 
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
+import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
 import com.codestates.flyaway.global.dto.MultiResponseDto;
 import com.codestates.flyaway.global.dto.SingleResponseDto;
 import com.codestates.flyaway.web.board.dto.BoardDto;
@@ -12,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,20 +28,24 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardImageService boardImageService;
 
-    @PostMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/{categoryId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public SingleResponseDto create(@PathVariable("categoryId") Long categoryId,
-                                   @Validated @RequestBody BoardDto.Create createDto){
+                                   @RequestPart("image") List<MultipartFile> images,
+                                   @Validated @RequestPart BoardDto.Create createDto) {
 
         createDto.setCategoryId(categoryId);
         BoardDto.BoardResponseDto created = boardService.create(createDto);
+        boardImageService.saveFiles(images);
 
         return new SingleResponseDto(created);
     }
 
     @PatchMapping("/{boardId}")
     public SingleResponseDto update(@PathVariable("boardId") Long boardId,
-                                        @RequestBody BoardDto.Update updateDto) {
+                                    @RequestBody BoardDto.Update updateDto) {
 
         updateDto.setBoardId(boardId);
         BoardDto.BoardResponseDto updated = boardService.update(updateDto);

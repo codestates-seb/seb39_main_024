@@ -5,7 +5,6 @@ import com.codestates.flyaway.domain.board.repository.BoardRepository;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.category.service.CategoryService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
-import com.codestates.flyaway.global.util.FileStore;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -40,7 +39,9 @@ public class BoardService {
     @Transactional
     public BoardResponseDto update(BoardDto.Update updateDto) {
 
+        Category category = categoryService.findById(updateDto.getCategoryId());
         final Board board = boardRepository.getReferenceById(updateDto.getBoardId());
+        board.setCategory(category);
         board.update(updateDto.getTitle(), updateDto.getContent());
 
         return toResponseDto(board);

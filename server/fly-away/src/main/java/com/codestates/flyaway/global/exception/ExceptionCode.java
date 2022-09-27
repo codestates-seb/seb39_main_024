@@ -11,6 +11,8 @@ public enum ExceptionCode {
     FILE_NOT_FOUND(404, "파일이 존재하지 않습니다."),
     FILE_DELETE_FAILED(404, "파일을 삭제에 실패했습니다."),
 
+    FILE_CAN_NOT_SAVE(404, "파일을 저장하지 못했습니다."),
+
     ARTICLE_NOT_FOUND(404, "존재하지 않는 게시글입니다."),
     COMMENT_NOT_FOUND(404, "존재하지 않는 댓글입니다."),
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리 입니다.");

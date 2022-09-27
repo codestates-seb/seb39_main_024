@@ -34,6 +34,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class Update {
 
+        private Long categoryId;
         @Nullable
         private Long boardId;
         @NotBlank
