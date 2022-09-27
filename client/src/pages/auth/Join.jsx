@@ -9,21 +9,11 @@ export default function Join() {
     check: '',
   });
 
-  let valid = false;
-  console.log(valid);
-
-  const validHandler = (value) => {
-    if (value.trim().length > 0) {
-      valid = true;
-    }
-  };
-
   const inputValueChangeHandler = (e) => {
     setInputValue({
       ...inputValue,
       [e.target.name]: e.target.value,
     });
-    validHandler(e.target.name);
   };
 
   const submitHandler = async (e) => {
