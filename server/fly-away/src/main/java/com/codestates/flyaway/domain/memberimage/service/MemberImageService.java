@@ -24,7 +24,7 @@ public class MemberImageService {
 
     private final MemberImageRepository memberImageRepository;
 
-    @Value("${file.dir}")
+//    @Value("${file.dir}")
     private String fileUrl;
 
     public String getFullPath(String filename) {

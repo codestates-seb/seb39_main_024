@@ -1,5 +1,6 @@
 package com.codestates.flyaway.domain.board.entity;
 
+import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.comment.entity.Comment;
 import com.codestates.flyaway.global.audit.Auditable;
@@ -35,6 +36,9 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<BoardImage> images = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -52,6 +56,13 @@ public class Board extends Auditable {
     public void setCategory(Category category) {
         this.category = category;
         category.getBoards().add(this);
+    }
+
+    public void addImage(BoardImage boardImage) {
+        this.images.add(boardImage);
+        if(boardImage.getBoard() != this) {
+            boardImage.setBoard(this);
+        }
     }
 
     public void addViewCount() {
