@@ -10,9 +10,8 @@ import lombok.NoArgsConstructor;
 public class SessionDto {
 
     private Long id;
-    private String email;
 
     public static SessionDto toSession(Member member) {
-        return new SessionDto(member.getId(), member.getEmail());
+        return new SessionDto(member.getId());
     }
 }

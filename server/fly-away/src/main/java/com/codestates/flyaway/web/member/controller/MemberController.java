@@ -24,7 +24,7 @@ public class MemberController {
     @ApiOperation(value = "회원 가입", notes = "이메일 중복 확인")
     @ResponseStatus(value = CREATED)
     @PostMapping("/join")
-    public SingleResponseDto join(@Validated @RequestBody JoinRequestDto joinRequestDto) { // todo : Auth api 로 분리 고려
+    public SingleResponseDto join(@Validated @RequestBody JoinRequestDto joinRequestDto) {
 
         JoinResponseDto joinResponse = memberService.join(joinRequestDto);
         return new SingleResponseDto<>(joinResponse);
@@ -36,7 +36,7 @@ public class MemberController {
         return memberService.getImage(memberId);
     }
 
-    @ApiOperation(value = "회원 정보 수정", notes = "이메일이 존재할 경우 중복 확인")
+    @ApiOperation(value = "회원 정보 수정")
     @PatchMapping("/{memberId}")
     public SingleResponseDto update(@PathVariable long memberId,
                                     @Validated UpdateRequestDto updateRequestDto) {
