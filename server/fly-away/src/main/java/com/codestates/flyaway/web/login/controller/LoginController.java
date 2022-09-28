@@ -22,23 +22,22 @@ import static com.codestates.flyaway.web.login.dto.LoginDto.*;
 public class LoginController {
 
     private final LoginService loginService;
+    private static final String MEMBER = "member";
 
     @ApiOperation(value = "로그인 API")
     @PostMapping("/login")
-    public LoginResponse login(HttpServletRequest request,
-                               @RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
 
         SessionDto member = loginService.login(loginRequest);
+        Long id = member.getId();
+
         HttpSession session = request.getSession();
-
-        if (session.getAttribute("member") == null) {
-
-            session.setAttribute("member", member);
+        if (session.getAttribute(MEMBER) == null) {
+            session.setAttribute(MEMBER, id);    // todo : 세션 저장 객체 직렬화
             log.info("로그인 성공 - {}", session.getId());
 
             return new LoginResponse("로그인 성공");
         }
-//        return new LoginResponse("이미 로그인 된 사용자입니다.");
         throw new BusinessLogicException(MEMBER_ALREADY_AUTHORIZED);
     }
 
@@ -47,7 +46,7 @@ public class LoginController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
 
-        if (session != null) {
+        if (session.getAttribute(MEMBER) != null) {
             session.invalidate();
             log.info("로그아웃 성공 - {}", session.getId());
 
