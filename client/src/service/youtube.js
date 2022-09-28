@@ -22,8 +22,10 @@ class Youtube {
   async videoData(id) {
     const response = await this.youtube.get('videos', {
       params: {
-        part: 'snippet',
         id: id,
+        part: 'snippet, statistics',
+        fields:
+          'items(id,snippet(publishedAt,title,description,channelTitle),statistics(likeCount,viewCount))',
       },
     });
     return response.data.items;
@@ -33,10 +35,12 @@ class Youtube {
     const response = await this.youtube.get('search', {
       params: {
         part: 'snippet',
-        maxResults: 2,
+        maxResults: 6,
         type: 'video',
         q: query,
         videoDefinition: 'high',
+        fields:
+          'items(etag,id,snippet(channelTitle,thumbnails(high,medium),title))',
       },
     });
     return response.data.items.map((item) => ({

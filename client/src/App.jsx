@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
-const SearchResult = lazy(() => import('./pages/videos/SearchResult'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
 const Join = lazy(() => import('./pages/auth/Join'));
@@ -13,6 +12,7 @@ const VideosALL = lazy(() => import('./pages/videos/VideosAll'));
 const Popularity = lazy(() => import('./pages/videos/Popularity'));
 const Training = lazy(() => import('./pages/videos/Training'));
 const Stretching = lazy(() => import('./pages/videos/Stretching'));
+const SearchResult = lazy(() => import('./pages/videos/SearchResult'));
 const VideoDetail = lazy(() => import('./pages/videos/VideoDetail'));
 const PostsAll = lazy(() => import('./pages/posts/category/All'));
 const Record = lazy(() => import('./pages/posts/category/Record'));
