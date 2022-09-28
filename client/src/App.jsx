@@ -8,8 +8,7 @@ const Join = lazy(() => import('./pages/auth/Join'));
 const Login = lazy(() => import('./pages/auth/Login'));
 const Layout = lazy(() => import('./containers/Layout'));
 const Home = lazy(() => import('./pages/Home'));
-const VideosALL = lazy(() => import('./pages/videos/VideosAll'));
-const Popularity = lazy(() => import('./pages/videos/Popularity'));
+const Hits = lazy(() => import('./pages/videos/Hits'));
 const Training = lazy(() => import('./pages/videos/Training'));
 const Stretching = lazy(() => import('./pages/videos/Stretching'));
 const SearchResult = lazy(() => import('./pages/videos/SearchResult'));
@@ -38,8 +37,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/videos" element={<VideosALL />} />
-            <Route path="/videos/popularity" element={<Popularity />} />
+            <Route path="/videos" element={<Hits />} />
             <Route path="/videos/training" element={<Training />} />
             <Route path="/videos/stretching" element={<Stretching />} />
             <Route path="/videos/search-result" element={<SearchResult />} />

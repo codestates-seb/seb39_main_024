@@ -24,8 +24,7 @@ export default function Navbar() {
       {path.includes('/videos') && (
         <nav className="flex sm:text-xs flex-row items-center justify-between">
           <div>
-            <Button link="/videos" str="전체" />
-            <Button link="/videos/popularity" str="인기 Top 10" />
+            <Button link="/videos" str="조회수 Top 10" />
             <Button link="/videos/training" str="홈트레이닝" />
             <Button link="/videos/stretching" str="스트레칭" />
           </div>

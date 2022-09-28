@@ -6,7 +6,7 @@ import axios from 'axios';
 import Youtube from '../../service/youtube';
 import VideoList from './VideoList';
 
-export default function Videos({ query }) {
+export default function Videos({ query, id }) {
   const httpClient = axios.create({
     baseURL: `https://www.googleapis.com/youtube/v3`,
     params: { key: process.env.REACT_APP_YOUTUBE_API_KEY },
@@ -16,21 +16,29 @@ export default function Videos({ query }) {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   // const [selectedVideo, setSelectedVideo] = useRecoilState(selectedVideoState);
-  const videoDataHandler = useSetRecoilState(selectedVideoState);
+  const setSelectedVideo = useSetRecoilState(selectedVideoState);
 
   useEffect(() => {
-    youtube
-      .search(query) //
-      .then((videos) => {
-        setVideos(videos);
-      });
+    if (id === 'all') {
+      youtube
+        .workout() //
+        .then((videos) => {
+          setVideos(videos);
+        });
+    } else {
+      youtube
+        .search(query) //
+        .then((videos) => {
+          setVideos(videos);
+        });
+    }
   }, []);
 
   const selectVideo = (id) => {
     youtube
       .videoData(id) //
       .then((video) => {
-        videoDataHandler(video);
+        setSelectedVideo(video);
         navigate('/videos/detail');
       });
   };

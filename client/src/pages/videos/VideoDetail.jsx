@@ -20,6 +20,7 @@ export default function VideoDetail() {
     /\B(?=(\d{3})+(?!\d))/g,
     ','
   );
+
   let startDate;
   let stopDate;
   let sec;
