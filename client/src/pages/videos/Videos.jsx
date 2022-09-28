@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { selectedVideoState } from '../../recoil/atoms/videoState';
 import axios from 'axios';
 import Youtube from '../../service/youtube';

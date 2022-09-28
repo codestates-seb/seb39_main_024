@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import instance from '../../../service/request';
 
 import Image from './Image';
 import Category from './Category';
 
 export default function Create() {
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState(0);
 
   const [inputValue, setInputValue] = useState({
     title: '',
     content: '',
   });
 
-  const [imgFile, setImgFile] = useState([]);
+  const [imgFile, setImgFile] = useState({
+    url: [],
+    file: [],
+  });
 
+  console.log(imgFile.file);
   // 제목, 내용 Input 값 핸들러
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -28,16 +32,44 @@ export default function Create() {
 
     const categoryId = Number(category);
 
+    if (categoryId === 0) {
+      alert('카테고리를 선택해주세요 !');
+      return;
+    }
+
+    if (inputValue.title.trim() === '') {
+      alert('제목은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
+    if (inputValue.content.trim() === '') {
+      alert('내용은 최소 한 글자 이상 적어주세요 !');
+      return;
+    }
+
     const item = {
-      categoryId: categoryId,
       title: inputValue.title,
       content: inputValue.content,
     };
 
+    const formData = new FormData();
+    formData.append(
+      'createDto',
+      new Blob([JSON.stringify(item)], { type: 'application/json' })
+    );
+    if (imgFile.file.length > 0) {
+      imgFile.file.forEach((file) =>
+        formData.append(
+          'image',
+          new Blob([JSON.stringify(file)], { type: 'image/png' })
+        )
+      );
+    } else formData.append('image', null);
+
     try {
-      await axios.post(`http://211.41.205.19:8080/board/${categoryId}`, item, {
+      await instance.post(`/board/${categoryId}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       alert('글이 등록되었습니다 !');
@@ -49,6 +81,8 @@ export default function Create() {
 
   return (
     <form
+      method="post"
+      encType="multipart/form-data"
       className="border-solid bg-green py-5 px-10 h-screen overflow-scroll"
       onSubmit={submitHandler}
     >

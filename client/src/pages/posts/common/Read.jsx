@@ -1,7 +1,7 @@
 import { lazy, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import instance from '../../../service/request';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { commentReadState } from '../../../recoil/selectors/commentReadState';
 
@@ -11,39 +11,55 @@ export default function Read() {
   const postRead = useRecoilValue(postReadState);
   const commentRead = useRecoilValue(commentReadState);
 
-  const navigation = useNavigate();
-
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
 
+  const navigation = useNavigate();
+
+  // 수정, 삭제 모달
   const modalHandler = () => {
     setModal((prev) => !prev);
   };
 
+  // 수정하기 버튼
   const editHandler = () => {
     navigation('/posts/edit');
   };
 
+  // 삭제하기 버튼
+  const deleteHandler = async () => {
+    try {
+      await instance.delete(`/board/${postRead.boardId}`),
+        alert('해당 글이 삭제되었습니다.');
+      window.location.replace('/posts');
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
+
+  // 댓글 인풋 값 핸들러
   const commentHandler = (e) => {
     setCommentValue(e.target.value);
   };
 
+  // 댓글 달기 버튼
   const submitHandler = async () => {
+    if (commentValue.trim() === '') {
+      alert('최소 한 글자 이상 작성해주세요 !');
+      return;
+    }
+
     const item = {
       boardId: postRead.boardId,
       content: commentValue,
     };
 
     try {
-      await axios.post(
-        `http://211.41.205.19:8080/board/${postRead.boardId}/comment`,
-        item,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      await instance.post(`/board/${postRead.boardId}/comment`, item, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       alert('댓글이 등록되었습니다 !');
       window.location.replace('/posts/read');
     } catch (err) {
@@ -59,7 +75,7 @@ export default function Read() {
           {modal && (
             <>
               <button onClick={editHandler}>수정</button>
-              <button>삭제</button>
+              <button onClick={deleteHandler}>삭제</button>
             </>
           )}
           <button onClick={modalHandler}>&#65049;</button>
@@ -91,7 +107,7 @@ export default function Read() {
         <button onClick={submitHandler}>댓글 달기 &rarr;</button>
       </div>
       {commentRead.map((comment) => (
-        <Comment key={comment.commentId} items={comment} />
+        <Comment key={comment.commentId} items={comment} postRead={postRead} />
       ))}
     </main>
   );
