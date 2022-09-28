@@ -1,10 +1,10 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { selectedVideoState } from '../../recoil/atoms/videoState';
-import VideoList from './VideoList';
+import axios from 'axios';
 import Youtube from '../../service/youtube';
+import VideoList from './VideoList';
 
 export default function Videos({ query }) {
   const httpClient = axios.create({
@@ -12,11 +12,19 @@ export default function Videos({ query }) {
     params: { key: process.env.REACT_APP_YOUTUBE_API_KEY },
   });
   const youtube = new Youtube(httpClient);
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   // const [selectedVideo, setSelectedVideo] = useRecoilState(selectedVideoState);
   const videoDataHandler = useSetRecoilState(selectedVideoState);
+
+  useEffect(() => {
+    youtube
+      .search(query) //
+      .then((videos) => {
+        setVideos(videos);
+      });
+  }, []);
 
   const selectVideo = (id) => {
     youtube
@@ -26,14 +34,6 @@ export default function Videos({ query }) {
         navigate('/videos/detail');
       });
   };
-
-  useEffect(() => {
-    youtube
-      .search(query) //
-      .then((videos) => {
-        setVideos(videos);
-      });
-  }, []);
 
   return (
     <section>

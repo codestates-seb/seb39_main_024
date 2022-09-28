@@ -1,6 +1,5 @@
-import React from 'react';
 import Videos from './Videos';
 
-export default function VideosAll() {
-  return <Videos query={'홈트레이닝'} />;
+export default function VideosAll({ youtube }) {
+  return <Videos query={'홈트레이닝'} youtube={youtube} />;
 }

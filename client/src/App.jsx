@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
+const SearchResult = lazy(() => import('./pages/videos/SearchResult'));
 const Topbar = lazy(() => import('./containers/Topbar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
 const Join = lazy(() => import('./pages/auth/Join'));
@@ -41,6 +42,7 @@ function App() {
             <Route path="/videos/popularity" element={<Popularity />} />
             <Route path="/videos/training" element={<Training />} />
             <Route path="/videos/stretching" element={<Stretching />} />
+            <Route path="/videos/search-result" element={<SearchResult />} />
             <Route path="/videos/detail" element={<VideoDetail />} />
             <Route path="/posts" element={<PostsAll />} />
             <Route path="/posts/free" element={<Free />} />
@@ -48,12 +50,12 @@ function App() {
             <Route path="/posts/record" element={<Record />} />
             <Route path="/posts/edit" element={<Create />} />
             <Route path="/posts/edit" element={<Edit />} />
+            <Route path="/posts/create" element={<Create />} />
+            <Route path="/posts/read" element={<Read />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mypage/calendar" element={<Calendar />} />
             <Route path="/mypage/profile_edit" element={<ProfileEdit />} />
             <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
-            <Route path="/posts/create" element={<Create />} />
-            <Route path="/posts/read" element={<Read />} />
           </Routes>
         </Layout>
         <Footer />

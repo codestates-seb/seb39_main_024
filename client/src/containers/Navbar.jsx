@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { categoryIdState } from '../recoil/atoms/categoryIdState';
-
+import Search from '../components/Search';
 import Button from '../components/Button';
 
-export default function Navbar() {
+export default function Navbar({ youtube }) {
   const location = useLocation();
 
   const [path, setPath] = useState('');
@@ -30,7 +30,7 @@ export default function Navbar() {
             <Button link="/videos/stretching" str="스트레칭" />
           </div>
           <div>
-            <input placeholder="영상 검색하기" />
+            <Search placeholder="영상 검색하기" youtube={youtube} />
           </div>
         </nav>
       )}
