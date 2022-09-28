@@ -5,7 +5,7 @@ import { categoryIdState } from '../recoil/atoms/categoryIdState';
 import Search from '../components/Search';
 import Button from '../components/Button';
 
-export default function Navbar({ youtube }) {
+export default function Navbar() {
   const location = useLocation();
 
   const [path, setPath] = useState('');
@@ -30,7 +30,7 @@ export default function Navbar({ youtube }) {
             <Button link="/videos/stretching" str="스트레칭" />
           </div>
           <div>
-            <Search placeholder="영상 검색하기" youtube={youtube} />
+            <Search placeholder="영상 검색하기" />
           </div>
         </nav>
       )}
