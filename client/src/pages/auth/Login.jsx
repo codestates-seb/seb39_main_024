@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import instance from '../../service/request';
 
 export default function Login() {
   const [inputValue, setInputValue] = useState({
@@ -22,8 +22,8 @@ export default function Login() {
       password: inputValue.password,
     };
 
-    await axios
-      .post('http://211.41.205.19:8080/login', item)
+    await instance
+      .post('/login', item)
       .then(() => {
         setInputValue({
           email: '',

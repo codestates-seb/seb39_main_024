@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import axios from 'axios';
+import instance from '../../../service/request';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { categoryIdState } from '../../../recoil/atoms/categoryIdState';
 
@@ -57,15 +57,11 @@ export default function Edit() {
     };
 
     try {
-      await axios.patch(
-        `http://211.41.205.19:8080/board/${postRead.boardId}`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      await instance.patch(`/board/${postRead.boardId}`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       alert('글이 수정되었습니다 !');
       window.location.replace('/posts/read');
     } catch (err) {

@@ -1,7 +1,7 @@
 import { lazy, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import instance from '../../../service/request';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { commentReadState } from '../../../recoil/selectors/commentReadState';
 
@@ -29,7 +29,7 @@ export default function Read() {
   // 삭제하기 버튼
   const deleteHandler = async () => {
     try {
-      await axios.delete(`http://211.41.205.19:8080/board/${postRead.boardId}`),
+      await instance.delete(`/board/${postRead.boardId}`),
         alert('해당 글이 삭제되었습니다.');
       window.location.replace('/posts');
     } catch (err) {
@@ -55,15 +55,11 @@ export default function Read() {
     };
 
     try {
-      await axios.post(
-        `http://211.41.205.19:8080/board/${postRead.boardId}/comment`,
-        item,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      await instance.post(`/board/${postRead.boardId}/comment`, item, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       alert('댓글이 등록되었습니다 !');
       window.location.replace('/posts/read');
     } catch (err) {

@@ -14,7 +14,7 @@ export default function Post({ items }) {
   };
 
   return (
-    <div className="flex flex-col py-5 px-2.5">
+    <section className="flex flex-col py-5 px-2.5">
       <div className="text-center border-solid border border-zinc-300 p-7 w-52 h-52 bg-white">
         사진
       </div>
@@ -25,6 +25,6 @@ export default function Post({ items }) {
         <span>👤 작성자</span>
         <button>❤️ {Math.floor(Math.random() * 100) + 1}</button>
       </div>
-    </div>
+    </section>
   );
 }

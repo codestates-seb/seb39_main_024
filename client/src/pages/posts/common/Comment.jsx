@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import instance from '../../../service/request';
 
 export default function Comment({ items, postRead }) {
   const [isEdit, setIsEdit] = useState(false);
@@ -24,8 +24,8 @@ export default function Comment({ items, postRead }) {
   // // 삭제 버튼 핸들러
   const deleteHandler = async () => {
     try {
-      await axios.delete(
-        `http://211.41.205.19:8080/board/${postRead.boardId}/comment/${items.commentId}`
+      await instance.delete(
+        `/board/${postRead.boardId}/comment/${items.commentId}`
       );
       alert('해당 댓글이 삭제되었습니다.');
       window.location.replace('/posts/read');
@@ -46,8 +46,8 @@ export default function Comment({ items, postRead }) {
       content: editValue,
     };
     try {
-      await axios.patch(
-        `http://211.41.205.19:8080/board/${postRead.boardId}/comment/${items.commentId}`,
+      await instance.patch(
+        `/board/${postRead.boardId}/comment/${items.commentId}`,
         item,
         {
           headers: {

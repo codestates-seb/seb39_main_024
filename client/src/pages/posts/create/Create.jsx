@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import instance from '../../../service/request';
 
 import Image from './Image';
 import Category from './Category';
@@ -50,7 +50,7 @@ export default function Create() {
     };
 
     try {
-      await axios.post(`http://211.41.205.19:8080/board/${categoryId}`, item, {
+      await instance.post(`/board/${categoryId}`, item, {
         headers: {
           'Content-Type': 'application/json',
         },
