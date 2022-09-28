@@ -13,11 +13,13 @@ export default function Image({ imgFile, setImgFile }) {
   // 이미지 업로드 버튼 핸들러
   const imgAddHandler = (e) => {
     const imgList = e.target.files;
-    let imgUrlList = [...imgFile];
+    let imgUrlList = [...imgFile.url];
+    let imgFileList = [...imgFile.file];
 
     for (let i = 0; i < imgList.length; i++) {
       const currentImageUrl = URL.createObjectURL(imgList[i]);
       imgUrlList.push(currentImageUrl);
+      imgFileList.push(imgList[i]);
     }
 
     if (imgUrlList.length > 5) {
@@ -25,12 +27,18 @@ export default function Image({ imgFile, setImgFile }) {
       alert('사진은 최대 5장까지 업로드 가능합니다.');
     }
 
-    setImgFile(imgUrlList);
+    setImgFile({
+      url: imgUrlList,
+      file: imgFileList,
+    });
   };
 
   // 이미지 삭제 핸들러
   const imgDeleteHandler = (id) => {
-    setImgFile(imgFile.filter((_, index) => index !== id));
+    setImgFile({
+      url: imgFile.url.filter((_, index) => index !== id),
+      file: imgFile.file.filter((_, index) => index !== id),
+    });
   };
 
   return (
@@ -52,7 +60,7 @@ export default function Image({ imgFile, setImgFile }) {
         </label>
       </section>
       <section className="mt-7">
-        {imgFile.length > 0 && (
+        {imgFile.url.length > 0 && (
           <Swiper
             modules={[Pagination, Navigation]}
             className="w-full h-96 bg-white"
@@ -68,12 +76,12 @@ export default function Image({ imgFile, setImgFile }) {
               1440: { slidesPerView: 4 },
             }}
           >
-            {imgFile.map((img, id) => (
+            {imgFile.url.map((img, id) => (
               <SwiperSlide
                 key={id}
                 className="p-3 m-0 flex flex-col justify-center items-center"
               >
-                <img src={img} alt={`${img}-${id}`} className="w-60 h-60" />
+                <img src={img} alt={`${img.url}-${id}`} className="w-60 h-60" />
                 <button
                   type="button"
                   className="bg-pink w-20 mt-2.5"
@@ -85,7 +93,7 @@ export default function Image({ imgFile, setImgFile }) {
             ))}
           </Swiper>
         )}
-        {imgFile.length === 0 && (
+        {imgFile.url.length === 0 && (
           <Swiper
             className="h-80 bg-white items-center"
             centeredSlides={true}

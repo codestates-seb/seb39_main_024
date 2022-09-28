@@ -18,7 +18,10 @@ export default function Edit() {
     content: postRead.content,
   });
 
-  const [imgFile, setImgFile] = useState([]);
+  const [imgFile, setImgFile] = useState({
+    url: [],
+    file: [],
+  });
 
   // 제목, 내용 Input 값 핸들러
   const inputValueChangeHandler = (e) => {
@@ -49,17 +52,30 @@ export default function Edit() {
       return;
     }
 
-    let data = {
-      categoryId: category,
+    let item = {
       boardId: postRead.boardId,
       title: inputValue.title,
       content: inputValue.content,
     };
 
+    const formData = new FormData();
+    formData.append(
+      'updateDto',
+      new Blob([JSON.stringify(item)], { type: 'application/json' })
+    );
+    if (imgFile.file.length > 0) {
+      imgFile.file.forEach((file) =>
+        formData.append(
+          'image',
+          new Blob([JSON.stringify(file)], { type: 'image/png' })
+        )
+      );
+    } else formData.append('image', null, { type: 'image/png' });
+
     try {
-      await instance.patch(`/board/${postRead.boardId}`, data, {
+      await instance.patch(`/board/${postRead.boardId}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       alert('글이 수정되었습니다 !');
