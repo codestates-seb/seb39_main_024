@@ -32,7 +32,6 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final CategoryService categoryService;
-    private final BoardImageRepository boardImageRepository;
     private final BoardImageService boardImageService;
 
     @Transactional
@@ -48,12 +47,13 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDto update(BoardDto.Update updateDto) {
+    public BoardResponseDto update(List<MultipartFile> images, BoardDto.Update updateDto) {
 
         Category category = categoryService.findById(updateDto.getCategoryId());
         final Board board = boardRepository.getReferenceById(updateDto.getBoardId());
         board.setCategory(category);
         board.update(updateDto.getTitle(), updateDto.getContent());
+        boardImageService.updateFiles(images, board);
 
         return toResponseDto(board);
     }

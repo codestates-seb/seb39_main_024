@@ -42,11 +42,12 @@ public class BoardController {
 
     @PatchMapping("/{boardId}")
     public BoardDto.BoardResponseDto update(@PathVariable("boardId") Long boardId,
-                                    @RequestBody BoardDto.Update updateDto) {
+                                    @RequestPart(value = "image",required = false) List<MultipartFile> images,
+                                    @Validated @RequestPart BoardDto.Update updateDto) {
 
         updateDto.setBoardId(boardId);
 
-        return boardService.update(updateDto);
+        return boardService.update(images, updateDto);
     }
 
     @GetMapping("/{boardId}")

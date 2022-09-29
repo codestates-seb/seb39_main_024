@@ -20,7 +20,7 @@ public class BoardImage {
     private String fileUrl;
     private String fileName;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 

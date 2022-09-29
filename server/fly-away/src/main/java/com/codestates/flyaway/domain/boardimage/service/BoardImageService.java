@@ -72,9 +72,19 @@ public class BoardImageService {
         return saveFileResult;
     }
 
-    public void delete(Long imageId) {
+    public List<BoardImage> updateFiles(List<MultipartFile> multipartFiles, Board board) {
 
-        final BoardImage boardImage = boardImageRepository.getReferenceById(imageId);
+        if(multipartFiles != null) {
+            List<BoardImage> imageList = boardImageRepository.findAllByBoardId(board.getId());
+            for (BoardImage boardImage : imageList) {
+                delete(boardImage);
+            }
+            return saveFiles(multipartFiles, board);
+        } else return boardImageRepository.findAllByBoardId(board.getId());
+    }
+
+    public void delete(BoardImage boardImage) {
+
         String fullPath = getFullPath(boardImage.getFileName());
         File file = new File(fullPath);
 
@@ -84,8 +94,7 @@ public class BoardImageService {
         if(!file.delete()) {
             throw new BusinessLogicException(ExceptionCode.FILE_DELETE_FAILED);
         }
-
-        boardImageRepository.delete(boardImage);
+        boardImageRepository.deleteById(boardImage.getId());
     }
 
     public List<Long> findByBoard(Long boardId) {
