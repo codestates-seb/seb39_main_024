@@ -5,6 +5,7 @@ import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.boardimage.repository.BoardImageRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import com.codestates.flyaway.global.exception.ExceptionCode;
+import com.codestates.flyaway.web.board.dto.BoardImageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.FILE_NOT_FOUND;
 
@@ -38,10 +40,7 @@ public class BoardImageService {
     }
 
     public BoardImage saveFile(MultipartFile multipartFile, Board board) throws IOException {
-        //Todo 파일이 비어있을 때 defaultImage 추가
-        if(multipartFile.isEmpty()) {
-            return null;
-        }
+
         String originalFileName = multipartFile.getOriginalFilename();
         String fileName = createStoreFileName(originalFileName);
         multipartFile.transferTo(new File(getFullPath(fileName)));
@@ -55,16 +54,21 @@ public class BoardImageService {
     public List<BoardImage> saveFiles(List<MultipartFile> multipartFiles, Board board) {
 
         List<BoardImage> saveFileResult = new ArrayList<>();
-        for(MultipartFile multipartFile : multipartFiles) {
-            try {
-                BoardImage storedFile = saveFile(multipartFile, board);
-                saveFileResult.add(storedFile);
-            }catch(IOException e) {
-                throw new BusinessLogicException(FILE_NOT_FOUND);
+        //todo 급하게 작성해준거라 리팩토링필요, 디폴트 이미지 추가
+        if(multipartFiles == null) {
+            BoardImage boardImage = new BoardImage("default.png", "default", "default");
+            boardImageRepository.save(boardImage);
+            boardImage.setBoard(board);
+        }else {
+            for(MultipartFile multipartFile : multipartFiles) {
+                try {
+                    BoardImage storedFile = saveFile(multipartFile, board);
+                    saveFileResult.add(storedFile);
+                }catch(IOException e) {
+                    throw new BusinessLogicException(FILE_NOT_FOUND);
+                }
             }
         }
-
-
         return saveFileResult;
     }
 
@@ -82,6 +86,23 @@ public class BoardImageService {
         }
 
         boardImageRepository.delete(boardImage);
+    }
+
+    public List<Long> findByBoard(Long boardId) {
+
+        List<BoardImage> imageList = boardImageRepository.findAllByBoardId(boardId);
+
+        return imageList.stream()
+                .map(BoardImage::getId)
+                .collect(Collectors.toList());
+    }
+
+    public BoardImageDto findByImageId(Long imageId) {
+
+        BoardImage boardImage = boardImageRepository.findById(imageId).orElseThrow(() ->
+                new BusinessLogicException(FILE_NOT_FOUND));
+
+        return BoardImageDto.toResponseDto(boardImage);
     }
 
     public String createStoreFileName(String originalFileName) {
