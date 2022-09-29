@@ -17,7 +17,7 @@ export default function Create() {
     file: [],
   });
 
-  console.log(imgFile.file);
+  console.log(imgFile.url);
   // 제목, 내용 Input 값 핸들러
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -58,13 +58,8 @@ export default function Create() {
       new Blob([JSON.stringify(item)], { type: 'application/json' })
     );
     if (imgFile.file.length > 0) {
-      imgFile.file.forEach((file) =>
-        formData.append(
-          'image',
-          new Blob([JSON.stringify(file)], { type: 'image/png' })
-        )
-      );
-    } else formData.append('image', null);
+      imgFile.file.forEach((file) => formData.append('image', file));
+    }
 
     try {
       await instance.post(`/board/${categoryId}`, formData, {

@@ -1,7 +1,17 @@
 import React from 'react';
+import instance from '../../service/request';
 import MyPage from './MyPage';
 
 export default function DeleteAccount() {
+  const deleteAccountHandler = async () => {
+    try {
+      await instance.delete('/members/1');
+      alert('회원탈퇴가 되었습니다 ! 그동안 서비스를 이용해주셔서 감사합니다.');
+      window.location.replace('/');
+    } catch (err) {
+      console.log('err', err);
+    }
+  };
   return (
     <MyPage>
       <p className="text-center mb-10 text-xl sm:my-4">회원탈퇴</p>
@@ -14,7 +24,9 @@ export default function DeleteAccount() {
           <p>탈퇴를 원하실 경우</p>
           <p>아래 탈퇴하기 버튼을 눌러주세요.</p>
         </div>
-        <button className="bg-gray w-44 my-10">탈퇴하기</button>
+        <button className="bg-gray w-44 my-10" onClick={deleteAccountHandler}>
+          탈퇴하기
+        </button>
       </div>
     </MyPage>
   );
