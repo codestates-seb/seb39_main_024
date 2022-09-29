@@ -25,7 +25,7 @@ class RecordRepositoryTest {
 
     @BeforeEach
     void before() {
-        Member member1 = new Member(1L, new ArrayList<>(), "kim", "member1@gmail.com", "pw");
+        Member member1 = new Member(1L, null, new ArrayList<>(), "kim", "member1@gmail.com", "pw");
 
         Record record1 = new Record(now(), 10);
         record1.setMember(member1);

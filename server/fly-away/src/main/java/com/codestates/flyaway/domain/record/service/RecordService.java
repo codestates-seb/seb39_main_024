@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 
 import static com.codestates.flyaway.web.record.dto.RecordDto.*;
-import static com.codestates.flyaway.web.record.dto.RecordDto.InsertResponseDto.*;
+import static com.codestates.flyaway.web.record.dto.RecordDto.InsertResponse.recordToInsertResponse;
 import static java.time.LocalDate.*;
 
 @Service
@@ -27,7 +27,7 @@ public class RecordService {
      * 운동 시간 기록
      * @return 회원 id, 기록 정보(날짜, 운동시간)
      */
-    public InsertResponseDto insertRecord(long memberId, InsertRequestDto insertDto) {
+    public InsertResponse insertRecord(long memberId, InsertRequest insertDto) {
 
         LocalDate date = now();
         long rec = insertDto.getRecord();
@@ -38,7 +38,7 @@ public class RecordService {
         return saveRecord(memberId, rec, record);
     }
 
-    private InsertResponseDto saveRecord(long memberId, long rec, Record record) {
+    private InsertResponse saveRecord(long memberId, long rec, Record record) {
 
         Member findMember = memberService.findById(memberId);
 
