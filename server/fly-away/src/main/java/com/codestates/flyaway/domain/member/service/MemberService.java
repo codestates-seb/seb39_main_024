@@ -8,6 +8,7 @@ import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponseDto.
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -140,6 +142,7 @@ public class MemberService {
         try {
             return new UrlResource(path);
         } catch (MalformedURLException e) {
+            log.info("exception = {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }

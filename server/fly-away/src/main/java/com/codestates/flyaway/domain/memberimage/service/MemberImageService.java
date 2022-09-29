@@ -45,6 +45,7 @@ public class MemberImageService {
             multipartFile.transferTo(new File(getFullPath(fileName)));
             log.info("파일 저장 성공 = {}", fileName);
         } catch (IOException ex) {
+            log.info("파일 저장 실패 = {}", ex.getMessage());
             throw new RuntimeException(ex);
         }
 

@@ -19,7 +19,7 @@ import static com.codestates.flyaway.web.record.dto.RecordDto.*;
 public class MemberDto {
 
     @Getter @Setter
-    @AllArgsConstructor
+    @NoArgsConstructor @AllArgsConstructor
     public static class JoinRequestDto {
         @NotEmpty
         private String name;
@@ -33,7 +33,7 @@ public class MemberDto {
         }
     }
     @Getter
-    @AllArgsConstructor
+    @NoArgsConstructor @AllArgsConstructor
     public static class JoinResponseDto {
         private Long memberId;
         private String name;
