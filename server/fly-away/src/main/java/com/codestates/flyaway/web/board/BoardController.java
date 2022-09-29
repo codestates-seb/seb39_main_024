@@ -31,32 +31,28 @@ public class BoardController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{categoryId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public SingleResponseDto create(@PathVariable("categoryId") Long categoryId,
+    public BoardDto.BoardResponseDto create(@PathVariable("categoryId") Long categoryId,
                                    @RequestPart(value = "image",required = false) List<MultipartFile> images,
                                    @Validated @RequestPart BoardDto.Create createDto) {
 
         createDto.setCategoryId(categoryId);
-        BoardDto.BoardResponseDto created = boardService.create(images, createDto);
 
-        return new SingleResponseDto(created);
+        return boardService.create(images, createDto);
     }
 
     @PatchMapping("/{boardId}")
-    public SingleResponseDto update(@PathVariable("boardId") Long boardId,
+    public BoardDto.BoardResponseDto update(@PathVariable("boardId") Long boardId,
                                     @RequestBody BoardDto.Update updateDto) {
 
         updateDto.setBoardId(boardId);
-        BoardDto.BoardResponseDto updated = boardService.update(updateDto);
 
-        return new SingleResponseDto(updated);
+        return boardService.update(updateDto);
     }
 
     @GetMapping("/{boardId}")
-    public SingleResponseDto read(@PathVariable("boardId") Long boardId) {
+    public BoardDto.BoardResponseDto read(@PathVariable("boardId") Long boardId) {
 
-        BoardDto.BoardResponseDto read = boardService.read(boardId);
-
-        return new SingleResponseDto(read);
+        return boardService.read(boardId);
     }
 
     @GetMapping("/all")
