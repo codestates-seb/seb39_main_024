@@ -24,21 +24,19 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public SingleResponseDto create(@Validated @RequestBody CategoryDto.CreateCategory createCategoryDto) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public CategoryDto.CategoryResponseDto create(@Validated @RequestBody CategoryDto.CreateCategory createCategoryDto) {
 
-        CategoryDto.CategoryResponseDto created = categoryService.create(createCategoryDto);
-
-        return new SingleResponseDto(created);
+        return categoryService.create(createCategoryDto);
     }
 
     @PatchMapping("/{categoryId}")
-    public SingleResponseDto update(@PathVariable("categoryId") Long categoryId,
+    public CategoryDto.CategoryResponseDto update(@PathVariable("categoryId") Long categoryId,
                                  @RequestBody CategoryDto.UpdateCategory updateCategoryDto) {
 
         updateCategoryDto.setCategoryId(categoryId);
-        CategoryDto.CategoryResponseDto updated = categoryService.update(updateCategoryDto);
 
-        return new SingleResponseDto<>(updated);
+        return categoryService.update(updateCategoryDto);
     }
 
     @GetMapping 
