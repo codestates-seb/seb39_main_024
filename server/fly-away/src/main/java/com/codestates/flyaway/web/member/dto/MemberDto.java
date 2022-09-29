@@ -20,7 +20,7 @@ public class MemberDto {
 
     @Getter @Setter
     @NoArgsConstructor @AllArgsConstructor
-    public static class JoinRequestDto {
+    public static class JoinRequest {
         @NotEmpty
         private String name;
         @NotEmpty @Email
@@ -34,34 +34,34 @@ public class MemberDto {
     }
     @Getter
     @NoArgsConstructor @AllArgsConstructor
-    public static class JoinResponseDto {
+    public static class JoinResponse {
         private Long memberId;
         private String name;
         private String email;
         private LocalDateTime createdAt;
 
-        public static JoinResponseDto toJoinResponse(Member member) {
-            return new JoinResponseDto(member.getId(), member.getName(), member.getEmail(), member.getCreatedAt());
+        public static JoinResponse toJoinResponse(Member member) {
+            return new JoinResponse(member.getId(), member.getName(), member.getEmail(), member.getCreatedAt());
         }
     }
 
     @Getter
     @NoArgsConstructor @AllArgsConstructor
-    public static class MemberProfileResponseDto {
+    public static class MemberProfileResponse {
         private long id;
         private String name;
         private String email;
-        private List<RecordProfileResponseDto> records;
+        private List<RecordProfileResponse> records;
         private long totalRecord;
 
-        public static MemberProfileResponseDto toProfileResponse(Member member, long totalRecord) {
-            return new MemberProfileResponseDto(
+        public static MemberProfileResponse toProfileResponse(Member member, long totalRecord) {
+            return new MemberProfileResponse(
                     member.getId(),
                     member.getName(),
                     member.getEmail(),
                     member.getRecords()
                             .stream()
-                            .map(record -> new RecordProfileResponseDto(record.getDate(), record.getRecord()))
+                            .map(record -> new RecordProfileResponse(record.getDate(), record.getRecord()))
                             .collect(Collectors.toList()),
                     totalRecord);
         }
@@ -69,7 +69,7 @@ public class MemberDto {
 
     @Getter @Setter
     @NoArgsConstructor @AllArgsConstructor
-    public static class UpdateRequestDto {
+    public static class UpdateRequest {
         private Long memberId;
         private String name;
         private String password;
@@ -78,14 +78,14 @@ public class MemberDto {
 
     @Getter
     @NoArgsConstructor @AllArgsConstructor
-    public static class UpdateResponseDto {  // todo : 재사용 고려
+    public static class UpdateResponse {  // todo : 재사용 고려
         private Long memberId;
         private String name;
         private String email;
         private LocalDateTime modifiedAt;
 
-        public static UpdateResponseDto toUpdateResponse(Member member) {
-            return new UpdateResponseDto(member.getId(), member.getName(), member.getEmail(), member.getModifiedAt());
+        public static UpdateResponse toUpdateResponse(Member member) {
+            return new UpdateResponse(member.getId(), member.getName(), member.getEmail(), member.getModifiedAt());
         }
     }
 
@@ -96,9 +96,5 @@ public class MemberDto {
         private String name;
         private String email;
         private LocalDateTime modifiedAt;
-
-        public static UpdateResponseDto toUpdateResponse(Member member) {
-            return new UpdateResponseDto(member.getId(), member.getName(), member.getEmail(), member.getModifiedAt());
-        }
     }
 }

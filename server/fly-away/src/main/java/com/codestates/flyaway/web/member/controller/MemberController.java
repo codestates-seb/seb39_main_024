@@ -1,7 +1,6 @@
 package com.codestates.flyaway.web.member.controller;
 
 import com.codestates.flyaway.domain.member.service.MemberService;
-import com.codestates.flyaway.global.dto.SingleResponseDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -24,10 +23,8 @@ public class MemberController {
     @ApiOperation(value = "회원 가입", notes = "이메일 중복 확인")
     @ResponseStatus(value = CREATED)
     @PostMapping("/join")
-    public SingleResponseDto join(@Validated @RequestBody JoinRequestDto joinRequestDto) {
-
-        JoinResponseDto joinResponse = memberService.join(joinRequestDto);
-        return new SingleResponseDto<>(joinResponse);
+    public JoinResponse join(@Validated @RequestBody JoinRequest joinRequest) {
+        return memberService.join(joinRequest);
     }
 
     @ApiOperation(value = "회원 프로필 이미지 API")
@@ -38,21 +35,17 @@ public class MemberController {
 
     @ApiOperation(value = "회원 정보 수정")
     @PatchMapping("/{memberId}")
-    public SingleResponseDto update(@PathVariable long memberId,
-                                    @Validated UpdateRequestDto updateRequestDto) {
+    public UpdateResponse update(@PathVariable long memberId,
+                                 @Validated UpdateRequest updateRequest) {
 
-        updateRequestDto.setMemberId(memberId);
-        UpdateResponseDto updated = memberService.update(updateRequestDto);
-
-        return new SingleResponseDto<>(updated);
+        updateRequest.setMemberId(memberId);
+        return memberService.update(updateRequest);
     }
 
     @ApiOperation(value = "회원 프로필 정보")
     @GetMapping("/{memberId}")
-    public SingleResponseDto findMember(@PathVariable long memberId) {
-        MemberProfileResponseDto findMember = memberService.findByIdFetch(memberId);
-
-        return new SingleResponseDto<>(findMember);
+    public MemberProfileResponse findMember(@PathVariable long memberId) {
+        return memberService.findByIdFetch(memberId);
     }
 
     @ApiOperation(value = "회원 탈퇴")

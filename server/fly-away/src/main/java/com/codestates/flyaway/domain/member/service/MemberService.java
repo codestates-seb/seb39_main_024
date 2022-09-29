@@ -19,9 +19,9 @@ import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
-import static com.codestates.flyaway.web.member.dto.MemberDto.JoinResponseDto.toJoinResponse;
-import static com.codestates.flyaway.web.member.dto.MemberDto.MemberProfileResponseDto.*;
-import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponseDto.*;
+import static com.codestates.flyaway.web.member.dto.MemberDto.JoinResponse.toJoinResponse;
+import static com.codestates.flyaway.web.member.dto.MemberDto.MemberProfileResponse.toProfileResponse;
+import static com.codestates.flyaway.web.member.dto.MemberDto.UpdateResponse.toUpdateResponse;
 
 @Service
 @Transactional
@@ -38,11 +38,11 @@ public class MemberService {
      * 회원가입
      * @return 가입 완료된 회원의 id, name, email, createdAt
      */
-    public JoinResponseDto join(JoinRequestDto joinRequestDto) {
+    public JoinResponse join(JoinRequest joinRequest) {
 
-        verifyEmail(joinRequestDto.getEmail());
+        verifyEmail(joinRequest.getEmail());
 
-        Member member = joinRequestDto.toEntity();
+        Member member = joinRequest.toEntity();
         Member savedMember = memberRepository.save(member);
 
         return toJoinResponse(savedMember);
@@ -52,15 +52,15 @@ public class MemberService {
      * 회원 정보 수정
      * @return 수정 완료된 회원의 id, name, email, modifiedAt
      */
-    public UpdateResponseDto update(UpdateRequestDto updateRequestDto) {
+    public UpdateResponse update(UpdateRequest updateRequest) {
 
-        String name = updateRequestDto.getName();
-        String password = updateRequestDto.getPassword();
+        String name = updateRequest.getName();
+        String password = updateRequest.getPassword();
 
-        Member member = findById(updateRequestDto.getMemberId());
+        Member member = findById(updateRequest.getMemberId());
         member.update(name, password);
 
-        saveImage(updateRequestDto, member);
+        saveImage(updateRequest, member);
         return toUpdateResponse(member);
     }
 
@@ -69,7 +69,7 @@ public class MemberService {
      * @return 회원 프로필 정보
      */
     @Transactional(readOnly = true)
-    public MemberProfileResponseDto findByIdFetch(long memberId) { //todo : 테스트 코드에서의 오류 해결
+    public MemberProfileResponse findByIdFetch(long memberId) { //todo : 테스트 코드에서의 오류 해결
 
         Member findMember = memberRepository.findByIdFetch(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
@@ -114,15 +114,15 @@ public class MemberService {
     /**
      * 이미지 저장 메서드
      */
-    private void saveImage(UpdateRequestDto updateRequestDto, Member member) {
+    private void saveImage(UpdateRequest updateRequest, Member member) {
 
-        if (updateRequestDto.getImage().isEmpty()) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
+        if (updateRequest.getImage() == null) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
             return;
         }
         Optional.ofNullable(member.getMemberImage())
                 .ifPresent(memberImageService::delete);
 
-        MemberImage memberImage = memberImageService.save(updateRequestDto.getImage());
+        MemberImage memberImage = memberImageService.save(updateRequest.getImage());
         memberImage.setMember(member);
     }
 

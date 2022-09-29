@@ -49,10 +49,10 @@ class InsertRecordTest {
     @DisplayName("운동시간 기록 테스트 (insertRecord)")
     @Test
     void insertRecordTest() {
-        InsertRequestDto recordDto = new InsertRequestDto(1800);
+        InsertRequest recordDto = new InsertRequest(1800);
         recordService.insertRecord(1L, recordDto);
 
-        InsertRequestDto recordDto2 = new InsertRequestDto(300);
+        InsertRequest recordDto2 = new InsertRequest(300);
         recordService.insertRecord(1L, recordDto2);
 
         Record record = recordRepository.findByMemberIdAndDate(1L, now()).get();
