@@ -33,6 +33,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final CategoryService categoryService;
     private final BoardImageService boardImageService;
+    private final BoardImageRepository boardImageRepository;
 
     @Transactional
     public BoardResponseDto create(List<MultipartFile> images, BoardDto.Create createDto) {
@@ -81,6 +82,7 @@ public class BoardService {
     public void delete(Long boardId) {
 
         Board board = findById(boardId);
+        boardImageRepository.deleteAll(boardImageRepository.findAllByBoardId(boardId));
         boardRepository.delete(board);
     }
 
