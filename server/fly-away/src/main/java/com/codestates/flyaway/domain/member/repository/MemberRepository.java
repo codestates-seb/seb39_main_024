@@ -12,5 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(value = "select distinct m from Member m left join fetch m.records where m.id = :id")
     Optional<Member> findByIdFetch(@Param("id") long memberId);
 
+    Optional<Member> findByEmail(String email);
+
     boolean existsByEmail(String email);
 }
