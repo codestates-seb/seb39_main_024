@@ -36,7 +36,7 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board")
     private List<BoardImage> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

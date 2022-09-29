@@ -23,24 +23,23 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{boardId}/comment")
-    public SingleResponseDto writeComment(@PathVariable("boardId") Long boardId,
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto.CommentResponseDto writeComment(@PathVariable("boardId") Long boardId,
                                        @RequestBody CommentDto.Write writeDto) {
 
         writeDto.setBoardId(boardId);
-        CommentDto.CommentResponseDto wrote = commentService.write(writeDto);
 
-        return new SingleResponseDto<>(wrote);
+        return commentService.write(writeDto);
     }
 
     @PatchMapping("/{boardId}/comment/{commentId}")
-    public SingleResponseDto updateComment(@PathVariable("boardId") Long boardId,
+    public CommentDto.CommentResponseDto updateComment(@PathVariable("boardId") Long boardId,
                                         @PathVariable("commentId") Long commentId,
                                         @RequestBody CommentDto.Update updateDto) {
 
         updateDto.setCommentId(commentId);
-        CommentDto.CommentResponseDto updated = commentService.update(updateDto);
 
-        return new SingleResponseDto<>(updated);
+        return commentService.update(updateDto);
     }
 
     @GetMapping("/{boardId}/comment")
