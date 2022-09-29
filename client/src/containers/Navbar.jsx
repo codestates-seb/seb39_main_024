@@ -1,19 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { categoryIdState } from '../recoil/atoms/categoryIdState';
 import Search from '../components/Search';
 import Button from '../components/Button';
 
-export default function Navbar() {
-  const location = useLocation();
-
-  const [path, setPath] = useState('');
+export default function Navbar({ path }) {
   const setCategoryId = useSetRecoilState(categoryIdState);
-
-  useEffect(() => {
-    setPath(location.pathname);
-  }, [location]);
 
   const navHandler = (e) => {
     setCategoryId(Number(e.target.value));

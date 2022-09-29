@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 
 const Topbar = lazy(() => import('./containers/Topbar'));
@@ -27,12 +27,15 @@ const DeleteAccount = lazy(() => import('./pages/mypage/DeleteAccount'));
 const Footer = lazy(() => import('./containers/Footer'));
 
 function App() {
+  const path = useLocation().pathname;
+  console.log(path);
+
   return (
     <RecoilRoot>
       <Suspense fallback={<p>로딩중</p>}>
-        <Topbar />
-        <Navbar />
-        <Layout>
+        <Topbar path={path} />
+        <Navbar path={path} />
+        <Layout path={path}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />

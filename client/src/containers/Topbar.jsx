@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import logo from '../images/logo_home.png';
 import { Link } from 'react-router-dom';
+import homeLogo from '../images/logo_home.png';
+import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 
-export default function TopBar() {
+export default function TopBar({ path }) {
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
     setModalOpen(!modalOpen);
@@ -12,7 +13,11 @@ export default function TopBar() {
 
   return (
     <>
-      <header className="flex flex-row items-center justify-between h-16 w-full bg-pink md:h-20">
+      <header
+        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full ${
+          path.includes('/mypage') ? 'bg-green' : 'bg-pink'
+        }`}
+      >
         <div className="flex flex-row items-center">
           <button onClick={menuHandler}>
             <img
@@ -24,7 +29,7 @@ export default function TopBar() {
           <Link to="/">
             <img
               className="h-10.5 w-36 md:m-2 md:h-14 md:w-48"
-              src={logo}
+              src={path.includes('/mypage') ? mypageLogo : homeLogo}
               alt="logo"
             />
           </Link>
