@@ -1,6 +1,7 @@
 package com.codestates.flyaway.web.board.dto;
 
 import com.codestates.flyaway.domain.board.entity.Board;
+import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,18 +50,22 @@ public class BoardDto {
     @NoArgsConstructor
     public static class BoardResponseDto {
 
+        private Long categoryId;
         private Long boardId;
         private String title;
         private String content;
+        private List<Long> imageId;
         private int viewCount;
         private LocalDateTime createdAt;
 
         public static BoardResponseDto toResponseDto(Board board){
 
             return new BoardResponseDto(
+                    board.getCategory().getId(),
                     board.getId(),
                     board.getTitle(),
                     board.getContent(),
+                    board.getImages().stream().map(BoardImage::getId).collect(Collectors.toList()),
                     board.getViewCount(),
                     board.getCreatedAt());
         }

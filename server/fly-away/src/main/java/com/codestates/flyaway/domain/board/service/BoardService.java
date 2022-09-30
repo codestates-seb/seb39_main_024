@@ -104,6 +104,7 @@ public class BoardService {
         }
     }
 
+    //TODO 이미지 단건조회시 리스트 받아오는거 잘 사용하면 삭제
     public List<Long> getImageId(Long boardId) {
         return boardImageService.findByBoard(boardId);
     }
