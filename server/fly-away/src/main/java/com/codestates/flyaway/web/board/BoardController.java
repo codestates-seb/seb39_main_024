@@ -3,7 +3,6 @@ package com.codestates.flyaway.web.board;
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
 import com.codestates.flyaway.global.dto.MultiResponseDto;
-import com.codestates.flyaway.global.dto.SingleResponseDto;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,9 +90,10 @@ public class BoardController {
         return boardService.getImage(imageId);
     }
 
-    @GetMapping("/images/{boardId}")
-    public List<Long> getImageId(@PathVariable Long boardId) {
-
-        return boardService.getImageId(boardId);
-    }
+    //TODO 게시글 단건조회시 리스트 이용 확인 후 잘 되면 삭제
+//    @GetMapping("/{boardId}/image")
+//    public List<Long> getImageId(@PathVariable Long boardId) {
+//
+//        return boardService.getImageId(boardId);
+//    }
 }
