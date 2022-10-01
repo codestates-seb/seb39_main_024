@@ -2,14 +2,16 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { boardIdState } from '../../../recoil/atoms/boardIdState';
+// import { imgIdState } from '../../../recoil/selectors/imgIdState';
 
 export default function Post({ items }) {
   const navigation = useNavigate();
 
-  const setPostBoard = useSetRecoilState(boardIdState);
+  const setBoardId = useSetRecoilState(boardIdState);
+  // const setImgId = useSetRecoilState(imgIdState);
 
   const postReadHandler = () => {
-    setPostBoard(items.boardId);
+    setBoardId(items.boardId);
     navigation('/posts/read');
   };
 

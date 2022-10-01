@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import instance from '../../service/request';
+import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import instance from '../../service/request';
 
+import { memberIdState } from '../../recoil/atoms/memberIdState';
 import MyPage from './MyPage';
 
 export default function ProfileEdit() {
@@ -14,6 +16,8 @@ export default function ProfileEdit() {
     name: '',
     password: '',
   });
+
+  const memberId = useRecoilValue(memberIdState);
 
   const navigation = useNavigate();
 
@@ -39,7 +43,7 @@ export default function ProfileEdit() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('memberId', 1);
+    formData.append('memberId', memberId);
     if (editValue.name.trim() !== '') {
       formData.append('name', editValue.name);
     }
@@ -53,7 +57,7 @@ export default function ProfileEdit() {
     console.log(typeof formData.get('image'));
 
     try {
-      await instance.patch(`/members/1`, formData, {
+      await instance.patch(`/members/${memberId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

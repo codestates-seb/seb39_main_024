@@ -6,11 +6,19 @@ import { categoryIdState } from '../atoms/categoryIdState';
 export const postsCategoryState = selector({
   key: 'postsCategoryState',
   get: async ({ get }) => {
-    const categoryId = get(categoryIdState);
-    const res = await axios.get(
-      `http://211.41.205.19:8080/board?categoryId=${categoryId}&sort=id,DESC`
-    );
-    const data = await res.data.data;
-    return data;
+    try {
+      const categoryId = get(categoryIdState);
+      const res = await axios.get(
+        `https://211.41.205.19:8080/board?categoryId=${categoryId}&sort=id,DESC`
+      );
+      const data = await res.data.data;
+      return data;
+    } catch (err) {
+      // if (err.response.status === 403) {
+      //   alert(err.response.data);
+      //   window.location.replace('/posts');
+      // }
+      console.log('err', err);
+    }
   },
 });

@@ -52,17 +52,26 @@ export default function Edit() {
       return;
     }
 
-    let data = {
+    let item = {
       categoryId: category,
       boardId: postRead.boardId,
       title: inputValue.title,
       content: inputValue.content,
     };
 
+    const formData = new FormData();
+    formData.append(
+      'updateDto',
+      new Blob([JSON.stringify(item)], { type: 'application/json' })
+    );
+    if (imgFile.file.length > 0) {
+      imgFile.file.forEach((file) => formData.append('image', file));
+    }
+
     try {
-      await instance.patch(`/board/${postRead.boardId}`, data, {
+      await instance.patch(`/board/${postRead.boardId}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       alert('글이 수정되었습니다 !');

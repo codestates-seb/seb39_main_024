@@ -14,6 +14,8 @@ export default function Read() {
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
 
+  const [imgPage, setImgPage] = useState(0);
+
   const navigation = useNavigate();
 
   // 수정, 삭제 모달
@@ -82,9 +84,30 @@ export default function Read() {
         </div>
       </section>
       <section className="bg-yellow w-full flex justify-center py-5">
-        <div className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white">
-          사진
-        </div>
+        <button
+          disabled={imgPage < 1}
+          onClick={() => setImgPage((prev) => prev - 1)}
+        >
+          &#8249;
+        </button>
+        {postRead.imageId.length === 0 && (
+          <div className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white">
+            사진이 없습니다.
+          </div>
+        )}
+        {postRead.imageId.length > 0 && (
+          <img
+            className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white"
+            src={`http://211.41.205.19:8080/board/image/${postRead.imageId[imgPage]}`}
+            alt="img"
+          />
+        )}
+        <button
+          disabled={postRead.imageId.length === imgPage + 1}
+          onClick={() => setImgPage((prev) => prev + 1)}
+        >
+          &#8250;
+        </button>
       </section>
       <section className="flex justify-between bg-white">
         <div>

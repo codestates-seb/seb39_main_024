@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { memberIdState } from '../../recoil/atoms/memberIdState';
+import { authState } from '../../recoil/atoms/authState';
 import instance from '../../service/request';
 
 export default function Login() {
@@ -6,6 +9,9 @@ export default function Login() {
     email: '',
     password: '',
   });
+
+  const setMemberId = useSetRecoilState(memberIdState);
+  const setIsLogin = useSetRecoilState(authState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -23,13 +29,27 @@ export default function Login() {
     };
 
     await instance
-      .post('/login', item)
-      .then(() => {
+      .post(
+        '/login',
+        item,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
         setInputValue({
           email: '',
           password: '',
         });
+        setIsLogin(true);
+        setMemberId(res.headers.memberid);
         alert('로그인 되었습니다 ! 환영합니다 :)');
+        window.location.replace('/');
       })
       .catch((e) => {
         console.log('err', e);
