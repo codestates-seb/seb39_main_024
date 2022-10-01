@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import instance from '../../../service/request';
-
+import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import Image from './Image';
 import Category from './Category';
 
 export default function Create() {
+  const memberId = useRecoilValue(memberIdState);
+
   const [category, setCategory] = useState(0);
 
   const [inputValue, setInputValue] = useState({
@@ -17,7 +20,6 @@ export default function Create() {
     file: [],
   });
 
-  console.log(imgFile.url);
   // 제목, 내용 Input 값 핸들러
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -50,6 +52,7 @@ export default function Create() {
     const item = {
       title: inputValue.title,
       content: inputValue.content,
+      memberId: memberId,
     };
 
     const formData = new FormData();

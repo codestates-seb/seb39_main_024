@@ -8,7 +8,7 @@ export const commentReadState = selector({
   get: async ({ get }) => {
     const id = get(boardIdState);
     const res = await axios.get(
-      `https://211.41.205.19:8080/board/${id}/comment`
+      `http://211.41.205.19:8080/board/${id}/comment`
     );
     const data = await res.data.data;
     return data;

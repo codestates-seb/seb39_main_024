@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import instance from '../../../service/request';
+import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { categoryIdState } from '../../../recoil/atoms/categoryIdState';
 
@@ -8,6 +9,7 @@ import Image from './Image';
 import Category from './Category';
 
 export default function Edit() {
+  const memberId = useRecoilValue(memberIdState);
   const postRead = useRecoilValue(postReadState);
   const categoryRead = useRecoilValue(categoryIdState);
 
@@ -53,6 +55,7 @@ export default function Edit() {
     }
 
     let item = {
+      memberId: memberId,
       categoryId: category,
       boardId: postRead.boardId,
       title: inputValue.title,

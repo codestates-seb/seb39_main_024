@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import instance from '../../../service/request';
+import { memberIdState } from '../../../recoil/atoms/memberIdState';
 
 export default function Comment({ items, postRead }) {
+  const memberId = useRecoilValue(memberIdState);
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(items.content);
 
@@ -23,9 +26,16 @@ export default function Comment({ items, postRead }) {
 
   // // 삭제 버튼 핸들러
   const deleteHandler = async () => {
+    let item = { memberId: memberId };
     try {
       await instance.delete(
-        `/board/${postRead.boardId}/comment/${items.commentId}`
+        `/board/${postRead.boardId}/comment/${items.commentId}`,
+        { data: item },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
       );
       alert('해당 댓글이 삭제되었습니다.');
       window.location.replace('/posts/read');
@@ -42,7 +52,8 @@ export default function Comment({ items, postRead }) {
     }
 
     let item = {
-      commentId: items.commentId,
+      memberId: memberId,
+      boardId: postRead.boardId,
       content: editValue,
     };
     try {

@@ -8,9 +8,8 @@ export const postReadState = selector({
   get: async ({ get }) => {
     try {
       const id = get(boardIdState);
-      const res = await axios.get(`https://211.41.205.19:8080/board/${id}`);
+      const res = await axios.get(`http://211.41.205.19:8080/board/${id}`);
       const data = await res.data;
-      console.log(data);
       return data;
     } catch (err) {
       if (err.response.status === 403) {
