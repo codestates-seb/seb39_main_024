@@ -22,6 +22,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class Create {
 
+        private Long memberId;
         private Long categoryId;
         @NotBlank
         private String title;
@@ -35,6 +36,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class Update {
 
+        private Long memberId;
         private Long categoryId;
         @Nullable
         private Long boardId;
@@ -44,12 +46,23 @@ public class BoardDto {
         private String content;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Delete {
+
+        private Long memberId;
+        private Long boardId;
+    }
+
 
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class BoardResponseDto {
 
+        private Long memberId;
         private Long categoryId;
         private Long boardId;
         private String title;
@@ -61,6 +74,7 @@ public class BoardDto {
         public static BoardResponseDto toResponseDto(Board board){
 
             return new BoardResponseDto(
+                    board.getMember().getId(),
                     board.getCategory().getId(),
                     board.getId(),
                     board.getTitle(),
@@ -79,6 +93,7 @@ public class BoardDto {
         private Long boardId;
         private String title;
         private String content;
+        private List<Long> imageId;
         private LocalDateTime createdAt;
         private int viewCount;
 
@@ -89,6 +104,7 @@ public class BoardDto {
                             board.getId(),
                             board.getTitle(),
                             board.getContent(),
+                            board.getImages().stream().map(BoardImage::getId).collect(Collectors.toList()),
                             board.getCreatedAt(),
                             board.getViewCount()))
                     .collect(Collectors.toList());

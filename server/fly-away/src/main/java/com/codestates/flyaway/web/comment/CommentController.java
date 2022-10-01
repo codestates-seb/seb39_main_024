@@ -55,9 +55,11 @@ public class CommentController {
     }
 
     @DeleteMapping("/{boardId}/comment/{commentId}")
-    public HttpStatus deleteComment(@PathVariable("commentId") Long commentId) {
+    public HttpStatus deleteComment(@PathVariable("commentId") Long commentId,
+                                    @RequestBody CommentDto.Delete deleteDto) {
 
-        commentService.delete(commentId);
+        deleteDto.setCommentId(commentId);
+        commentService.delete(deleteDto);
 
         return HttpStatus.NO_CONTENT;
     }

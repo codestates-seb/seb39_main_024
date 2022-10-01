@@ -77,9 +77,11 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public HttpStatus delete(@PathVariable("boardId") Long boardId) {
+    public HttpStatus delete(@PathVariable("boardId") Long boardId,
+                             @RequestBody BoardDto.Delete deleteDto) {
 
-        boardService.delete(boardId);
+        deleteDto.setBoardId(boardId);
+        boardService.delete(deleteDto);
 
         return HttpStatus.NO_CONTENT;
     }
