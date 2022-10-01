@@ -3,6 +3,7 @@ package com.codestates.flyaway.domain.board.entity;
 import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.comment.entity.Comment;
+import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.global.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,12 +37,16 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     private List<BoardImage> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public Board(String title, String content) {
         this.title = title;
@@ -51,6 +56,11 @@ public class Board extends Auditable {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getBoards().add(this);
     }
 
     public void setCategory(Category category) {

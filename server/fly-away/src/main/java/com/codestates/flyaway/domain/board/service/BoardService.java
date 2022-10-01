@@ -6,6 +6,8 @@ import com.codestates.flyaway.domain.boardimage.repository.BoardImageRepository;
 import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.category.service.CategoryService;
+import com.codestates.flyaway.domain.member.entity.Member;
+import com.codestates.flyaway.domain.member.service.MemberService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import com.codestates.flyaway.web.board.dto.BoardImageDto;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.MalformedURLException;
 import java.util.List;
+import java.util.Objects;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.board.dto.BoardDto.*;
@@ -34,13 +37,16 @@ public class BoardService {
     private final CategoryService categoryService;
     private final BoardImageService boardImageService;
     private final BoardImageRepository boardImageRepository;
+    private final MemberService memberService;
 
     @Transactional
     public BoardResponseDto create(List<MultipartFile> images, BoardDto.Create createDto) {
 
         Category category = categoryService.findById(createDto.getCategoryId());
+        Member member = memberService.findById(createDto.getMemberId());
         Board board = new Board(createDto.getTitle(), createDto.getContent());
         board.setCategory(category);
+        board.setMember(member);
         boardRepository.save(board);
         boardImageService.saveFiles(images, board);
 
@@ -52,6 +58,9 @@ public class BoardService {
 
         Category category = categoryService.findById(updateDto.getCategoryId());
         final Board board = boardRepository.getReferenceById(updateDto.getBoardId());
+        if(!Objects.equals(updateDto.getMemberId(), board.getMember().getId())) {
+            throw new BusinessLogicException(NOT_AUTHORIZED);
+        }
         board.setCategory(category);
         board.update(updateDto.getTitle(), updateDto.getContent());
         boardImageService.updateFiles(images, board);
@@ -79,10 +88,13 @@ public class BoardService {
     }
 
     @Transactional
-    public void delete(Long boardId) {
+    public void delete(BoardDto.Delete deleteDto) {
 
-        Board board = findById(boardId);
-        boardImageRepository.deleteAll(boardImageRepository.findAllByBoardId(boardId));
+        Board board = findById(deleteDto.getBoardId());
+        if(!Objects.equals(board.getMember().getId(), deleteDto.getMemberId())) {
+            throw new BusinessLogicException(NOT_AUTHORIZED);
+        }
+        boardImageRepository.deleteAll(boardImageRepository.findAllByBoardId(deleteDto.getBoardId()));
         boardRepository.delete(board);
     }
 
