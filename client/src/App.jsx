@@ -58,7 +58,7 @@ function App() {
             <Route path="/mypage/deleteaccount" element={<DeleteAccount />} />
           </Routes>
         </Layout>
-        <Footer />
+        <Footer path={path} />
       </Suspense>
     </RecoilRoot>
   );
