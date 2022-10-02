@@ -8,7 +8,7 @@ export const postsCategoryState = selector({
   get: async ({ get }) => {
     const categoryId = get(categoryIdState);
     const res = await axios.get(
-      `http://211.41.205.19:8080/board?categoryId=${categoryId}&sort=id,DESC`
+      `https://211.41.205.19:8080/board?categoryId=${categoryId}&sort=id,DESC`
     );
     const data = await res.data.data;
     return data;

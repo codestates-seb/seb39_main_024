@@ -28,7 +28,6 @@ const Footer = lazy(() => import('./containers/Footer'));
 
 function App() {
   const path = useLocation().pathname;
-  console.log(path);
 
   return (
     <RecoilRoot>
