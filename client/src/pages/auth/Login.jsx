@@ -23,13 +23,17 @@ export default function Login() {
     };
 
     await instance
-      .post('/login', item)
-      .then(() => {
+      .post('/login', item, {
+        withCredentials: true,
+      })
+      .then((res) => {
         setInputValue({
           email: '',
           password: '',
         });
-        alert('로그인 되었습니다 ! 환영합니다 :)');
+        console.log(res);
+        alert('로그인 되었습니다.');
+        // navigate('/videos');
       })
       .catch((e) => {
         console.log('err', e);
