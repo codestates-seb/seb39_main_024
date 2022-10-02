@@ -1,16 +1,26 @@
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { postsCategoryState } from '../../../recoil/selectors/postsCategoryState';
 import Post from '../common/Post';
+import Pagination from '../../../components/Pagination';
 
 export default function Free() {
-  const posts = useRecoilValue(postsCategoryState);
+  const [currentPage, setCurrentPage] = useState(0);
+  const posts = useRecoilValue(postsCategoryState(currentPage));
 
   return (
-    <div className="flex flex-wrap justify-center items-start bg-pink">
-      {posts.map((post) => (
-        <Post key={post.boardId} items={post} />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-wrap justify-center items-start bg-pink">
+        {posts.map((post) => (
+          <Post key={post.boardId} items={post} />
+        ))}
+      </div>
+      <Pagination
+        posts={posts}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </>
   );
 }

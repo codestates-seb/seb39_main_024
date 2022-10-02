@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import instance from '../../../service/request';
+import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { categoryIdState } from '../../../recoil/atoms/categoryIdState';
 
@@ -8,6 +9,7 @@ import Image from './Image';
 import Category from './Category';
 
 export default function Edit() {
+  const memberId = useRecoilValue(memberIdState);
   const postRead = useRecoilValue(postReadState);
   const categoryRead = useRecoilValue(categoryIdState);
 
@@ -52,17 +54,27 @@ export default function Edit() {
       return;
     }
 
-    let data = {
+    let item = {
+      memberId: memberId,
       categoryId: category,
       boardId: postRead.boardId,
       title: inputValue.title,
       content: inputValue.content,
     };
 
+    const formData = new FormData();
+    formData.append(
+      'updateDto',
+      new Blob([JSON.stringify(item)], { type: 'application/json' })
+    );
+    if (imgFile.file.length > 0) {
+      imgFile.file.forEach((file) => formData.append('image', file));
+    }
+
     try {
-      await instance.patch(`/board/${postRead.boardId}`, data, {
+      await instance.patch(`/board/${postRead.boardId}`, formData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
         },
       });
       alert('글이 수정되었습니다 !');

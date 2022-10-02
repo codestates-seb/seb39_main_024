@@ -1,4 +1,4 @@
-export default function Layout({ children, path }) {
+export default function Layout({ children }) {
   return (
     <main
       className={`flex justify-center items-center ${

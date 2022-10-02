@@ -2,17 +2,21 @@ import { lazy, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../../service/request';
+import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { commentReadState } from '../../../recoil/selectors/commentReadState';
 
 const Comment = lazy(() => import('./Comment'));
 
 export default function Read() {
+  const memberId = useRecoilValue(memberIdState);
   const postRead = useRecoilValue(postReadState);
   const commentRead = useRecoilValue(commentReadState);
 
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
+
+  const [imgPage, setImgPage] = useState(0);
 
   const navigation = useNavigate();
 
@@ -28,8 +32,17 @@ export default function Read() {
 
   // 삭제하기 버튼
   const deleteHandler = async () => {
+    let item = { memberId: memberId };
     try {
-      await instance.delete(`/board/${postRead.boardId}`),
+      await instance.delete(
+        `/board/${postRead.boardId}`,
+        { data: item },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      ),
         alert('해당 글이 삭제되었습니다.');
       window.location.replace('/posts');
     } catch (err) {
@@ -50,6 +63,7 @@ export default function Read() {
     }
 
     const item = {
+      memberId: memberId,
       boardId: postRead.boardId,
       content: commentValue,
     };
@@ -67,24 +81,42 @@ export default function Read() {
     }
   };
 
+  const isValid = Number(memberId) === postRead.memberId;
+
   return (
     <main className="flex flex-col justify-center py-5 px-5 bg-pink">
       <section className="flex justify-between">
         <p className="text-start">{postRead.title}</p>
-        <div className="flex">
-          {modal && (
-            <>
-              <button onClick={editHandler}>수정</button>
-              <button onClick={deleteHandler}>삭제</button>
-            </>
-          )}
-          <button onClick={modalHandler}>&#65049;</button>
-        </div>
+        {isValid && (
+          <div className="flex">
+            {modal && (
+              <>
+                <button onClick={editHandler}>수정</button>
+                <button onClick={deleteHandler}>삭제</button>
+              </>
+            )}
+            <button onClick={modalHandler}>&#65049;</button>
+          </div>
+        )}
       </section>
       <section className="bg-yellow w-full flex justify-center py-5">
-        <div className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white">
-          사진
-        </div>
+        <button
+          disabled={imgPage < 1}
+          onClick={() => setImgPage((prev) => prev - 1)}
+        >
+          &#8249;
+        </button>
+        <img
+          className="text-center border-solid border border-zinc-300 p-7 w-9/12 bg-white"
+          src={`http://211.41.205.19:8080/board/image/${postRead.imageId[imgPage]}`}
+          alt="img"
+        />
+        <button
+          disabled={postRead.imageId.length === imgPage + 1}
+          onClick={() => setImgPage((prev) => prev + 1)}
+        >
+          &#8250;
+        </button>
       </section>
       <section className="flex justify-between bg-white">
         <div>
