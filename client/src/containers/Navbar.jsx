@@ -11,9 +11,11 @@ export default function Navbar({ path }) {
   };
 
   return (
-    <>
+    <nav
+      className={`flex fixed mt-[64px] md:mt-[80px] h-10 md:h-12 sm:text-xs bg-white border-y-[1px]`}
+    >
       {path.includes('/videos') && (
-        <nav className="flex sm:text-xs flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-between w-screen">
           <div>
             <Button link="/videos" str="조회수 Top 10" />
             <Button link="/videos/training" str="홈트레이닝" />
@@ -22,10 +24,10 @@ export default function Navbar({ path }) {
           <div>
             <Search placeholder="영상 검색하기" />
           </div>
-        </nav>
+        </div>
       )}
       {path.includes('/posts') && (
-        <nav className="flex sm:text-xs flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-between w-screen">
           <div>
             <Button link="/posts" str="전체" />
             <Button
@@ -51,8 +53,8 @@ export default function Navbar({ path }) {
             <Button link="/posts/create" str="글쓰기" />
             <input placeholder="글 검색하기" />
           </div>
-        </nav>
+        </div>
       )}
-    </>
+    </nav>
   );
 }
