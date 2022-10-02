@@ -7,7 +7,8 @@ export default function Layout({ children, path }) {
       ${
         path.includes('/mypage') ||
         path.includes('/login') ||
-        path.includes('/join')
+        path.includes('/join') ||
+        path.includes('/posts')
           ? // 화면 스크롤 안 생기게 메인 박스 높이를 vh에 맞춤
             'sm:min-h-[calc(100vh-80px)] min-h-[calc(100vh-80px)] pt-[64px] md:pt-[80px]'
           : // 메인 박스 높이를 자식 요소 높이에 맞춤
