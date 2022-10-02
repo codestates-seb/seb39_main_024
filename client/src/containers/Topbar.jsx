@@ -14,7 +14,7 @@ export default function TopBar({ path }) {
   return (
     <>
       <header
-        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full ${
+        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full fixed ${
           path.includes('/mypage') ? 'bg-green' : 'bg-pink'
         }`}
       >

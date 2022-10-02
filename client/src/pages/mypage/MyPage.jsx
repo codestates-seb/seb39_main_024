@@ -15,8 +15,8 @@ export default function MyPage(props) {
   }, [location]);
 
   return (
-    <main className="border-solid border flex sm:flex-col">
-      <section className="flex flex-col bg-green">
+    <section className="border-solid border flex sm:flex-col">
+      <aside className="flex flex-col bg-green">
         <div className="flex flex-col sm:items-center">
           <div className="text-center border-solid border border-zinc-300 p-7 w-44 h-44 m-2 sm:w-32 sm:h-32 bg-white">
             사진
@@ -29,10 +29,10 @@ export default function MyPage(props) {
           <Button link="/mypage/profile_edit" str="프로필 편집" />
           <Button link="/mypage/deleteaccount" str="회원 탈퇴" />
         </div>
-      </section>
+      </aside>
       <section className="flex flex-col justify-center w-full bg-pale_pink md:m-3">
         {path === '/mypage' ? <Summary /> : <>{props.children}</>}
       </section>
-    </main>
+    </section>
   );
 }

@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 
 export default function Join() {
+  const navigate = useNavigate();
+
   const [inputValue, setInputValue] = useState({
     name: '',
     email: '',
@@ -40,6 +43,7 @@ export default function Join() {
           check: '',
         });
         alert('회원가입 되었습니다 ! 환영합니다 :)');
+        navigate('/login');
       })
       .catch((e) => {
         console.log('err', e);
@@ -49,49 +53,62 @@ export default function Join() {
       });
   };
   return (
-    <main>
-      <p className="text-center sm:text-xl md:text-3xl">
+    <div className="flex flex-col items-center justify-center my-8">
+      <p className="mb-8 s:text-2xl text-3xl font-bold">
         FLY AWAY에 회원가입 하기
       </p>
-      <form
-        className="flex flex-col items-center bg-gray"
-        onSubmit={submitHandler}
-      >
-        <label htmlFor="name">이름</label>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          value={inputValue.name}
-          onChange={inputValueChangeHandler}
-        />
+      <div className="flex flex-col items-center justify-center w-1/2 sm:w-4/5 bg-pale_pink rounded-lg">
+        <form className="flex flex-col w-4/5 my-3" onSubmit={submitHandler}>
+          <label className="h-10 leading-10" htmlFor="name">
+            이름
+          </label>
+          <input
+            className="mb-3 h-10 rounded-md"
+            id="name"
+            type="text"
+            name="name"
+            value={inputValue.name}
+            onChange={inputValueChangeHandler}
+          />
 
-        <label htmlFor="email">이메일</label>
-        <input
-          id="email"
-          type="email"
-          name="email"
-          value={inputValue.email}
-          onChange={inputValueChangeHandler}
-        />
-        <label htmlFor="password">비밀번호</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          value={inputValue.password}
-          onChange={inputValueChangeHandler}
-        />
-        <label htmlFor="check">비밀번호 확인</label>
-        <input
-          id="check"
-          type="password"
-          name="check"
-          value={inputValue.check}
-          onChange={inputValueChangeHandler}
-        />
-        <button className="rounded bg-pink px-1.5">회원가입</button>
-      </form>
-    </main>
+          <label className="h-10 leading-10" htmlFor="email">
+            이메일
+          </label>
+          <input
+            className="mb-3 h-10 rounded-md"
+            id="email"
+            type="email"
+            name="email"
+            value={inputValue.email}
+            onChange={inputValueChangeHandler}
+          />
+          <label className="h-10 leading-10" htmlFor="password">
+            비밀번호
+          </label>
+          <input
+            className="mb-3 h-10 rounded-md"
+            id="password"
+            type="password"
+            name="password"
+            value={inputValue.password}
+            onChange={inputValueChangeHandler}
+          />
+          <label className="h-10 leading-10" htmlFor="check">
+            비밀번호 확인
+          </label>
+          <input
+            className="mb-3 h-10 rounded-md"
+            id="check"
+            type="password"
+            name="check"
+            value={inputValue.check}
+            onChange={inputValueChangeHandler}
+          />
+          <button className="my-6 h-10 bg-green rounded-md font-bold">
+            회원가입
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
