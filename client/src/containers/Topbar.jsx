@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import instance from '../service/request';
+import { loginState } from '../recoil/atoms/loginState';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 
 export default function TopBar({ path }) {
+  const isLogin = useRecoilValue(loginState);
+
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const logoutHandler = async () => {
+    try {
+      await instance.post('/logout');
+      alert('로그아웃 되었습니다 !');
+      window.localStorage.clear();
+      window.location.replace('/');
+    } catch (err) {
+      console.log('err', err);
+    }
   };
 
   return (
@@ -36,10 +52,27 @@ export default function TopBar({ path }) {
           <Button className="sm:hidden" link="/videos" str="운동하기" />
           <Button className="sm:hidden" link="/posts" str="공유하기" />
         </div>
-        <div className="flex flex-row items-center">
-          <Button link="/login" str="로그인" />
-          <Button link="/join" str="회원가입" />
-        </div>
+        {!isLogin && (
+          <div className="flex flex-row items-center">
+            <Button link="/login" str="로그인" />
+            <Button link="/join" str="회원가입" />
+          </div>
+        )}
+        {isLogin && (
+          <div className="flex flex-row items-center">
+            <img
+              src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/30/000000/external-user-user-tanah-basah-glyph-tanah-basah-4.png"
+              alt="user"
+            />
+            <img
+              src="https://img.icons8.com/fluency-systems-filled/30/000000/logout-rounded.png"
+              alt="logout"
+              className="cursor-pointer"
+              onClick={logoutHandler}
+              aria-hidden="true"
+            />
+          </div>
+        )}
       </header>
       {modalOpen && <Modal className="md:hidden" onMenu={menuHandler} />}
     </>

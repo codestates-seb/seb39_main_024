@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { memberIdState } from '../../recoil/atoms/memberIdState';
+import { loginState } from '../../recoil/atoms/loginState';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 
@@ -9,6 +12,9 @@ export default function Login() {
     email: '',
     password: '',
   });
+
+  const setMemberId = useSetRecoilState(memberIdState);
+  const setIsLogin = useSetRecoilState(loginState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -26,14 +32,25 @@ export default function Login() {
     };
 
     await instance
-      .post('/login', item, {
-        withCredentials: true,
-      })
+      .post(
+        '/login',
+        item,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         setInputValue({
           email: '',
           password: '',
         });
+        setIsLogin(true);
+        setMemberId(res.headers.memberid);
         console.log(res);
         alert('로그인 되었습니다.');
         // navigate('/videos');

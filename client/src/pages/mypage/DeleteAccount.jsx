@@ -1,11 +1,15 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import instance from '../../service/request';
+import { memberIdState } from '../../recoil/atoms/memberIdState';
 import MyPage from './MyPage';
 
 export default function DeleteAccount() {
+  const memberId = useRecoilValue(memberIdState);
+
   const deleteAccountHandler = async () => {
     try {
-      await instance.delete('/members/1');
+      await instance.delete(`/members/${memberId}`);
       alert('회원탈퇴가 되었습니다 ! 그동안 서비스를 이용해주셔서 감사합니다.');
       window.location.replace('/');
     } catch (err) {

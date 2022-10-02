@@ -1,15 +1,12 @@
-import { selector } from 'recoil';
-import axios from 'axios';
+// import { selector } from 'recoil';
+// import axios from 'axios';
+// import { imgIdState } from './imgIdState';
 
-export const imgReadState = selector({
-  key: 'imgReadState',
-  get: async () => {
-    try {
-      const res = await axios.get('https://211.41.205.19:8080/members/1/image');
-      const data = await res.data;
-      return data;
-    } catch (err) {
-      console.log('err', err);
-    }
-  },
-});
+// export const imgReadState = selector({
+//   key: 'imgReadState',
+//   get: async ({ get }) => {
+//     const imgId = get(imgIdState);
+//     const res = await axios.get(`http://211.41.205.19:8080/board/image/${imgId}`);
+
+//   },
+// });
