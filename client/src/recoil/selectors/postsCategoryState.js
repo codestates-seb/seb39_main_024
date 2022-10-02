@@ -1,5 +1,5 @@
 import { selectorFamily } from 'recoil';
-import axios from 'axios';
+import instance from '../../service/request';
 
 import { categoryIdState } from '../atoms/categoryIdState';
 
@@ -10,9 +10,9 @@ export const postsCategoryState = selectorFamily({
     async ({ get }) => {
       try {
         const categoryId = get(categoryIdState);
-        const res = await axios.get(
+        const res = await instance.get(
           // `http://211.41.205.19:8080/board?categoryId=${categoryId}&sort=id,DESC?page=${page}&size=2`
-          `http://211.41.205.19:8080/board?categoryId=${categoryId}&page=${page}&size=2&sort=id,DESC`
+          `/board?categoryId=${categoryId}&page=${page}&size=2&sort=id,DESC`
         );
         const data = await res.data.data;
         return data;
