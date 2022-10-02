@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
-import { authState } from '../../recoil/atoms/authState';
+import { loginState } from '../../recoil/atoms/loginState';
 import instance from '../../service/request';
 
 export default function Login() {
@@ -11,7 +11,7 @@ export default function Login() {
   });
 
   const setMemberId = useSetRecoilState(memberIdState);
-  const setIsLogin = useSetRecoilState(authState);
+  const setIsLogin = useSetRecoilState(loginState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
