@@ -1,8 +1,10 @@
 package com.codestates.flyaway.domain.memberimage.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.memberimage.repository.MemberImageRepository;
-import com.codestates.flyaway.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,11 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
-
-import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 
 @Service
 @Transactional
@@ -22,67 +22,50 @@ import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 @RequiredArgsConstructor
 public class MemberImageService {
 
-    private final MemberImageRepository memberImageRepository;
+    @Value("${cloud.aws.s3.bucket}/member")
+    private String bucket;
+    @Value("${cloud.aws.s3.default}")
+    private String defaultUrl;
 
-    @Value("${file.dir}")
-    private String fileUrl;
-
-    public String getFullPath(String filename) {
-        return fileUrl + filename;
-    }
+    private final AmazonS3 amazonS3;
+    private final MemberImageRepository imageRepository;
 
 
     /**
-     * 파일 저장 (DB 저장 + 로컬 pc 저장)
-     * @return 생성된 memberImage
+     * S3 이미지 업로드
+     * @param multipartFile
+     * @return 생성된 image 객체
      */
-    public MemberImage save(MultipartFile multipartFile) {
+    public MemberImage upload(MultipartFile multipartFile) throws IOException {
 
         String fileOriName = multipartFile.getOriginalFilename();
-        String fileName = createFileName(fileOriName);
+        String s3FileName = UUID.randomUUID().toString() + "-" + fileOriName;
 
-        try {
-            multipartFile.transferTo(new File(getFullPath(fileName)));
-            log.info("파일 저장 성공 = {}", fileName);
-        } catch (IOException ex) {
-            log.info("파일 저장 실패 = {}", ex.getMessage());
-            throw new RuntimeException(ex);
-        }
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(multipartFile.getInputStream().available());
 
-        return new MemberImage(fileOriName, fileUrl, fileName);
+        amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+        log.info("파일 업로드 성공 = {}", s3FileName);
+
+        String s3Url = amazonS3.getUrl(bucket, s3FileName).toString();
+        return new MemberImage(fileOriName, s3Url, s3FileName);
     }
 
     /**
-     * 파일 삭제 (DB 삭제, pc 파일 삭제)
+     * 파일 반환
+     * @return 파일 url
      */
-    public void delete(MemberImage image) {
-        String fullPath = getFullPath(image.getFileName());
-        File file = new File(fullPath);
+    public String getImageUrl(Member member) {
 
-        //파일 없을 시
-        if (!file.exists()) {
-            throw new BusinessLogicException(FILE_NOT_FOUND);
-        }
-        //파일 삭제 실패 시
-        if (!file.delete()) {
-            throw new BusinessLogicException(FILE_DELETE_FAILED);
-        }
-
-        log.info("파일 삭제 성공 ={}", file.getName());
-
-        memberImageRepository.delete(image);
+        return Optional.ofNullable(member.getMemberImage())
+                .map(MemberImage::getFileUrl)
+                .orElseGet(() -> defaultUrl);
     }
 
-    private String createFileName(String originalFilename) {
-
-        String ext = extractExt(originalFilename);
-        String uuid = UUID.randomUUID().toString();     //todo : pk로 관리되는데 uuid가 필요할까?
-        return uuid + "." + ext;
-    }
-
-    private String extractExt(String originalFilename) {
-
-        int pos = originalFilename.lastIndexOf(".");
-        return originalFilename.substring(pos + 1);
+    /**
+     * 파일 삭제
+     */
+    public void delete(long id) {
+        imageRepository.deleteById(id);
     }
 }
