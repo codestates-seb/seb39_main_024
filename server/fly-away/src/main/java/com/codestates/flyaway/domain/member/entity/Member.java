@@ -1,5 +1,7 @@
 package com.codestates.flyaway.domain.member.entity;
 
+import com.codestates.flyaway.domain.board.entity.Board;
+import com.codestates.flyaway.domain.comment.entity.Comment;
 import com.codestates.flyaway.domain.member.util.PasswordConverter;
 import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.record.entity.Record;
@@ -35,6 +37,12 @@ public class Member extends Auditable {
 
     @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Record> records = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments = new ArrayList<>();
 
     private String name;
     private String email;

@@ -21,6 +21,7 @@ public class CommentDto {
     @NoArgsConstructor
     public static class Write {
 
+        private Long memberId;
         private Long boardId;
         @NotBlank
         private String content;
@@ -30,8 +31,10 @@ public class CommentDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UpdateComment {
+    public static class Update {
 
+        private Long memberId;
+        private Long boardId;
         @Nullable
         private Long commentId;
         @NotBlank
@@ -39,17 +42,29 @@ public class CommentDto {
     }
 
     @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Delete {
+
+        private Long memberId;
+        private Long commentId;
+    }
+
+    @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CommentResponseDto {
 
+        private Long memberId;
         private Long commentId;
         private String content;
         private LocalDateTime createdAt;
 
-        public static CommentDto.CommentResponseDto commentToCommentResponseDto(Comment comment) {
+        public static CommentDto.CommentResponseDto toResponseDto(Comment comment) {
 
             return new CommentDto.CommentResponseDto(
+                    comment.getMember().getId(),
                     comment.getId(),
                     comment.getContent(),
                     comment.getCreatedAt());
@@ -61,14 +76,16 @@ public class CommentDto {
     @NoArgsConstructor
     public static class MultiCommentDto {
 
+        private Long memberId;
         private Long commentId;
         private String content;
         private LocalDateTime createdAt;
 
-        public static List<MultiCommentDto> commentToResponsesDto(List<Comment> comments) {
+        public static List<MultiCommentDto> toResponsesDto(List<Comment> comments) {
 
             return comments.stream()
                     .map(comment -> new MultiCommentDto(
+                            comment.getMember().getId(),
                             comment.getId(),
                             comment.getContent(),
                             comment.getCreatedAt()))

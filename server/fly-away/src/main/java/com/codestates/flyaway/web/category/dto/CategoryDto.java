@@ -4,6 +4,7 @@ import com.codestates.flyaway.domain.category.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CategoryDto {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UpdateCategory {
@@ -39,7 +41,7 @@ public class CategoryDto {
         private Long categoryId;
         private String categoryName;
 
-        public static CategoryResponseDto categoryToResponseDto(Category category) {
+        public static CategoryResponseDto toResponseDto(Category category) {
 
             return new CategoryResponseDto(
                     category.getId(),
@@ -55,7 +57,7 @@ public class CategoryDto {
         private Long categoryId;
         private String categoryName;
 
-        public static List<MultiCategoryDto> responsesDto(List<Category> categories) {
+        public static List<MultiCategoryDto> toResponsesDto(List<Category> categories) {
 
             return categories.stream()
                     .map(category -> new MultiCategoryDto(

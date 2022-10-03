@@ -1,7 +1,9 @@
 package com.codestates.flyaway.domain.board.entity;
 
+import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.comment.entity.Comment;
+import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.global.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,16 +34,19 @@ public class Board extends Auditable {
     private int likeCount;
     private int commentCount;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    private List<BoardImage> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public Board(String title, String content) {
         this.title = title;
@@ -53,9 +58,21 @@ public class Board extends Auditable {
         this.content = content;
     }
 
+    public void setMember(Member member) {
+        this.member = member;
+        member.getBoards().add(this);
+    }
+
     public void setCategory(Category category) {
         this.category = category;
         category.getBoards().add(this);
+    }
+
+    public void addImage(BoardImage boardImage) {
+        this.images.add(boardImage);
+        if(boardImage.getBoard() != this) {
+            boardImage.setBoard(this);
+        }
     }
 
     public void addViewCount() {
