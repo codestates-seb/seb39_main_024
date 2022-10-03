@@ -2,6 +2,7 @@ package com.codestates.flyaway.web.board;
 
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
+import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
 import com.codestates.flyaway.global.dto.MultiResponseDto;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardImageService boardImageService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/{categoryId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -87,15 +89,15 @@ public class BoardController {
     }
 
     @GetMapping("/image/{imageId}")
-    public Resource getImage(@PathVariable Long imageId) {
+    public String getImage(@PathVariable Long imageId) {
 
-        return boardService.getImage(imageId);
+        return boardImageService.getImage(imageId);
     }
 
-    //TODO 게시글 단건조회시 리스트 이용 확인 후 잘 되면 삭제
-//    @GetMapping("/{boardId}/image")
-//    public List<Long> getImageId(@PathVariable Long boardId) {
-//
-//        return boardService.getImageId(boardId);
-//    }
+    @PostMapping("/{boardId}/like")
+    public void doLike(@PathVariable("boardId") Long boardId,
+                       @RequestParam Long memberId) {
+
+        boardService.doLike(memberId, boardId);
+    }
 }

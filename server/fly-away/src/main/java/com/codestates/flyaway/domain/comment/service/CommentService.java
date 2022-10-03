@@ -48,7 +48,7 @@ public class CommentService {
     public CommentResponseDto update(CommentDto.Update updateDto) {
 
         final Comment comment = commentRepository.getReferenceById(updateDto.getCommentId());
-        if(!Objects.equals(comment.getId(), updateDto.getMemberId())) {
+        if(!Objects.equals(comment.getMember().getId(), updateDto.getMemberId())) {
             throw new BusinessLogicException(ExceptionCode.NOT_AUTHORIZED);
         }
         comment.update(updateDto.getCommentId(), updateDto.getContent());
