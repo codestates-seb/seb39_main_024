@@ -8,6 +8,8 @@ export default function Comment({ items, postRead }) {
   const [isEdit, setIsEdit] = useState(false);
   const [editValue, setEditValue] = useState(items.content);
 
+  const date = items.createdAt.split('T');
+
   // 수정 여부 핸들러
   const isEditHandler = () => {
     setIsEdit(true);
@@ -74,32 +76,32 @@ export default function Comment({ items, postRead }) {
   };
 
   return (
-    <section className="bg-white">
+    <section className="mt-2">
       <div className="flex justify-between">
         <div>
           <span className="mr-2 ml-1">👤 작성자</span>
           <span className="mr-2">&#124;</span>
-          <span className="ml-1">{items.createdAt}</span>
+          <span className="ml-1">{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>
-        {isEdit && (
-          <div>
-            <button className="mr-1" onClick={cancelHandler}>
-              취소
-            </button>
-            <button className="mr-1" onClick={completeHandler}>
-              완료
-            </button>
-          </div>
-        )}
-        {!isEdit && (
-          <div>
-            <button className="mr-1" onClick={isEditHandler}>
-              수정
-            </button>
-            <button className="mr-1" onClick={deleteHandler}>
-              삭제
-            </button>
-          </div>
+        {memberId && (
+          <>
+            {isEdit && (
+              <div>
+                <button onClick={cancelHandler}>취소</button>
+                <button className="mr-2" onClick={completeHandler}>
+                  완료
+                </button>
+              </div>
+            )}
+            {!isEdit && (
+              <div>
+                <button onClick={isEditHandler}>수정</button>
+                <button className="ml-2" onClick={deleteHandler}>
+                  삭제
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
       {isEdit && (
@@ -107,7 +109,7 @@ export default function Comment({ items, postRead }) {
           <input value={editValue} onChange={editValueHandler} />
         </>
       )}
-      {!isEdit && <p className="ml-1">{items.content}</p>}
+      {!isEdit && <p className="ml-1 pt-2">{items.content}</p>}
     </section>
   );
 }

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
-import { loginState } from '../recoil/atoms/loginState';
+import { isLoginState } from '../recoil/atoms/isLoginState';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
 
 export default function TopBar({ path }) {
-  const isLogin = useRecoilValue(loginState);
+  const isLogin = useRecoilValue(isLoginState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
