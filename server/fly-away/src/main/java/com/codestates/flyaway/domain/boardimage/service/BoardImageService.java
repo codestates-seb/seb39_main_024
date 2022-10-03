@@ -1,10 +1,11 @@
 package com.codestates.flyaway.domain.boardimage.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.boardimage.repository.BoardImageRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
-import com.codestates.flyaway.global.exception.ExceptionCode;
 import com.codestates.flyaway.web.board.dto.BoardImageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.FILE_NOT_FOUND;
 
@@ -29,22 +28,23 @@ import static com.codestates.flyaway.global.exception.ExceptionCode.FILE_NOT_FOU
 public class BoardImageService {
 
     private final BoardImageRepository boardImageRepository;
+    private final AmazonS3 amazonS3;
 
-//    @Value("${file.dir}")
-    @Value("/Users/ricepocket/Desktop/test/")
-    private String fileDir;
+    @Value("${cloud.aws.s3.bucket}/board")
+    private String bucket;
+    @Value("${cloud.aws.s3.defaultBoard}")
+    private String defaultUrl;
 
-    public String getFullPath(String fileName) {
-
-        return fileDir + fileName;
-    }
+    BoardImage defaultImage = new BoardImage("default", defaultUrl, "default");
 
     public BoardImage saveFile(MultipartFile multipartFile, Board board) throws IOException {
 
         String originalFileName = multipartFile.getOriginalFilename();
-        String fileName = createStoreFileName(originalFileName);
-        multipartFile.transferTo(new File(getFullPath(fileName)));
-        BoardImage boardImage = new BoardImage(originalFileName, fileDir, fileName);
+        String s3FileName = UUID.randomUUID() + "-" + multipartFile.getOriginalFilename();
+        ObjectMetadata objMeta = new ObjectMetadata();
+        objMeta.setContentLength(multipartFile.getInputStream().available());
+        amazonS3.putObject(bucket, s3FileName, multipartFile.getInputStream(), objMeta);
+        BoardImage boardImage = new BoardImage(originalFileName, bucket, s3FileName);
         boardImageRepository.save(boardImage);
         boardImage.setBoard(board);
 
@@ -54,9 +54,8 @@ public class BoardImageService {
     public List<BoardImage> saveFiles(List<MultipartFile> multipartFiles, Board board) {
 
         List<BoardImage> saveFileResult = new ArrayList<>();
-        //todo 급하게 작성해준거라 리팩토링필요, 디폴트 이미지 추가
         if(multipartFiles == null) {
-            BoardImage boardImage = new BoardImage("default.png", "default", "default");
+            BoardImage boardImage = defaultImage;
             boardImageRepository.save(boardImage);
             boardImage.setBoard(board);
         }else {
@@ -83,27 +82,24 @@ public class BoardImageService {
         } else return boardImageRepository.findAllByBoardId(board.getId());
     }
 
-    public void delete(BoardImage boardImage) {
+    public String getImage(Long imageId) {
 
-        String fullPath = getFullPath(boardImage.getFileName());
-        File file = new File(fullPath);
+        BoardImageDto boardImageDto = findByImageId(imageId);
 
-        if(!file.exists()) {
-            throw new BusinessLogicException(ExceptionCode.FILE_NOT_FOUND);
-        }
-        if(!file.delete()) {
-            throw new BusinessLogicException(ExceptionCode.FILE_DELETE_FAILED);
-        }
-        boardImageRepository.deleteById(boardImage.getId());
+        return amazonS3.getUrl(boardImageDto.getFileUrl(), boardImageDto.getFileName()).toString();
     }
 
-    public List<Long> findByBoard(Long boardId) {
 
-        List<BoardImage> imageList = boardImageRepository.findAllByBoardId(boardId);
+    public void delete(BoardImage boardImage) {
 
-        return imageList.stream()
-                .map(BoardImage::getId)
-                .collect(Collectors.toList());
+//    File file = new File(boardImage.getFileUrl());
+//    if(!file.exists()) {
+//        throw new BusinessLogicException(ExceptionCode.FILE_NOT_FOUND);
+//    }
+//    if(!file.delete()) {
+//        throw new BusinessLogicException(ExceptionCode.FILE_DELETE_FAILED);
+//    }
+        boardImageRepository.deleteById(boardImage.getId());
     }
 
     public BoardImageDto findByImageId(Long imageId) {
@@ -112,20 +108,5 @@ public class BoardImageService {
                 new BusinessLogicException(FILE_NOT_FOUND));
 
         return BoardImageDto.toResponseDto(boardImage);
-    }
-
-    public String createStoreFileName(String originalFileName) {
-
-        String uuid = UUID.randomUUID().toString();
-        String ext = extractedExt(originalFileName);
-
-        return uuid + "." + ext;
-    }
-
-    public String extractedExt(String originalFileName) {
-
-        int pos = originalFileName.lastIndexOf(".");
-
-        return originalFileName.substring(pos + 1);
     }
 }

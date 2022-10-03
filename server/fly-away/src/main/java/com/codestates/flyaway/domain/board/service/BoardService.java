@@ -6,21 +6,19 @@ import com.codestates.flyaway.domain.boardimage.repository.BoardImageRepository;
 import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.category.service.CategoryService;
+import com.codestates.flyaway.domain.likes.Likes;
+import com.codestates.flyaway.domain.likes.LikesRepository;
 import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.domain.member.service.MemberService;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import com.codestates.flyaway.web.board.dto.BoardDto;
-import com.codestates.flyaway.web.board.dto.BoardImageDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +36,7 @@ public class BoardService {
     private final BoardImageService boardImageService;
     private final BoardImageRepository boardImageRepository;
     private final MemberService memberService;
+    private final LikesRepository likesRepository;
 
     @Transactional
     public BoardResponseDto create(List<MultipartFile> images, BoardDto.Create createDto) {
@@ -104,20 +103,36 @@ public class BoardService {
                 new BusinessLogicException(ARTICLE_NOT_FOUND));
     }
 
-    public Resource getImage(Long imageId) {
+    //TODO 이미지 url 잘 내려오는지 확인 후 삭제
+//    public Resource getImage(Long imageId) {
+//
+//        BoardImageDto boardImageDto = boardImageService.findByImageId(imageId);
+//        boardImageDto.getFileUrl();
+//        boardImageDto.getFileName();
+//
+//        String path = "file:" + boardImageService.getFullPath(boardImageDto.getFileName());
+//
+//        try {
+//            return new UrlResource(path);
+//        }catch (MalformedURLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-        BoardImageDto boardImageDto = boardImageService.findByImageId(imageId);
-        String path = "file:" + boardImageService.getFullPath(boardImageDto.getFileName());
+    //Todo 좋아요기능 아직 덜만들었음
+    @Transactional
+    public void doLike(Long memberId, Long boardId) {
 
-        try {
-            return new UrlResource(path);
-        }catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    //TODO 이미지 단건조회시 리스트 받아오는거 잘 사용하면 삭제
-    public List<Long> getImageId(Long boardId) {
-        return boardImageService.findByBoard(boardId);
+        Member member = memberService.findById(memberId);
+        Board board = findById(boardId);
+        board.addLikeCount();
+        likesRepository.save(Likes.builder()
+                .board(board)
+                .member(member)
+                .build());
+        likesRepository.findByBoardAndMember(board, member).ifPresent(id -> {
+            likesRepository.deleteAll();
+            board.dislike();
+        });
     }
 }

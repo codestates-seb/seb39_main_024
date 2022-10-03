@@ -3,6 +3,7 @@ package com.codestates.flyaway.domain.board.entity;
 import com.codestates.flyaway.domain.boardimage.entity.BoardImage;
 import com.codestates.flyaway.domain.category.entity.Category;
 import com.codestates.flyaway.domain.comment.entity.Comment;
+import com.codestates.flyaway.domain.likes.Likes;
 import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.global.audit.Auditable;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,9 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     private List<BoardImage> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Likes> likes = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -75,11 +79,23 @@ public class Board extends Auditable {
         }
     }
 
+    public void setLikes(Likes likes) {
+        this.likes.add(likes);
+    }
+
     public void addViewCount() {
         this.viewCount++;
     }
 
     public void addCommentCount() {
         this.commentCount++;
+    }
+
+    public void addLikeCount() {
+        this.likeCount++;
+    }
+
+    public void dislike() {
+        this.likeCount--;
     }
 }
