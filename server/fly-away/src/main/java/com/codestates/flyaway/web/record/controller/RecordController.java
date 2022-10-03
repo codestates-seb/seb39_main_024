@@ -18,7 +18,7 @@ public class RecordController {
 
     @ApiOperation(value = "운동 시간 기록", notes = "운동영상 시청 시간을 회원의 운동 기록에 반영")
     @ResponseStatus(value = CREATED)
-    @PostMapping("/{memberId}")      // todo : memberController에서 처리하는 게 맞는지 고민
+    @PostMapping("/{memberId}")
     public InsertResponse insertRecord(@PathVariable long memberId,
                                        @Validated @RequestBody InsertRequest recordDto) {
         return recordService.insertRecord(memberId, recordDto);

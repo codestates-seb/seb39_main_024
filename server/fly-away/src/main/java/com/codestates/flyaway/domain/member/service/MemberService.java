@@ -9,13 +9,10 @@ import com.codestates.flyaway.domain.record.repository.RecordRepository;
 import com.codestates.flyaway.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.MalformedURLException;
-import java.util.Optional;
+import java.io.IOException;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
@@ -54,14 +51,41 @@ public class MemberService {
      */
     public UpdateResponse update(UpdateRequest updateRequest) {
 
+        Member member = findById(updateRequest.getMemberId());
+        saveImage(updateRequest, member);
+
         String name = updateRequest.getName();
         String password = updateRequest.getPassword();
-
-        Member member = findById(updateRequest.getMemberId());
         member.update(name, password);
 
-        saveImage(updateRequest, member);
         return toUpdateResponse(member);
+    }
+
+    /**
+     * 이미지 저장 메서드
+     */
+    private void saveImage(UpdateRequest updateRequest, Member member) {
+
+        if (updateRequest.getImage() == null) {
+            return;
+        }
+
+        try {
+            MemberImage image = memberImageService.upload(updateRequest.getImage());
+            image.setMember(member);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 프로필 이미지
+     * @return 이미지 파일
+     */
+    @Transactional(readOnly = true)
+    public String getImageUrl(long memberId) {
+        Member member = findById(memberId);
+        return memberImageService.getImageUrl(member);
     }
 
     /**
@@ -110,40 +134,73 @@ public class MemberService {
             throw new BusinessLogicException(EMAIL_ALREADY_EXISTS);
         }
     }
-
-    /**
-     * 이미지 저장 메서드
-     */
-    private void saveImage(UpdateRequest updateRequest, Member member) {
-
-        if (updateRequest.getImage() == null) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
-            return;
-        }
-        Optional.ofNullable(member.getMemberImage())
-                .ifPresent(memberImageService::delete);
-
-        MemberImage memberImage = memberImageService.save(updateRequest.getImage());
-        memberImage.setMember(member);
-    }
-
-    /**
-     * 프로필 이미지 V1
-     * @return 이미지 경로
-     */
-    @Transactional(readOnly = true)
-    public Resource getImage(long memberId) {
-
-        Member member = findById(memberId);
-        MemberImage image = Optional.ofNullable(member.getMemberImage()).
-                orElseThrow(() -> new BusinessLogicException(IMAGE_NOT_FOUND));
-
-        String path = "file:" + memberImageService.getFullPath(image.getFileName());
-
-        try {
-            return new UrlResource(path);
-        } catch (MalformedURLException e) {
-            log.info("exception = {}", e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 }
+
+//    /**
+//     * 회원 정보 수정
+//     *
+//     * @return 수정 완료된 회원의 id, name, email, modifiedAt
+//     */
+//    public UpdateResponse update(UpdateRequest updateRequest) {
+//
+//        String name = updateRequest.getName();
+//        String password = updateRequest.getPassword();
+//
+//        Member member = findById(updateRequest.getMemberId());
+//        member.update(name, password);
+//
+//        saveImage(updateRequest, member);
+//        return toUpdateResponse(member);
+//    }
+//    /**
+//     * 이미지 저장 메서드
+//     */
+//    private void saveImage(UpdateRequest updateRequest, Member member) {
+//
+//        //기존 이미지가 있을 경우 삭제
+//        Optional.ofNullable(member.getMemberImage())
+//                .ifPresent(memberImageService::delete);
+//
+//        if (updateRequest.getImage() == null) { //todo : 이미지가 첨부된 유스 케이스 처리 분리 고려
+//            return;
+//        }
+//
+//        MemberImage memberImage = memberImageService.save(updateRequest.getImage());
+//        memberImage.setMember(member);
+//    }
+//
+//    /**
+//     * 프로필 이미지
+//     * @return 이미지 파일
+//     */
+//    @Transactional(readOnly = true)
+//    public Resource getImage(long memberId) {
+//
+//        Member member = findById(memberId);
+//        MemberImage image = Optional.ofNullable(member.getMemberImage()).
+//                orElseGet(memberImageService::getDefaultImage);
+//
+//        String path = getImagePath(image);
+//
+//        try {
+//            return new UrlResource(path);
+//        } catch (MalformedURLException e) {
+//            log.info("exception = {}", e.getMessage());
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    /**
+//     * 이미지 경로 조회 메서드
+//     * @return image path
+//     */
+//    private String getImagePath(MemberImage image) {
+//
+//        //이미지가 없는 경우 기본 이미지 경로로 가서 조회
+//        if (image.getFileName().equals("default.png")) {
+//            return "file:" + memberImageService.getDefaultPath(image.getFileName());
+//        } else {
+//            return "file:" + memberImageService.getFullPath(image.getFileName());
+//        }
+//    }
+//}

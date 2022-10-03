@@ -31,7 +31,7 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = LAZY, cascade = ALL)
+    @OneToOne(fetch = LAZY, cascade = ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private MemberImage memberImage;
 
