@@ -10,6 +10,8 @@ export default function Comment({ items, postRead }) {
 
   const date = items.createdAt.split('T');
 
+  const userComment = memberId === items.memberId;
+
   // 수정 여부 핸들러
   const isEditHandler = () => {
     setIsEdit(true);
@@ -83,7 +85,7 @@ export default function Comment({ items, postRead }) {
           <span className="mr-2">&#124;</span>
           <span className="ml-1">{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>
-        {memberId && (
+        {userComment && (
           <>
             {isEdit && (
               <div>
