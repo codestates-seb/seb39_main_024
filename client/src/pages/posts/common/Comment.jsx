@@ -10,7 +10,7 @@ export default function Comment({ items, postRead }) {
 
   const date = items.createdAt.split('T');
 
-  const userComment = memberId === items.memberId;
+  const userComment = Number(memberId) === items.memberId;
 
   // 수정 여부 핸들러
   const isEditHandler = () => {
