@@ -16,7 +16,7 @@
 
 - Tailwind CSS
 - React
-- Typescript
+- Javascript
 - Axios
 - Recoil
 - ESlint
