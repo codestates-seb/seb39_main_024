@@ -2,7 +2,7 @@ import axios from 'axios';
 // import https from 'https';
 
 const instance = axios.create({
-  baseURL: `http://211.41.205.19:8080`,
+  baseURL: `https://flyaway.main024.shop/`,
 });
 
 export default instance;

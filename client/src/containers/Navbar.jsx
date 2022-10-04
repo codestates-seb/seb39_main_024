@@ -20,7 +20,7 @@ export default function Navbar({ path }) {
 
   return (
     <nav
-      className={`flex fixed mt-[64px] md:mt-[80px] h-10 md:h-12 sm:text-xs bg-white border-y-[1px]`}
+      className={`flex fixed mt-[64px] md:mt-[80px] h-10 md:h-12 sm:text-xs bg-white ${'border-y-[1px]'}`}
     >
       {path.includes('/videos') && (
         <div className="flex flex-row items-center justify-between w-screen">

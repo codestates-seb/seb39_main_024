@@ -1,8 +1,9 @@
-import { useRecoilValue } from 'recoil';
 import { selectedVideoState } from '../../recoil/atoms/videoState';
+import { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { memberIdState } from '../../recoil/atoms/memberIdState';
 import YouTube from 'react-youtube';
 import instance from '../../service/request';
-import { useEffect } from 'react';
 
 // { video, video: { snippet } }
 export default function VideoDetail() {
@@ -20,11 +21,12 @@ export default function VideoDetail() {
     /\B(?=(\d{3})+(?!\d))/g,
     ','
   );
+  const memberId = useRecoilValue(memberIdState);
+  // console.log(memberId);
 
   let startDate;
   let stopDate;
   let sec;
-  let memberId = 7;
 
   function onPlay() {
     startDate = new Date();
