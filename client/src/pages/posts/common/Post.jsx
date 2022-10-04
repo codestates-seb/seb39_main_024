@@ -14,15 +14,17 @@ export default function Post({ items }) {
   };
 
   return (
-    <section className="flex flex-col py-5 px-2.5">
+    <section
+      className="flex flex-col p-2.5 m-1.5 border-solid border border-slate-500 hover:cursor-pointer hover:bg-slate-200/30"
+      onClick={postReadHandler}
+      aria-hidden="true"
+    >
       <img
-        className="text-center border-solid border border-zinc-300 w-52 h-52"
+        className="border-solid border border-zinc-300 w-full h-full md:h-350"
         src={`http://211.41.205.19:8080/board/image/${items.imageId[0]}`}
         alt="img"
       />
-      <button className="text-start" onClick={postReadHandler}>
-        {items.title}
-      </button>
+      <p className="text-start text-2xl">{items.title}</p>
       <div className="flex justify-between">
         <span>👤 작성자</span>
         <button>❤️ {Math.floor(Math.random() * 100) + 1}</button>

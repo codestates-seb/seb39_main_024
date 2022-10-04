@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
-import { loginState } from '../../recoil/atoms/loginState';
+import { isLoginState } from '../../recoil/atoms/isLoginState';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 
@@ -14,7 +14,7 @@ export default function Login() {
   });
 
   const setMemberId = useSetRecoilState(memberIdState);
-  const setIsLogin = useSetRecoilState(loginState);
+  const setIsLogin = useSetRecoilState(isLoginState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -53,7 +53,7 @@ export default function Login() {
         setMemberId(res.headers.memberid);
         console.log(res);
         alert('로그인 되었습니다.');
-        // navigate('/videos');
+        navigate('/');
       })
       .catch((e) => {
         console.log('err', e);

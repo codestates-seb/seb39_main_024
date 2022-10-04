@@ -11,7 +11,7 @@ export default function Record() {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center items-start bg-pink">
+      <div className="grid grid-rows-1 grid-cols-1 md:grid-rows-2 md:grid-cols-2 mt-10 md:mt-14">
         {posts.map((post) => (
           <Post key={post.boardId} items={post} />
         ))}
