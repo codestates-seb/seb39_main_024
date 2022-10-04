@@ -6,6 +6,7 @@ import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { commentReadState } from '../../../recoil/selectors/commentReadState';
 import { isLoginState } from '../../../recoil/atoms/isLoginState';
+import { imgReadState } from '../../../recoil/selectors/imgReadState';
 
 const Comment = lazy(() => import('./Comment'));
 
@@ -15,10 +16,11 @@ export default function Read() {
   const postRead = useRecoilValue(postReadState);
   const commentRead = useRecoilValue(commentReadState);
 
+  const [imgPage, setImgPage] = useState(0);
+  const imgUrl = useRecoilValue(imgReadState(postRead.imageId[imgPage]));
+
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
-
-  const [imgPage, setImgPage] = useState(0);
 
   const navigation = useNavigate();
 
@@ -92,7 +94,7 @@ export default function Read() {
   const isValid = Number(memberId) === postRead.memberId;
 
   return (
-    <main className="flex flex-col justify-center py-5 px-5 mt-11">
+    <main className="flex flex-col justify-center py-5 px-5 mb-10">
       <section className="flex justify-between">
         <p className="text-start text-3xl">{postRead.title}</p>
         {isValid && (
@@ -120,8 +122,8 @@ export default function Read() {
           &#8249;
         </button>
         <img
-          className="text-center border-solid border border-zinc-300 w-ful"
-          src={`http://211.41.205.19:8080/board/image/${postRead.imageId[imgPage]}`}
+          className="text-center border-solid border border-zinc-300 rounded-sm w-full"
+          src={imgUrl}
           alt="img"
         />
         <button
@@ -134,14 +136,14 @@ export default function Read() {
       </section>
       <section className="flex justify-between bg-white">
         <div>
-          <span className="mr-4 ml-1">👤 작성자</span>
+          <span className="mr-4">👤 작성자</span>
           <span>{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>
         <button className="mr-1">
           ❤️ {Math.floor(Math.random() * 100) + 1}
         </button>
       </section>
-      <p className="sm:text-2xl text-3xl mt-5">{postRead.content}</p>
+      <p className="sm:text-2xl text-3xl my-5">{postRead.content}</p>
       <span className="my-3">댓글 {commentRead.length} 개</span>
       {isLogin && (
         <input

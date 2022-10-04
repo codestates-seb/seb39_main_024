@@ -7,6 +7,7 @@ import Category from './Category';
 
 export default function Create() {
   const memberId = useRecoilValue(memberIdState);
+  console.log(memberId);
 
   const [category, setCategory] = useState(0);
 

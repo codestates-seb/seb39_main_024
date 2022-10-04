@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
-import instance from '../../service/request';
 import Calendar from './Calendar';
 
 export default function Summary() {
