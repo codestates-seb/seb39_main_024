@@ -1,5 +1,5 @@
-import React from 'react';
+import Videos from './Videos';
 
 export default function Training() {
-  return <div>Training</div>;
+  return <Videos query={'홈트레이닝'} />;
 }

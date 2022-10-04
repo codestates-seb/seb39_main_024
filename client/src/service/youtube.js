@@ -7,10 +7,12 @@ class Youtube {
     const response = await this.youtube.get('search', {
       params: {
         part: 'snippet',
-        maxResults: 5,
+        maxResults: 10,
         type: 'video',
-        q: '홈트레이닝',
+        q: '운동',
         videoDefinition: 'high',
+        order: 'viewCount',
+        regionCode: 'KR',
       },
     });
     return response.data.items.map((item) => ({
@@ -23,16 +25,31 @@ class Youtube {
     const response = await this.youtube.get('search', {
       params: {
         part: 'snippet',
-        maxResults: 5,
+        maxResults: 6,
         type: 'video',
         q: query,
-        videoDefinition: 'high',
+        order: 'relevance',
+        regionCode: 'KR',
+        fields:
+          'items(etag,id,snippet(channelTitle,thumbnails(high,medium),title))',
       },
     });
     return response.data.items.map((item) => ({
       ...item,
       id: item.id.videoId,
     }));
+  }
+
+  async videoData(id) {
+    const response = await this.youtube.get('videos', {
+      params: {
+        id: id,
+        part: 'snippet, statistics',
+        fields:
+          'items(id,snippet(publishedAt,title,description,channelTitle),statistics(likeCount,viewCount))',
+      },
+    });
+    return response.data.items;
   }
 }
 
