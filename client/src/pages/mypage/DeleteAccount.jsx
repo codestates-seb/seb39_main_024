@@ -2,7 +2,6 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import instance from '../../service/request';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
-import MyPage from './MyPage';
 
 export default function DeleteAccount() {
   const memberId = useRecoilValue(memberIdState);
@@ -17,7 +16,7 @@ export default function DeleteAccount() {
     }
   };
   return (
-    <MyPage>
+    <>
       <p className="text-center mb-10 text-xl sm:my-4">회원탈퇴</p>
       <div className="flex flex-col items-center bg-white m-3">
         <div className="flex flex-col items-center my-10">
@@ -32,6 +31,6 @@ export default function DeleteAccount() {
           탈퇴하기
         </button>
       </div>
-    </MyPage>
+    </>
   );
 }

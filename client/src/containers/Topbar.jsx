@@ -30,8 +30,8 @@ export default function TopBar({ path }) {
   return (
     <>
       <header
-        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full fixed ${
-          path.includes('/mypage') ? 'bg-green' : 'bg-pink'
+        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full ${
+          path.includes('/mypage') ? 'bg-green' : 'fixed bg-pink'
         }`}
       >
         <div className="flex flex-row items-center">
@@ -52,27 +52,32 @@ export default function TopBar({ path }) {
           <Button className="sm:hidden" link="/videos" str="운동하기" />
           <Button className="sm:hidden" link="/posts" str="공유하기" />
         </div>
-        {!isLogin && (
-          <div className="flex flex-row items-center">
-            <Button link="/login" str="로그인" />
-            <Button link="/join" str="회원가입" />
-          </div>
-        )}
-        {isLogin && (
-          <div className="flex flex-row items-center">
-            <img
-              src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/30/000000/external-user-user-tanah-basah-glyph-tanah-basah-4.png"
-              alt="user"
-            />
-            <img
-              src="https://img.icons8.com/fluency-systems-filled/30/000000/logout-rounded.png"
-              alt="logout"
-              className="cursor-pointer"
-              onClick={logoutHandler}
-              aria-hidden="true"
-            />
-          </div>
-        )}
+        <div className="flex flex-row items-center">
+          {!isLogin && (
+            <>
+              <Button link="/login" str="로그인" />
+              <Button link="/join" str="회원가입" />
+            </>
+          )}
+          {isLogin && (
+            <>
+              <Link to="/mypage">
+                <img
+                  className="m-2"
+                  src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/30/000000/external-user-user-tanah-basah-glyph-tanah-basah-4.png"
+                  alt="user"
+                />
+              </Link>
+              <img
+                className="m-2 cursor-pointer"
+                src="https://img.icons8.com/fluency-systems-filled/30/000000/logout-rounded.png"
+                alt="logout"
+                onClick={logoutHandler}
+                aria-hidden="true"
+              />
+            </>
+          )}
+        </div>
       </header>
       {modalOpen && <Modal className="md:hidden" onMenu={menuHandler} />}
     </>

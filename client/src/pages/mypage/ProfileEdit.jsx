@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
-
 import { memberIdState } from '../../recoil/atoms/memberIdState';
-import MyPage from './MyPage';
 
 export default function ProfileEdit() {
   const [imgFile, setImgFile] = useState({
@@ -69,7 +67,7 @@ export default function ProfileEdit() {
     }
   };
   return (
-    <MyPage>
+    <>
       <form
         className="flex flex-col items-center"
         method="post"
@@ -120,6 +118,6 @@ export default function ProfileEdit() {
           적용
         </button>
       </div>
-    </MyPage>
+    </>
   );
 }
