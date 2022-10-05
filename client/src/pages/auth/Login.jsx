@@ -45,6 +45,7 @@ export default function Login() {
         }
       )
       .then((res) => {
+        console.log(res.headers.memberId);
         setInputValue({
           email: '',
           password: '',

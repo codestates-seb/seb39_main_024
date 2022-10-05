@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "https": "^1.0.0",
+    "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-calendar": "^3.9.0",

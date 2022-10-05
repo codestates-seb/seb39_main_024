@@ -7,7 +7,7 @@ module.exports = {
         pink: '#FFDADA',
         pale_pink: '#FDEFEF',
         green: '#A8F1DE',
-        gray: '#696969',
+        gray: '#F4F4F4',
         deep_green: '#02CD9A',
       },
       width: {

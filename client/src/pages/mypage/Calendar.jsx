@@ -1,31 +1,44 @@
+import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
+import moment from 'moment';
 import CalendarApp from 'react-calendar';
 import './Calendar.css';
 
 export default function Calendar() {
-  // const [value, onChange] = useState(new Date());
+  const records = useRecoilValue(getWorkoutTimeState).records;
+  console.log(records);
+
   return (
     <>
       <CalendarApp
-        // onChange={onChange}
-        // value={value}
         showNeighboringMonth={false}
-        // tileContent={({ date, view }) => {
-        //   // 날짜 타일에 컨텐츠 추가하기 (html 태그)
-        //   // 추가할 html 태그를 변수 초기화
-        //   let html = [];
-        //   // 현재 날짜가 post 작성한 날짜 배열(mark)에 있다면, dot div 추가
-        //   if (mark.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
-        //     html.push(<div className="dot"></div>);
-        //   }
-        //   // 다른 조건을 주어서 html.push 에 추가적인 html 태그를 적용할 수 있음.
-        //   return (
-        //     <>
-        //       <div className="flex justify-center items-center absoluteDiv">
-        //         {html}
-        //       </div>
-        //     </>
-        //   );
-        // }}
+        formatDay={(locale, date) => moment(date).format('DD')}
+        tileContent={({ date }) =>
+          records.map((el) =>
+            el.date === moment(date).format('YYYY-MM-DD') ? (
+              <div
+                className={
+                  el.record < 900
+                    ? 'record record__mint'
+                    : el.record < 1800
+                    ? 'record record__light-green'
+                    : el.record < 3600
+                    ? 'record record__green'
+                    : 'record record__deep-green'
+                }
+              >
+                {el.record < 60
+                  ? `${el.record}초`
+                  : el.record >= 60
+                  ? `${Math.floor(el.record / 60)}분`
+                  : ''}
+              </div>
+            ) : (
+              ''
+            )
+          )
+        }
       ></CalendarApp>
     </>
   );
