@@ -31,8 +31,7 @@ public class LoginService {
         String password = loginRequest.getPassword();
 
         //이메일 확인
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessLogicException(EMAIL_NOT_EXISTS));
+        Member member = findByEmail(email);
 
         //비밀번호 확인
         if (encode(password).equals(member.getPassword())) {
@@ -60,5 +59,13 @@ public class LoginService {
 
         member.setLogout();
         log.info("로그아웃 성공 - {}", member.getEmail());
+    }
+
+    public Member findByEmail(String email) {
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(EMAIL_NOT_EXISTS));
+
+        return member;
     }
 }
