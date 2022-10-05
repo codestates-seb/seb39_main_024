@@ -74,47 +74,51 @@ export default function ProfileEdit() {
         encType="multipart/form-data"
       >
         {imgFile.url.trim().length === 0 && (
-          <p className="text-center border-solid border border-zinc-300 w-44 h-44 m-2 bg-white">
+          <p className="text-center border-solid border border-zinc-300 w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white">
             No Image
           </p>
         )}
         {imgFile.url.trim().length > 0 && (
           <img
-            className="text-center border-solid border border-zinc-300 w-44 h-44 m-2 bg-white"
+            className="text-center border-solid border border-zinc-300 rounded w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white"
             src={imgFile.url}
             alt={`${imgFile.url}`}
           />
         )}
-
         <label
-          className="bg-gray p-1.5 rounded"
+          className="bg-gray p-2 my-5 rounded text-xl"
           htmlFor="img"
           onChange={imgAddHandler}
         >
           사진 업로드
           <input className="hidden" id="img" type="file" accept="image/*" />
         </label>
-        <p className="text-center m-2.5">username</p>
         <input
-          className="p-0.5 mb-2"
+          className="p-1.5 mb-2 w-80 sm:w-64 text-xl rounded"
           placeholder="이름 수정"
           name="name"
           value={editValue.name}
           onChange={nameValueHandler}
         />
         <input
-          className="p-0.5"
+          className="p-1.5 w-80 sm:w-64 text-xl rounded"
           placeholder="비밀번호 수정"
           name="password"
           value={editValue.password}
           onChange={nameValueHandler}
         />
       </form>
-      <div className="flex flex-col items-center mt-6">
-        <button className="bg-gray w-44 mb-2" onClick={cancelHandler}>
+      <div className="flex flex-col items-center mt-10">
+        <button
+          className="bg-gray w-80 sm:w-64 p-1 mb-2 text-2xl rounded"
+          onClick={cancelHandler}
+        >
           취소
         </button>
-        <button className="bg-green w-44 mb-2 sm:mb-6" onClick={submitHandler}>
+        <button
+          className="bg-green w-80 sm:w-64 p-1 mb-2 sm:mb-6 text-2xl rounded"
+          onClick={submitHandler}
+        >
           적용
         </button>
       </div>

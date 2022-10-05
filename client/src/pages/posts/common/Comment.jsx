@@ -10,6 +10,8 @@ export default function Comment({ items, postRead }) {
 
   const date = items.createdAt.split('T');
 
+  const userComment = Number(memberId) === items.memberId;
+
   // 수정 여부 핸들러
   const isEditHandler = () => {
     setIsEdit(true);
@@ -77,18 +79,18 @@ export default function Comment({ items, postRead }) {
 
   return (
     <section className="mt-2">
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-2">
         <div>
-          <span className="mr-2 ml-1">👤 작성자</span>
+          <span className="mr-2">👤 작성자</span>
           <span className="mr-2">&#124;</span>
           <span className="ml-1">{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>
-        {memberId && (
+        {userComment && (
           <>
             {isEdit && (
               <div>
                 <button onClick={cancelHandler}>취소</button>
-                <button className="mr-2" onClick={completeHandler}>
+                <button className="ml-2" onClick={completeHandler}>
                   완료
                 </button>
               </div>
@@ -106,10 +108,14 @@ export default function Comment({ items, postRead }) {
       </div>
       {isEdit && (
         <>
-          <input value={editValue} onChange={editValueHandler} />
+          <input
+            className="w-full border-solid border border-slate-500 rounded-md p-2"
+            value={editValue}
+            onChange={editValueHandler}
+          />
         </>
       )}
-      {!isEdit && <p className="ml-1 pt-2">{items.content}</p>}
+      {!isEdit && <p className="py-1 ml-1">{items.content}</p>}
     </section>
   );
 }
