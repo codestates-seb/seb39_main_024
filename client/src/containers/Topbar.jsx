@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
 import { isLoginState } from '../recoil/atoms/isLoginState';
+import { memberImgState } from '../recoil/selectors/memberImgState';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
@@ -10,6 +11,7 @@ import Modal from '../components/Modal';
 
 export default function TopBar({ path }) {
   const isLogin = useRecoilValue(isLoginState);
+  const memberImg = useRecoilValue(memberImgState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
@@ -63,8 +65,8 @@ export default function TopBar({ path }) {
             <>
               <Link to="/mypage">
                 <img
-                  className="m-2"
-                  src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/30/000000/external-user-user-tanah-basah-glyph-tanah-basah-4.png"
+                  className="m-2 w-[30px] h-[30px] rounded-full"
+                  src={memberImg}
                   alt="user"
                 />
               </Link>
