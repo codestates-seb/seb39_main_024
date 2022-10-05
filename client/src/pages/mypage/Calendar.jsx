@@ -8,6 +8,9 @@ import './Calendar.css';
 export default function Calendar() {
   const records = useRecoilValue(getWorkoutTimeState).records;
   console.log(records);
+  // if (records.length === 0) {
+
+  // }
 
   return (
     <>
