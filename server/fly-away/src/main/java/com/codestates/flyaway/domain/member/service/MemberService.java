@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
+import static com.codestates.flyaway.domain.member.util.MemberUtil.*;
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
 import static com.codestates.flyaway.web.member.dto.MemberDto.JoinResponse.toJoinResponse;
@@ -38,6 +39,7 @@ public class MemberService {
     public JoinResponse join(JoinRequest joinRequest) {
 
         verifyEmail(joinRequest.getEmail());
+        joinRequest.setPassword(encode(joinRequest.getPassword()));
 
         Member member = joinRequest.toEntity();
         Member savedMember = memberRepository.save(member);
