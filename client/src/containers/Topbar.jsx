@@ -7,6 +7,7 @@ import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
 import Modal from '../components/Modal';
+import logoutIcon from '../images/logout.png';
 
 export default function TopBar({ path }) {
   const isLogin = useRecoilValue(isLoginState);
@@ -70,7 +71,7 @@ export default function TopBar({ path }) {
               </Link>
               <img
                 className="m-2 cursor-pointer"
-                src="https://img.icons8.com/fluency-systems-filled/30/000000/logout-rounded.png"
+                src={logoutIcon}
                 alt="logout"
                 onClick={logoutHandler}
                 aria-hidden="true"
