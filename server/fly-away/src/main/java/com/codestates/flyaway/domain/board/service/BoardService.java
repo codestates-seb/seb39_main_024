@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.board.dto.BoardDto.*;
@@ -119,20 +120,21 @@ public class BoardService {
 //        }
 //    }
 
-    //Todo 좋아요기능 아직 덜만들었음
     @Transactional
     public void doLike(Long memberId, Long boardId) {
 
         Member member = memberService.findById(memberId);
         Board board = findById(boardId);
-        board.addLikeCount();
+        Optional<Likes> savedLikes = likesRepository.findByBoardAndMember(board, member);
+        if(savedLikes.isPresent()) {
+            likesRepository.findByBoardAndMember(board, member).ifPresent(id -> likesRepository.deleteAll());
+            board.dislike();
+        }else {
+            board.addLikeCount();
+        }
         likesRepository.save(Likes.builder()
                 .board(board)
                 .member(member)
                 .build());
-        likesRepository.findByBoardAndMember(board, member).ifPresent(id -> {
-            likesRepository.deleteAll();
-            board.dislike();
-        });
     }
 }
