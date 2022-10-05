@@ -5,7 +5,6 @@ import { memberIdState } from '../../recoil/atoms/memberIdState';
 import YouTube from 'react-youtube';
 import instance from '../../service/request';
 
-// { video, video: { snippet } }
 export default function VideoDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -17,6 +16,9 @@ export default function VideoDetail() {
     ','
   );
   const date = video.snippet.publishedAt;
+  const YYYY = date.slice(0, 4);
+  const MM = date.slice(5, 7);
+  const DD = date.slice(8, 10);
   const likeCount = video.statistics.likeCount.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     ','
@@ -71,7 +73,7 @@ export default function VideoDetail() {
       <div id="videoInfo">
         <span>조회수 {viewCount}회</span>﹒
         <span>
-          업로드 {date.slice(0, 4)}.{date.slice(5, 7)}.{date.slice(8, 10)}.
+          업로드 {YYYY}.{MM}.{DD}.
         </span>
         ﹒<span>♥️ {likeCount}</span>
       </div>
