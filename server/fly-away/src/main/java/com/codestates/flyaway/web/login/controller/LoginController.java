@@ -1,5 +1,6 @@
 package com.codestates.flyaway.web.login.controller;
 
+import com.codestates.flyaway.domain.member.entity.Member;
 import com.codestates.flyaway.web.login.service.LoginService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,9 @@ public class LoginController {
     public LoginResponse login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) {
 
         String token = loginService.login(loginRequest);
+        Member member = loginService.findByEmail(loginRequest.getEmail());
 
+        response.addHeader("memberId", String.valueOf(member.getId()));
         response.addHeader(HEADER, PREFIX + token);
         return new LoginResponse("로그인 성공");
     }

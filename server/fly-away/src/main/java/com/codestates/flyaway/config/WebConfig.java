@@ -16,19 +16,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                .allowCredentials(true)
                 .allowedOriginPatterns("*")
-                .allowedMethods("POST", "PATCH", "GET", "DELETE", "OPTIONS")
-                .exposedHeaders("Set-Cookie")
-                .exposedHeaders("Cookie")
-                .exposedHeaders("memberId")
-                .maxAge(3600)
-                .allowCredentials(true);
+                .allowedMethods("*")
+                .exposedHeaders("memberId", "Authorization")
+                .maxAge(3600);
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/record/**", "/board/**", "/members/**", "/logout")  // 미인증 사용자의 회원,게시판 기능을 모두 막고, 그 중 회원가입, 게시글 전체 목록만 허용
-                .excludePathPatterns("/members/join", "/board/all");
+                .addPathPatterns("/record/**", "/members/**", "/logout")  // 미인증 사용자의 회원,게시판 기능을 모두 막고, 그 중 회원가입, 게시글 전체 목록만 허용
+                .excludePathPatterns("/members/join");
     }
 }
