@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
 import { isLoginState } from '../recoil/atoms/isLoginState';
-import { memberImgState } from '../recoil/selectors/memberImgState';
+import ProfileIcon from '../components/ProfileIcon';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
 import Button from '../components/Button';
@@ -12,7 +12,6 @@ import logoutIcon from '../images/logout.png';
 
 export default function TopBar({ path }) {
   const isLogin = useRecoilValue(isLoginState);
-  const memberImg = useRecoilValue(memberImgState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
@@ -64,13 +63,7 @@ export default function TopBar({ path }) {
           )}
           {isLogin && (
             <>
-              <Link to="/mypage">
-                <img
-                  className="m-2 w-[30px] h-[30px] rounded-full"
-                  src={memberImg}
-                  alt="user"
-                />
-              </Link>
+              <ProfileIcon />
               <img
                 className="m-2 cursor-pointer"
                 src={logoutIcon}
