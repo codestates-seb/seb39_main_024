@@ -1,9 +1,9 @@
 import { useSetRecoilState } from 'recoil';
-import { loginState } from '../../recoil/atoms/loginState';
+import { isLoginState } from '../../recoil/atoms/isLoginState';
 
 export default function Logout() {
   function onClick() {
-    const setIsLogin = useSetRecoilState(loginState);
+    const setIsLogin = useSetRecoilState(isLoginState);
     setIsLogin(false);
   }
   return <button onClick={onClick}>Logout</button>;
