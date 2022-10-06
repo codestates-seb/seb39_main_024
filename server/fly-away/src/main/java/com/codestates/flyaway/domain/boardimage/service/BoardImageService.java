@@ -56,6 +56,7 @@ public class BoardImageService {
         List<BoardImage> saveFileResult = new ArrayList<>();
         if(multipartFiles == null) {
             BoardImage boardImage = defaultImage;
+            saveFileResult.add(boardImage);
             boardImageRepository.save(boardImage);
             boardImage.setBoard(board);
         }else {

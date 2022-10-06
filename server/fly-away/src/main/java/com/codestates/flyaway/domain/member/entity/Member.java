@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.codestates.flyaway.domain.member.util.MemberUtil.*;
 import static javax.persistence.CascadeType.*;
@@ -46,7 +44,7 @@ public class Member extends Auditable {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
-    private List<Likes> likes = new ArrayList<>();
+    private Set<Likes> likes = new HashSet<>();
 
     private String name;
     private String email;

@@ -63,6 +63,7 @@ public class BoardDto {
     public static class BoardResponseDto {
 
         private Long memberId;
+        private String memberName;
         private Long categoryId;
         private Long boardId;
         private String title;
@@ -76,6 +77,7 @@ public class BoardDto {
 
             return new BoardResponseDto(
                     board.getMember().getId(),
+                    board.getMember().getName(),
                     board.getCategory().getId(),
                     board.getId(),
                     board.getTitle(),
@@ -92,6 +94,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class MultiBoardDto {
 
+        private String memberName;
         private Long boardId;
         private String title;
         private String content;
@@ -103,6 +106,7 @@ public class BoardDto {
 
             return boards.stream()
                     .map(board -> new MultiBoardDto(
+                            board.getMember().getName(),
                             board.getId(),
                             board.getTitle(),
                             board.getContent(),

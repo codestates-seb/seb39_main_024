@@ -77,14 +77,20 @@ public class BoardService {
         return toResponseDto(board);
     }
 
-    public Page<Board> readAll(Pageable pageable) {
+    public List<MultiBoardDto> readAll(Pageable pageable) {
 
-        return boardRepository.findAll(pageable);
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        List<Board> board = boardPage.getContent();
+
+        return MultiBoardDto.toResponsesDto(board);
     }
 
-    public Page<Board> readByCategory(Long categoryId, Pageable pageable) {
+    public List<MultiBoardDto> readByCategory(Long categoryId, Pageable pageable) {
 
-        return boardRepository.findAllByCategoryId(categoryId, pageable);
+        Page<Board> boardCategory = boardRepository.findAllByCategoryId(categoryId, pageable);
+        List<Board> categories = boardCategory.getContent();
+
+        return MultiBoardDto.toResponsesDto(categories);
     }
 
     @Transactional
@@ -104,24 +110,8 @@ public class BoardService {
                 new BusinessLogicException(ARTICLE_NOT_FOUND));
     }
 
-    //TODO 이미지 url 잘 내려오는지 확인 후 삭제
-//    public Resource getImage(Long imageId) {
-//
-//        BoardImageDto boardImageDto = boardImageService.findByImageId(imageId);
-//        boardImageDto.getFileUrl();
-//        boardImageDto.getFileName();
-//
-//        String path = "file:" + boardImageService.getFullPath(boardImageDto.getFileName());
-//
-//        try {
-//            return new UrlResource(path);
-//        }catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     @Transactional
-    public void doLike(Long memberId, Long boardId) {
+    public void doLike(Long boardId, Long memberId) {
 
         Member member = memberService.findById(memberId);
         Board board = findById(boardId);
@@ -131,10 +121,10 @@ public class BoardService {
             board.dislike();
         }else {
             board.addLikeCount();
+            likesRepository.save(Likes.builder()
+                    .board(board)
+                    .member(member)
+                    .build());
         }
-        likesRepository.save(Likes.builder()
-                .board(board)
-                .member(member)
-                .build());
     }
 }

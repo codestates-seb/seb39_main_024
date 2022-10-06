@@ -1,14 +1,10 @@
 package com.codestates.flyaway.web.board;
 
-import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.board.service.BoardService;
 import com.codestates.flyaway.domain.boardimage.service.BoardImageService;
-import com.codestates.flyaway.global.dto.MultiResponseDto;
 import com.codestates.flyaway.web.board.dto.BoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -58,24 +54,16 @@ public class BoardController {
     }
 
     @GetMapping("/all")
-    public MultiResponseDto readAll(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+    public List<BoardDto.MultiBoardDto> readAll(@PageableDefault(sort = "id", direction = Sort.Direction.DESC)
                                       Pageable pageable) {
 
-        Page<Board> boardPage = boardService.readAll(pageable);
-        List<Board> board = boardPage.getContent();
-        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.toResponsesDto(board);
-
-        return new MultiResponseDto<>(responses, boardPage);
+        return boardService.readAll(pageable);
     }
 
     @GetMapping
-    public MultiResponseDto readByCategory(@RequestParam Long categoryId, Pageable pageable) {
+    public List<BoardDto.MultiBoardDto> readByCategory(@RequestParam Long categoryId, Pageable pageable) {
 
-        Page<Board> categoryPage = boardService.readByCategory(categoryId, pageable);
-        List<Board> boards = categoryPage.getContent();
-        List<BoardDto.MultiBoardDto> responses = BoardDto.MultiBoardDto.toResponsesDto(boards);
-
-        return new MultiResponseDto<>(responses, categoryPage);
+        return boardService.readByCategory(categoryId, pageable);
     }
 
     @DeleteMapping("/{boardId}")
@@ -98,6 +86,6 @@ public class BoardController {
     public void doLike(@PathVariable("boardId") Long boardId,
                        @RequestParam Long memberId) {
 
-        boardService.doLike(memberId, boardId);
+        boardService.doLike(boardId, memberId);
     }
 }
