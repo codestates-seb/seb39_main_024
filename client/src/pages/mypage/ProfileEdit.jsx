@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
+import { authorizationState } from '../../recoil/atoms/authorizationState';
 
 export default function ProfileEdit() {
   const [imgFile, setImgFile] = useState({
@@ -16,6 +17,7 @@ export default function ProfileEdit() {
   });
 
   const memberId = useRecoilValue(memberIdState);
+  const token = useRecoilValue(authorizationState);
 
   const navigation = useNavigate();
 
@@ -58,6 +60,7 @@ export default function ProfileEdit() {
       await instance.patch(`/members/${memberId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: token,
         },
       });
       alert('회원정보가 변경되었습니다 !');

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
 import moment from 'moment';
@@ -7,7 +7,6 @@ import './Calendar.css';
 
 export default function Calendar() {
   const records = useRecoilValue(getWorkoutTimeState).records;
-  console.log(records);
   // if (records.length === 0) {
 
   // }
