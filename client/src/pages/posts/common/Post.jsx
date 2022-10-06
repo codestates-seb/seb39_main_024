@@ -28,7 +28,7 @@ export default function Post({ items }) {
       />
       <p className="text-start text-2xl py-2">{items.title}</p>
       <div className="flex justify-between">
-        <span>👤 작성자</span>
+        <span>{items.memberName}</span>
         <button>❤️ {Math.floor(Math.random() * 100) + 1}</button>
       </div>
     </section>

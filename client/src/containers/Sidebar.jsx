@@ -1,10 +1,10 @@
 import { useRecoilValue } from 'recoil';
-import { memberInfoState } from '../recoil/selectors/memberInfoState';
+import { getMemberInfoState } from '../recoil/selectors/getMemberInfoState';
 import { memberImgState } from '../recoil/selectors/memberImgState';
 import Button from './components/Button';
 
 export default function Sidebar() {
-  const memberInfo = useRecoilValue(memberInfoState);
+  const memberInfo = useRecoilValue(getMemberInfoState);
   const memberImg = useRecoilValue(memberImgState);
   return (
     <aside className="flex flex-col justify-center items-center w-[300px]">

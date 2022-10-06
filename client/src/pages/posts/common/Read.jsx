@@ -136,7 +136,7 @@ export default function Read() {
       </section>
       <section className="flex justify-between bg-white">
         <div>
-          <span className="mr-4">👤 작성자</span>
+          <span className="mr-4">{postRead.memberName}</span>
           <span>{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>
         <button className="mr-1">

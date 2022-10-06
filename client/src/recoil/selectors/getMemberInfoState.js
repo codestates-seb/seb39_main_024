@@ -3,8 +3,8 @@ import instance from '../../service/request';
 import { memberIdState } from '../atoms/memberIdState';
 import { authorizationState } from '../atoms/authorizationState';
 
-export const memberInfoState = selector({
-  key: 'memberInfoState',
+export const getMemberInfoState = selector({
+  key: 'getMemberInfoState',
   get: async ({ get }) => {
     try {
       const memberId = get(memberIdState);

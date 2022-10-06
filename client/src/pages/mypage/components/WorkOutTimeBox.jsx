@@ -1,8 +1,8 @@
 import { useRecoilValue } from 'recoil';
-import { getWorkoutTimeState } from '../../../recoil/selectors/getWorkoutTimeState';
+import { getMemberInfoState } from '../../../recoil/selectors/getMemberInfoState';
 
 export default function WorkOutTimeBox() {
-  const data = useRecoilValue(getWorkoutTimeState);
+  const data = useRecoilValue(getMemberInfoState);
   const records = data.records;
   const today = new Date();
   const todayRecord =
