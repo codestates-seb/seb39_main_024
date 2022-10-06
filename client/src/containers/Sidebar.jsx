@@ -1,7 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { memberInfoState } from '../recoil/selectors/memberInfoState';
 import { memberImgState } from '../recoil/selectors/memberImgState';
-import Button from '../components/Button';
+import Button from './components/Button';
 
 export default function Sidebar() {
   const memberInfo = useRecoilValue(memberInfoState);

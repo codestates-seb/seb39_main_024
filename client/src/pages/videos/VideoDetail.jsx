@@ -24,7 +24,6 @@ export default function VideoDetail() {
     ','
   );
   const memberId = useRecoilValue(memberIdState);
-  console.log(memberId);
 
   let startDate;
   let stopDate;
