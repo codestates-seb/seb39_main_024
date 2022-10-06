@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
 
-import { memberImgState } from '../recoil/selectors/memberImgState';
+import { memberImgState } from '../../recoil/selectors/memberImgState';
 
 export default function ProfileIcon() {
   const memberImg = useRecoilValue(memberImgState);

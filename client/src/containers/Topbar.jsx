@@ -4,11 +4,11 @@ import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
 import { isLoginState } from '../recoil/atoms/isLoginState';
 import { authorizationState } from '../recoil/atoms/authorizationState';
-import ProfileIcon from '../components/ProfileIcon';
+import ProfileIcon from './components/ProfileIcon';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
+import Button from './components/Button';
+import Modal from './components/Modal';
 import logoutIcon from '../images/logout.png';
 
 export default function TopBar({ path }) {
@@ -70,7 +70,9 @@ export default function TopBar({ path }) {
           )}
           {isLogin && (
             <>
-              <ProfileIcon />
+              <Link to="/mypage">
+                <ProfileIcon />
+              </Link>
               <img
                 className="m-2 cursor-pointer"
                 src={logoutIcon}

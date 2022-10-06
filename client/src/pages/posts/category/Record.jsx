@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 
 import { postsCategoryState } from '../../../recoil/selectors/postsCategoryState';
 import Post from '../common/Post';
-import Pagination from '../../../components/Pagination';
+import Pagination from '../common/Pagination';
 
 export default function Record() {
   const [currentPage, setCurrentPage] = useState(0);

@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SearchIcon from '../images/SearchIcon';
+import SearchIcon from '../../images/SearchIcon';
 
 export default function Search({ placeholder }) {
   const navigate = useNavigate();

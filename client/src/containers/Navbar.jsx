@@ -1,8 +1,8 @@
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { categoryIdState } from '../recoil/atoms/categoryIdState';
 import { isLoginState } from '../recoil/atoms/isLoginState';
-import Search from '../components/Search';
-import Button from '../components/Button';
+import Search from './components/Search';
+import Button from './components/Button';
 
 export default function Navbar({ path }) {
   const setCategoryId = useSetRecoilState(categoryIdState);
