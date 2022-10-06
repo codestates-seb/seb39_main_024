@@ -6,7 +6,7 @@ export const postsAllState = selectorFamily({
   get: (page) => async () => {
     try {
       const res = await instance.get(`/board/all?page=${page}&size=4`);
-      const data = await res.data.data;
+      const data = await res.data;
       return data;
     } catch (err) {
       console.log('err', err);

@@ -8,8 +8,8 @@ export const postReadState = selector({
   key: 'postReadState',
   get: async ({ get }) => {
     try {
-      const token = get(authorizationState);
       const id = get(boardIdState);
+      const token = get(authorizationState);
       const res = await instance.get(`/board/${id}`, {
         headers: {
           'Content-Type': 'application/json',

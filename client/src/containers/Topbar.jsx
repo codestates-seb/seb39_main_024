@@ -22,7 +22,7 @@ export default function TopBar({ path }) {
 
   const logoutHandler = async () => {
     try {
-      await instance.post('/logout', {
+      await instance.post('/logout', '_', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
