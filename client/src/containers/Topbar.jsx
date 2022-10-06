@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
 import { isLoginState } from '../recoil/atoms/isLoginState';
+import { authorizationState } from '../recoil/atoms/authorizationState';
 import ProfileIcon from '../components/ProfileIcon';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
@@ -12,6 +13,7 @@ import logoutIcon from '../images/logout.png';
 
 export default function TopBar({ path }) {
   const isLogin = useRecoilValue(isLoginState);
+  const token = useRecoilValue(authorizationState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
@@ -20,7 +22,12 @@ export default function TopBar({ path }) {
 
   const logoutHandler = async () => {
     try {
-      await instance.post('/logout');
+      await instance.post('/logout', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
       alert('로그아웃 되었습니다 !');
       window.localStorage.clear();
       window.location.replace('/');

@@ -2,13 +2,20 @@ import { selector } from 'recoil';
 import instance from '../../service/request';
 
 import { boardIdState } from '../atoms/boardIdState';
+import { authorizationState } from '../atoms/authorizationState';
 
 export const postReadState = selector({
   key: 'postReadState',
   get: async ({ get }) => {
     try {
+      const token = get(authorizationState);
       const id = get(boardIdState);
-      const res = await instance.get(`/board/${id}`);
+      const res = await instance.get(`/board/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
       const data = await res.data;
       return data;
     } catch (err) {

@@ -1,11 +1,11 @@
-import { useRecoilValue } from 'recoil';
-import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
+// import { useRecoilValue } from 'recoil';
+// import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
 import Calendar from './Calendar';
 
 export default function Summary() {
-  const data = useRecoilValue(getWorkoutTimeState);
-  const todayRecord = data.records[0].record;
-  const totalRecord = data.totalRecord;
+  // const data = useRecoilValue(getWorkoutTimeState);
+  // const todayRecord = data.records[0].record;
+  // const totalRecord = data.totalRecord;
 
   return (
     <div className="m-2">
@@ -15,7 +15,7 @@ export default function Summary() {
             <text className="p-3">일일 운동 시간</text>
             <text className="text-center">오늘 운동 시간 / 총 운동 시간</text>
             <text className="text-center text-5xl">
-              {todayRecord} / {totalRecord}
+              {/* {todayRecord} / {totalRecord} */}
             </text>
           </section>
           <section className="grow mr-5 bg-pale_pink">
