@@ -70,9 +70,7 @@ export default function TopBar({ path }) {
           )}
           {isLogin && (
             <>
-              <Link to="/mypage">
-                <ProfileIcon />
-              </Link>
+              <ProfileIcon />
               <img
                 className="m-2 cursor-pointer"
                 src={logoutIcon}
