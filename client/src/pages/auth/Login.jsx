@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
 import { isLoginState } from '../../recoil/atoms/isLoginState';
+import { authorizationState } from '../../recoil/atoms/authorizationState';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 
@@ -15,6 +16,7 @@ export default function Login() {
 
   const setMemberId = useSetRecoilState(memberIdState);
   const setIsLogin = useSetRecoilState(isLoginState);
+  const setAuthorization = useSetRecoilState(authorizationState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -32,25 +34,21 @@ export default function Login() {
     };
 
     await instance
-      .post(
-        '/login',
-        item,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-        {
+      .post('/login', item, {
+        headers: {
           withCredentials: true,
-        }
-      )
+          'Content-Type': 'application/json',
+        },
+      })
       .then((res) => {
+        // console.log(res.headers.memberId);
         setInputValue({
           email: '',
           password: '',
         });
         setIsLogin(true);
         setMemberId(res.headers.memberid);
+        setAuthorization(res.headers.authorization);
         console.log(res);
         alert('로그인 되었습니다.');
         navigate('/');

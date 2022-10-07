@@ -1,33 +1,20 @@
-import { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { getWorkoutTimeState } from '../../recoil/selectors/getWorkoutTimeState';
-import instance from '../../service/request';
+import WorkOutTimeBox from './components/WorkOutTimeBox';
 import Calendar from './Calendar';
+import Goal from './components/Goal';
 
 export default function Summary() {
-  const data = useRecoilValue(getWorkoutTimeState);
-  const todayRecord = data.records[0].record;
-  const totalRecord = data.totalRecord;
-  // const memberId = useRecoilValue(getWorkoutTimeState);
-
-  // useEffect(() => {
-  //   instance
-  //     .get(`/members/${memberId}`)
-  //     .then((res) => console.log(memberId, res));
-  // }, []);
-
   return (
-    <>
-      <div>
-        <p>일일 운동 시간</p>
-        <div>
-          {todayRecord} / {totalRecord}
+    <div className="sm:flex m-2 sm:flex-col w-full px-[14px] md:pl-[5%] z-0">
+      <div className="flex sm:flex-col md:flew-row grow">
+        <div className="flex flex-col md:mr-5 sm:mb-5 grow">
+          <WorkOutTimeBox />
+          <Goal />
         </div>
+        <Calendar summary={'summary'} />
       </div>
-      <div>
-        <p>목표 달성 스티커</p>
-        <Calendar></Calendar>
-      </div>
-    </>
+      {/* <section className="">
+        <p>최근 시청한 운동 영상</p>
+      </section> */}
+    </div>
   );
 }

@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 
 import { postsAllState } from '../../../recoil/selectors/postsAllState';
 import Post from '../common/Post';
-import Pagination from '../../../components/Pagination';
+import Pagination from '../common/Pagination';
 
 export default function All() {
   const [currentPage, setCurrentPage] = useState(0);

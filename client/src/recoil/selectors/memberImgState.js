@@ -1,16 +1,15 @@
 import { selector } from 'recoil';
 import instance from '../../service/request';
-
-import { boardIdState } from '../atoms/boardIdState';
+import { memberIdState } from '../atoms/memberIdState';
 import { authorizationState } from '../atoms/authorizationState';
 
-export const postReadState = selector({
-  key: 'postReadState',
+export const memberImgState = selector({
+  key: 'memberImgState',
   get: async ({ get }) => {
     try {
-      const id = get(boardIdState);
+      const memberId = get(memberIdState);
       const token = get(authorizationState);
-      const res = await instance.get(`/board/${id}`, {
+      const res = await instance.get(`/members/${memberId}/image`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
@@ -19,10 +18,6 @@ export const postReadState = selector({
       const data = await res.data;
       return data;
     } catch (err) {
-      if (err.response.status === 403) {
-        alert(err.response.data);
-        window.location.replace('/posts');
-      }
       console.log('err', err);
     }
   },

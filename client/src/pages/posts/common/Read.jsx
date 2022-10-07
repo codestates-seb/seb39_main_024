@@ -6,6 +6,8 @@ import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { commentReadState } from '../../../recoil/selectors/commentReadState';
 import { isLoginState } from '../../../recoil/atoms/isLoginState';
+import ImageBox from './ImageBox';
+import LikeCount from './LikeCount';
 
 const Comment = lazy(() => import('./Comment'));
 
@@ -18,11 +20,12 @@ export default function Read() {
   const [commentValue, setCommentValue] = useState('');
   const [modal, setModal] = useState(false);
 
-  const [imgPage, setImgPage] = useState(0);
-
   const navigation = useNavigate();
 
-  const date = postRead.createdAt.split('T');
+  // createdAt
+  const createdAt = postRead.createdAt.split('T');
+  const date = createdAt[0];
+  const time = createdAt[1].slice(0, 5);
 
   // 수정, 삭제 모달
   const modalHandler = () => {
@@ -60,6 +63,7 @@ export default function Read() {
   };
 
   const loginPageHandler = () => {
+    alert('로그인이 필요한 서비스입니다 !');
     navigation('/login');
   };
 
@@ -92,7 +96,7 @@ export default function Read() {
   const isValid = Number(memberId) === postRead.memberId;
 
   return (
-    <main className="flex flex-col justify-center py-5 px-5 mt-11">
+    <main className="flex flex-col justify-center py-5 px-5 mb-10">
       <section className="flex justify-between">
         <p className="text-start text-3xl">{postRead.title}</p>
         {isValid && (
@@ -111,37 +115,20 @@ export default function Read() {
           </div>
         )}
       </section>
-      <section className="w-full flex justify-center py-5">
-        <button
-          className="text-5xl px-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
-          disabled={imgPage < 1}
-          onClick={() => setImgPage((prev) => prev - 1)}
-        >
-          &#8249;
-        </button>
-        <img
-          className="text-center border-solid border border-zinc-300 w-ful"
-          src={`http://211.41.205.19:8080/board/image/${postRead.imageId[imgPage]}`}
-          alt="img"
-        />
-        <button
-          className="text-5xl px-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
-          disabled={postRead.imageId.length === imgPage + 1}
-          onClick={() => setImgPage((prev) => prev + 1)}
-        >
-          &#8250;
-        </button>
-      </section>
+      <ImageBox postRead={postRead} />
       <section className="flex justify-between bg-white">
-        <div>
-          <span className="mr-4 ml-1">👤 작성자</span>
-          <span>{`${date[0]} ${date[1].slice(0, 5)}`}</span>
+        <div className="flex items-center">
+          <img
+            className="w-6 h-6 mr-3 rounded-full"
+            src={postRead.memberImage}
+            alt="memberImage"
+          />
+          <span className="mr-3">{postRead.memberName}</span>
+          <span>{`${date} ${time}`}</span>
         </div>
-        <button className="mr-1">
-          ❤️ {Math.floor(Math.random() * 100) + 1}
-        </button>
+        <LikeCount like={postRead.likeCount} />
       </section>
-      <p className="sm:text-2xl text-3xl mt-5">{postRead.content}</p>
+      <p className="sm:text-2xl text-3xl my-5">{postRead.content}</p>
       <span className="my-3">댓글 {commentRead.length} 개</span>
       {isLogin && (
         <input

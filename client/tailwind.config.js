@@ -7,7 +7,7 @@ module.exports = {
         pink: '#FFDADA',
         pale_pink: '#FDEFEF',
         green: '#A8F1DE',
-        gray: '#696969',
+        gray: '#F4F4F4',
         deep_green: '#02CD9A',
       },
       width: {
@@ -30,9 +30,9 @@ module.exports = {
       md: { min: '768px' },
     },
     backgroundImage: {
-      'split-green-pink': 'linear-gradient(to top, #FFDADA 60% , #A9F1DF 40%);',
+      'split-green-pink': 'linear-gradient(to top, #FFDADA 55% , #A9F1DF 45%);',
       'sm-split-green-pink':
-        'linear-gradient(to top, #FFDADA 65% , #A9F1DF 35%);',
+        'linear-gradient(to top, #FFDADA 50% , #A9F1DF 50%);',
     },
   },
   plugins: [],
