@@ -1,10 +1,13 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 import Button from '../containers/components/Button';
+import { isLoginState } from '../recoil/atoms/isLoginState';
 
 export default function Home() {
+  const isLogin = useRecoilValue(isLoginState);
   return (
     <article className="flex flex-col items-center mb-10">
-      <section className="flex flex-col items-center m-5 p-5 bg-white">
+      <section className="flex flex-col items-center m-5 p-5">
         <h1 className="sm:text-3xl text-4xl text-center mt-5 mb-20">
           Flyaway에 오신 걸 환영합니다 !
         </h1>
@@ -20,7 +23,7 @@ export default function Home() {
           웹 사이트 서비스입니다.
         </p>
       </section>
-      <section className="flex flex-col items-center m-5 p-5 bg-white">
+      <section className="flex flex-col items-center m-5 p-5">
         <p className="text-center text-lg">
           운동하기 게시판에서 다양한 운동 영상을 접해보세요.
         </p>
@@ -28,7 +31,7 @@ export default function Home() {
           다양한 운동 영상들이 준비되어 있습니다.
         </p>
         <img
-          className="p-10 rounded"
+          className="p-10 rounded "
           src="https://images.unsplash.com/photo-1607962837359-5e7e89f86776?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
           alt="img"
         />
@@ -38,7 +41,7 @@ export default function Home() {
           str="운동하러 가기"
         />
       </section>
-      <section className="flex flex-col items-center m-5 p-5 bg-white">
+      <section className="flex flex-col items-center m-5 p-5">
         <p className="text-center text-lg">
           공유하기 게시판에서 열심히 운동한 것을 공유해보세요.
         </p>
@@ -50,11 +53,40 @@ export default function Home() {
           src="https://images.unsplash.com/photo-1456324504439-367cee3b3c32?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTQxfHxwb3N0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
           alt="img"
         />
-        <Button
-          className="bg-green rounded"
-          link="/posts"
-          str="공유하러 가기"
+        <Button className="bg-pink rounded" link="/posts" str="공유하러 가기" />
+      </section>
+      <section className="flex flex-col items-center m-5 p-5">
+        <p className="text-center text-lg">
+          마이페이지에서 운동 기록을 확인해보세요.
+        </p>
+        <p className="text-center text-lg">
+          하루 운동 시간에 따라 캘린더 배경색이 달라집니다.
+        </p>
+        <p className="text-center text-lg">
+          누적 운동 시간에 따라 주어지는 스탬프를 받고, 의지를 불태워봅시다.
+        </p>
+        <p className="text-center text-lg">
+          (누적 운동 시간 : 20시간 / 50시간 / 80시간 / 100시간)
+        </p>
+        <img
+          className="p-10 rounded"
+          src="https://images.unsplash.com/photo-1618690258643-9c31bdf60811?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhbGVuZGVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
+          alt="img"
         />
+        {isLogin && (
+          <Button
+            className="bg-green rounded"
+            link="/mypage"
+            str="마이페이지 가기"
+          />
+        )}
+        {!isLogin && (
+          <Button
+            className="bg-green rounded"
+            link="/login"
+            str="로그인 하러 가기"
+          />
+        )}
       </section>
     </article>
   );
