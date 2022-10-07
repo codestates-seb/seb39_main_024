@@ -98,7 +98,7 @@ export default function Read() {
   return (
     <main className="flex flex-col justify-center py-5 px-5 mb-10">
       <section className="flex justify-between">
-        <p className="text-start text-3xl">{postRead.title}</p>
+        <p className="text-start sm:text-2xl text-3xl">{postRead.title}</p>
         {isValid && (
           <div className="flex">
             {modal && (
@@ -128,7 +128,7 @@ export default function Read() {
         </div>
         <LikeCount like={postRead.likeCount} />
       </section>
-      <p className="sm:text-2xl text-3xl my-5">{postRead.content}</p>
+      <p className="sm:text-xl text-2xl my-5">{postRead.content}</p>
       <span className="my-3">댓글 {commentRead.length} 개</span>
       {isLogin && (
         <input
