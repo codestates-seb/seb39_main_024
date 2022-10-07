@@ -13,7 +13,7 @@ export default function WorkOutTimeBox() {
       ? Math.floor(records.find((el) => el.date === today).record / 60)
       : 0;
   const totalRecord = Math.floor(data.totalRecord / 60);
-  console.log(typeof todayRecord);
+
   return (
     <section className="flex flex-col justify-center p-4 mb-4 bg-pale_pink rounded-[8px] grow">
       <p className="">일일 운동 시간</p>

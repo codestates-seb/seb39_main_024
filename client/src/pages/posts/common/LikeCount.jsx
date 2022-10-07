@@ -11,9 +11,7 @@ export default function LikeCount({ like }) {
 
   const likeHandler = async () => {
     try {
-      await instance.post(
-        `http://211.41.205.19:8080/board/${boardId}/like?memberId=${memberId}`
-      );
+      await instance.post(`/board/${boardId}/like?memberId=${memberId}`);
       if (!isCheckLike) {
         alert('해당 글에 좋아요를 눌렀습니다.');
       }

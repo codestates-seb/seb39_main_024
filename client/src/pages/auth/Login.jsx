@@ -49,7 +49,6 @@ export default function Login() {
         setIsLogin(true);
         setMemberId(res.headers.memberid);
         setAuthorization(res.headers.authorization);
-        console.log(res);
         alert('로그인 되었습니다.');
         navigate('/');
       })
