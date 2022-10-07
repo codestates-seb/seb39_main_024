@@ -2,6 +2,7 @@ import { selectedVideoState } from '../../recoil/atoms/videoState';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
+import { authorizationState } from '../../recoil/atoms/authorizationState';
 import YouTube from 'react-youtube';
 import instance from '../../service/request';
 
@@ -10,6 +11,15 @@ export default function VideoDetail() {
     window.scrollTo(0, 0);
   }, []);
 
+  const memberId = useRecoilValue(memberIdState);
+  const token = useRecoilValue(authorizationState);
+  const apiURL = `/record/${memberId}`;
+  const headers = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  };
   const video = useRecoilValue(selectedVideoState)[0];
   const viewCount = video.statistics.viewCount.replace(
     /\B(?=(\d{3})+(?!\d))/g,
@@ -23,7 +33,6 @@ export default function VideoDetail() {
     /\B(?=(\d{3})+(?!\d))/g,
     ','
   );
-  const memberId = useRecoilValue(memberIdState);
 
   let startDate;
   let stopDate;
@@ -36,17 +45,13 @@ export default function VideoDetail() {
   function onPause() {
     stopDate = new Date();
     sec = (stopDate.getTime() - startDate.getTime()) / 1000;
-    instance.post(`/record/${memberId}`, {
-      record: sec,
-    });
+    instance.post(apiURL, { record: sec }, headers);
   }
 
   function onEnd() {
     stopDate = new Date();
     sec = (stopDate.getTime() - startDate.getTime()) / 1000;
-    instance.post(`/record/${memberId}`, {
-      record: sec,
-    });
+    instance.post(apiURL, { record: sec }, headers);
   }
 
   return (

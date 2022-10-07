@@ -1,19 +1,18 @@
-// import { useState } from 'react';
+import { memo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getMemberInfoState } from '../../recoil/selectors/getMemberInfoState';
 import moment from 'moment';
 import CalendarApp from 'react-calendar';
 import './Calendar.css';
 
-export default function Calendar() {
+export default memo(function Calendar({ summary }) {
   const records = useRecoilValue(getMemberInfoState).records;
-  console.log(records);
 
   return (
-    <>
+    <section className="flex justify-center items-center sm:my-5 h-full">
       <CalendarApp
         showNeighboringMonth={false}
-        formatDay={(locale, date) => moment(date).format('DD')}
+        formatDay={(locale, date) => (summary ? '' : moment(date).format('DD'))}
         tileContent={({ date }) =>
           records.length === 0
             ? null
@@ -30,8 +29,10 @@ export default function Calendar() {
                         : 'record record__deep-green'
                     }
                   >
-                    {el.record < 60
-                      ? `${el.record}초`
+                    {summary
+                      ? ''
+                      : el.record < 60
+                      ? '0분'
                       : el.record >= 60
                       ? `${Math.floor(el.record / 60)}분`
                       : ''}
@@ -42,6 +43,6 @@ export default function Calendar() {
               )
         }
       ></CalendarApp>
-    </>
+    </section>
   );
-}
+});

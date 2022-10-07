@@ -39,7 +39,7 @@
   margin-bottom: 1em;
 }
 .react-calendar__navigation__label > span {
-  font-size: 30px;
+  font-size: 2vh;
   font-weight: 700;
 }
 .react-calendar__navigation button {
@@ -54,9 +54,10 @@
   background-color: #e6e6e6;
 }
 .react-calendar__month-view__weekdays {
+  display: none !important;
   text-align: center;
   text-transform: uppercase;
-  font-weight: bold;
+  /* font-weight: bold; */
   /* font-size: 1em; */
 }
 .react-calendar__month-view__weekdays__weekday {
