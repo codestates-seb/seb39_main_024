@@ -15,7 +15,7 @@ export default function ImageBox({ postRead }) {
         &#8249;
       </button>
       <img
-        className="text-center border-solid border border-zinc-300 rounded-sm s:w-[100px] s:h-[100px] sm:w-[358px] sm:h-[358px] md:w-[654px] md:h-[654px]"
+        className="text-center border-solid border border-zinc-300 rounded-sm sm:w-[358px] sm:h-[358px] md:w-[654px] md:h-[654px]"
         src={imgUrl}
         alt="img"
       />

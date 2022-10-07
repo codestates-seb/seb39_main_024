@@ -24,7 +24,7 @@ export default function Post({ items }) {
       aria-hidden="true"
     >
       <img
-        className="border-solid border border-zinc-300 rounded-sm w-full h-full md:h-350"
+        className="border-solid border border-zinc-300 rounded-sm w-full h-[446px] md:h-350"
         src={imgUrl}
         alt="img"
       />
