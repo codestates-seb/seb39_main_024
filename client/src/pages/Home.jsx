@@ -2,6 +2,8 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import Button from '../containers/components/Button';
 import { isLoginState } from '../recoil/atoms/isLoginState';
+import calenderImg from '../images/calender.png';
+import goalImg from '../images/goal.png';
 
 export default function Home() {
   const isLogin = useRecoilValue(isLoginState);
@@ -62,17 +64,16 @@ export default function Home() {
         <p className="text-center text-lg">
           하루 운동 시간에 따라 캘린더 배경색이 달라집니다.
         </p>
+        <img className="p-10 rounded" src={calenderImg} alt="img" />
         <p className="text-center text-lg">
-          누적 운동 시간에 따라 주어지는 스탬프를 받고, 의지를 불태워봅시다.
+          누적 운동 시간에 따라 주어지는 스티커를 받고, 의지를 불태워봅시다.
         </p>
-        <p className="text-center text-lg">
-          (누적 운동 시간 : 20시간 / 50시간 / 80시간 / 100시간)
-        </p>
-        <img
-          className="p-10 rounded"
-          src="https://images.unsplash.com/photo-1618690258643-9c31bdf60811?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhbGVuZGVyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
-          alt="img"
-        />
+        <p className="text-center text-lg my-3">스티커 획득 기준 시간</p>
+        <p className="text-center text-lg">20시간 - 달리기 스티커</p>
+        <p className="text-center text-lg">50시간 - 줄넘기 스티커</p>
+        <p className="text-center text-lg">80시간 - 덤벨 스티커</p>
+        <p className="text-center text-lg">100시간 - 메달 스티커</p>
+        <img className="p-10 rounded" src={goalImg} alt="img" />
         {isLogin && (
           <Button
             className="bg-green rounded"
