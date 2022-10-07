@@ -4,21 +4,17 @@ import Goal from './components/Goal';
 
 export default function Summary() {
   return (
-    <div className="m-2">
-      <div className="flex w-full">
-        <div className="flex flex-col grow">
+    <div className="sm:flex m-2 sm:flex-col w-full px-[14px] md:pl-[5%] z-0">
+      <div className="flex sm:flex-col md:flew-row grow">
+        <div className="flex flex-col md:mr-5 sm:mb-5 grow">
           <WorkOutTimeBox />
-          <section className="grow mr-5 bg-pale_pink">
-            <Goal />
-          </section>
+          <Goal />
         </div>
-        <section className="flex justify-center grow w-1/2 h-full">
-          <Calendar />
-        </section>
+        <Calendar summary={'summary'} />
       </div>
-      <section className="">
+      {/* <section className="">
         <p>최근 시청한 운동 영상</p>
-      </section>
+      </section> */}
     </div>
   );
 }
