@@ -3,12 +3,14 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 
 import { boardIdState } from '../../../recoil/atoms/boardIdState';
 import { imgReadState } from '../../../recoil/selectors/imgReadState';
+import { isCheckLikeState } from '../../../recoil/selectors/isCheckLikeState';
 
 export default function Post({ items }) {
   const navigation = useNavigate();
 
   const setBoardId = useSetRecoilState(boardIdState);
   const imgUrl = useRecoilValue(imgReadState(items.imageId[0]));
+  const isCheckLike = useRecoilValue(isCheckLikeState(items.boardId));
 
   const postReadHandler = () => {
     setBoardId(items.boardId);
@@ -28,8 +30,12 @@ export default function Post({ items }) {
       />
       <p className="text-start text-2xl py-2">{items.title}</p>
       <div className="flex justify-between">
-        <span>{items.memberName}</span>
-        <button>❤️ {Math.floor(Math.random() * 100) + 1}</button>
+        <span className="text-xl">&#128100; {items.memberName}</span>
+        <div className="flex row-end text-lg">
+          {isCheckLike && <span>&#10084;</span>}
+          {!isCheckLike && <span>&#129293;</span>}
+          <span className="ml-2">{items.likeCount}</span>
+        </div>
       </div>
     </section>
   );

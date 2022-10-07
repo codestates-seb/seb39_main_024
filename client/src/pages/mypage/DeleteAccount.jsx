@@ -29,7 +29,7 @@ export default function DeleteAccount() {
           <p>아래 탈퇴하기 버튼을 눌러주세요.</p>
         </div>
         <button
-          className="bg-gray p-1 md:w-60 sm:w-48 mb-10 text-2xl sm:text-xl rounded"
+          className="bg-pink p-1 md:w-60 sm:w-48 mb-10 text-2xl sm:text-xl rounded"
           onClick={deleteAccountHandler}
         >
           탈퇴하기

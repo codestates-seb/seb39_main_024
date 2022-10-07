@@ -70,7 +70,7 @@ export default function ProfileEdit() {
     }
   };
   return (
-    <>
+    <section className="my-10">
       <form
         className="flex flex-col items-center"
         method="post"
@@ -89,7 +89,7 @@ export default function ProfileEdit() {
           />
         )}
         <label
-          className="bg-gray p-2 my-5 rounded text-xl"
+          className="bg-pink p-2 my-5 rounded text-xl"
           htmlFor="img"
           onChange={imgAddHandler}
         >
@@ -113,18 +113,18 @@ export default function ProfileEdit() {
       </form>
       <div className="flex flex-col items-center mt-10">
         <button
-          className="bg-gray w-80 sm:w-64 p-1 mb-2 text-2xl rounded"
+          className="bg-pink w-80 sm:w-64 p-1 mb-2 text-2xl rounded"
           onClick={cancelHandler}
         >
           취소
         </button>
         <button
-          className="bg-green w-80 sm:w-64 p-1 mb-2 sm:mb-6 text-2xl rounded"
+          className="bg-green w-80 sm:w-64 p-1 sm:mb-6 text-2xl rounded"
           onClick={submitHandler}
         >
           적용
         </button>
       </div>
-    </>
+    </section>
   );
 }

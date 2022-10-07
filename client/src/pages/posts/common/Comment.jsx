@@ -81,7 +81,7 @@ export default function Comment({ items, postRead }) {
     <section className="mt-2">
       <div className="flex justify-between mb-2">
         <div>
-          <span className="mr-2">👤 작성자</span>
+          <span className="mr-2">&#128100; {items.memberName}</span>
           <span className="mr-2">&#124;</span>
           <span className="ml-1">{`${date[0]} ${date[1].slice(0, 5)}`}</span>
         </div>

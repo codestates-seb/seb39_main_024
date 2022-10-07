@@ -16,7 +16,7 @@ export const commentReadState = selector({
           Authorization: token,
         },
       });
-      const data = await res.data.data;
+      const data = await res.data;
       return data;
     } catch (err) {
       console.log('err', err);
