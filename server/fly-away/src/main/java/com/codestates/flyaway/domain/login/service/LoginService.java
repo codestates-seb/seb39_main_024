@@ -1,4 +1,4 @@
-package com.codestates.flyaway.web.login.service;
+package com.codestates.flyaway.domain.login.service;
 
 import com.auth0.jwt.JWT;
 import com.codestates.flyaway.domain.member.entity.Member;
@@ -15,7 +15,7 @@ import static com.auth0.jwt.algorithms.Algorithm.*;
 import static com.codestates.flyaway.domain.member.util.MemberUtil.*;
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.login.dto.LoginDto.*;
-import static com.codestates.flyaway.web.login.util.JwtProperties.*;
+import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
 
 @Service
 @Transactional
@@ -47,7 +47,7 @@ public class LoginService {
 
         return JWT.create()
                 .withSubject("flyaway token")
-                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 10)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 1000 * 20)))
                 .withClaim("email", member.getEmail())
                 .sign(HMAC512(SECRET));
     }
@@ -63,9 +63,7 @@ public class LoginService {
 
     public Member findByEmail(String email) {
 
-        Member member = memberRepository.findByEmail(email)
+        return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(EMAIL_NOT_EXISTS));
-
-        return member;
     }
 }

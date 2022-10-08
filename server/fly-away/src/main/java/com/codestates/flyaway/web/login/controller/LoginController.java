@@ -1,7 +1,7 @@
 package com.codestates.flyaway.web.login.controller;
 
 import com.codestates.flyaway.domain.member.entity.Member;
-import com.codestates.flyaway.web.login.service.LoginService;
+import com.codestates.flyaway.domain.login.service.LoginService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.codestates.flyaway.web.login.dto.LoginDto.*;
-import static com.codestates.flyaway.web.login.util.JwtProperties.*;
+import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
 
 @RestController
 @RequiredArgsConstructor

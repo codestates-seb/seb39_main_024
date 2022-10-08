@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static com.auth0.jwt.algorithms.Algorithm.*;
-import static com.codestates.flyaway.web.login.util.JwtProperties.*;
+import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
 
 @Slf4j
 @Component

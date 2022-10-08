@@ -1,4 +1,4 @@
-package com.codestates.flyaway.web.login.util;
+package com.codestates.flyaway.domain.login.util;
 
 public final class JwtProperties {
 
