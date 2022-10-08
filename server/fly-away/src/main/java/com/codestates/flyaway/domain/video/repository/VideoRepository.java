@@ -13,5 +13,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
     @Query(value = "select * from video where member_id = :memberId order by id desc limit 4", nativeQuery = true)
     List<Video> findRecent(@Param("memberId") long memberId);
 
-    Optional<Video> findByVideoIdAndMemberId(long videoId, long memberId);
+    Optional<Video> findByVideoIdAndMemberId(String videoId, long memberId);
 }

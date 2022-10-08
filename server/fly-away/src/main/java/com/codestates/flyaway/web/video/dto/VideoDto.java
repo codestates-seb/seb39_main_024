@@ -13,7 +13,7 @@ public class VideoDto {
     @NoArgsConstructor @AllArgsConstructor
     public static class AddRequest{
         private long memberId;
-        private long videoId;
+        private String videoId;
         private String title;
         private String url;
     }
@@ -21,7 +21,7 @@ public class VideoDto {
     @Getter
     @NoArgsConstructor @AllArgsConstructor
     public static class VideoList{
-        private long videoId;
+        private String videoId;
         private String title;
         private String url;
     }

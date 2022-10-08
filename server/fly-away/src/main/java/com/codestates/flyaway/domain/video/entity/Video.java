@@ -18,7 +18,7 @@ public class Video {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private Long videoId;
+    private String videoId;
     private String title;
     private String url;
 
@@ -26,7 +26,7 @@ public class Video {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public Video(long videoId, String title, String url, Member member) {
+    public Video(String videoId, String title, String url, Member member) {
         this.videoId = videoId;
         this.title = title;
         this.url = url;
