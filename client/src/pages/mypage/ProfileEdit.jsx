@@ -70,7 +70,7 @@ export default function ProfileEdit() {
     }
   };
   return (
-    <section className="my-10">
+    <section>
       <form
         className="flex flex-col items-center"
         method="post"
@@ -83,7 +83,7 @@ export default function ProfileEdit() {
         )}
         {imgFile.url.trim().length > 0 && (
           <img
-            className="text-center border-solid border border-zinc-300 rounded w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white"
+            className="text-center border-solid border border-zinc-300 rounded w-80 h-80 sm:w-64 sm:h-64 sm:mt-6"
             src={imgFile.url}
             alt={`${imgFile.url}`}
           />
