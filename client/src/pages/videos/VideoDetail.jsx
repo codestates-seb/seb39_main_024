@@ -2,27 +2,37 @@ import { selectedVideoState } from '../../recoil/atoms/videoState';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
+import { authorizationState } from '../../recoil/atoms/authorizationState';
 import YouTube from 'react-youtube';
 import instance from '../../service/request';
 
-// { video, video: { snippet } }
 export default function VideoDetail() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  const memberId = useRecoilValue(memberIdState);
+  const token = useRecoilValue(authorizationState);
+  const apiURL = `/record/${memberId}`;
+  const headers = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  };
   const video = useRecoilValue(selectedVideoState)[0];
   const viewCount = video.statistics.viewCount.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     ','
   );
   const date = video.snippet.publishedAt;
+  const YYYY = date.slice(0, 4);
+  const MM = date.slice(5, 7);
+  const DD = date.slice(8, 10);
   const likeCount = video.statistics.likeCount.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     ','
   );
-  const memberId = useRecoilValue(memberIdState);
-  // console.log(memberId);
 
   let startDate;
   let stopDate;
@@ -35,17 +45,13 @@ export default function VideoDetail() {
   function onPause() {
     stopDate = new Date();
     sec = (stopDate.getTime() - startDate.getTime()) / 1000;
-    instance.post(`/record/${memberId}`, {
-      record: sec,
-    });
+    instance.post(apiURL, { record: sec }, headers);
   }
 
   function onEnd() {
     stopDate = new Date();
     sec = (stopDate.getTime() - startDate.getTime()) / 1000;
-    instance.post(`/record/${memberId}`, {
-      record: sec,
-    });
+    instance.post(apiURL, { record: sec }, headers);
   }
 
   return (
@@ -71,7 +77,7 @@ export default function VideoDetail() {
       <div id="videoInfo">
         <span>조회수 {viewCount}회</span>﹒
         <span>
-          업로드 {date.slice(0, 4)}.{date.slice(5, 7)}.{date.slice(8, 10)}.
+          업로드 {YYYY}.{MM}.{DD}.
         </span>
         ﹒<span>♥️ {likeCount}</span>
       </div>

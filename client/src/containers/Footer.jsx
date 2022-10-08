@@ -1,4 +1,6 @@
-export default function Footer({ path }) {
+import { memo } from 'react';
+
+export default memo(function Footer({ path }) {
   return (
     <footer
       className={`flex justify-center items-center h-20	 bottom-0 ${
@@ -8,4 +10,4 @@ export default function Footer({ path }) {
       ©2022. Fly away. All rights reserved.
     </footer>
   );
-}
+});

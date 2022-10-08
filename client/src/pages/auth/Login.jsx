@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { memberIdState } from '../../recoil/atoms/memberIdState';
 import { isLoginState } from '../../recoil/atoms/isLoginState';
+import { authorizationState } from '../../recoil/atoms/authorizationState';
 import { useNavigate } from 'react-router-dom';
 import instance from '../../service/request';
 
@@ -15,6 +16,7 @@ export default function Login() {
 
   const setMemberId = useSetRecoilState(memberIdState);
   const setIsLogin = useSetRecoilState(isLoginState);
+  const setAuthorization = useSetRecoilState(authorizationState);
 
   const inputValueChangeHandler = (e) => {
     setInputValue({
@@ -32,31 +34,37 @@ export default function Login() {
     };
 
     await instance
-      .post(
-        '/login',
-        item,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-        {
+      .post('/login', item, {
+        headers: {
           withCredentials: true,
-        }
-      )
+          'Content-Type': 'application/json',
+        },
+      })
       .then((res) => {
+        // console.log(res.headers.memberId);
         setInputValue({
           email: '',
           password: '',
         });
         setIsLogin(true);
         setMemberId(res.headers.memberid);
-        console.log(res);
+        setAuthorization(res.headers.authorization);
         alert('로그인 되었습니다.');
         navigate('/');
       })
-      .catch((e) => {
-        console.log('err', e);
+      .catch((err) => {
+        const errStatus = err.response.data.status === 400;
+        const errMsgEmail = err.response.data.message.includes('이메일');
+        const errMsgPassword = err.response.data.message.includes('비밀번호');
+        if (errStatus && errMsgEmail) {
+          alert('존재하지 않는 이메일입니다.');
+          return;
+        }
+        if (errStatus && errMsgPassword) {
+          alert('비밀번호가 일치하지 않습니다.');
+          return;
+        }
+        console.log('err', err);
       });
   };
   return (
