@@ -70,7 +70,7 @@ public class BoardDto {
         private String content;
         private List<Long> imageId;
         private int viewCount;
-        private int likecount;
+        private int likeCount;
         private LocalDateTime createdAt;
 
         public static BoardResponseDto toResponseDto(Board board){
@@ -101,6 +101,7 @@ public class BoardDto {
         private List<Long> imageId;
         private LocalDateTime createdAt;
         private int viewCount;
+        private int likeCount;
 
         public static List<MultiBoardDto> toResponsesDto(List<Board> boards) {
 
@@ -112,7 +113,8 @@ public class BoardDto {
                             board.getContent(),
                             board.getImages().stream().map(BoardImage::getId).collect(Collectors.toList()),
                             board.getCreatedAt(),
-                            board.getViewCount()))
+                            board.getViewCount(),
+                            board.getLikeCount()))
                     .collect(Collectors.toList());
         }
     }

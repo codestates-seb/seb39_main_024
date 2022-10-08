@@ -111,20 +111,32 @@ public class BoardService {
     }
 
     @Transactional
-    public void doLike(Long boardId, Long memberId) {
+    public boolean doLike(Long boardId, Long memberId) {
 
+        boolean likeResult;
         Member member = memberService.findById(memberId);
         Board board = findById(boardId);
         Optional<Likes> savedLikes = likesRepository.findByBoardAndMember(board, member);
         if(savedLikes.isPresent()) {
             likesRepository.findByBoardAndMember(board, member).ifPresent(id -> likesRepository.deleteAll());
             board.dislike();
+            likeResult = false;
         }else {
             board.addLikeCount();
+            likeResult = true;
             likesRepository.save(Likes.builder()
                     .board(board)
                     .member(member)
                     .build());
         }
+        return likeResult;
+    }
+
+    public boolean readLike(Long boardId, Long memberId) {
+
+        Member member = memberService.findById(memberId);
+        Board board = findById(boardId);
+        Optional<Likes> savedLikes = likesRepository.findByBoardAndMember(board, member);
+        return savedLikes.isPresent();
     }
 }
