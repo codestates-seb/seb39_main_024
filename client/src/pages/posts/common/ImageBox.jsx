@@ -8,7 +8,7 @@ export default function ImageBox({ postRead }) {
   return (
     <section className="w-full flex justify-center py-5">
       <button
-        className="sm:text-xl text-5xl pr-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
+        className="sm:text-xl text-4xl pr-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
         disabled={imgPage < 1}
         onClick={() => setImgPage((prev) => prev - 1)}
       >
@@ -20,7 +20,7 @@ export default function ImageBox({ postRead }) {
         alt="img"
       />
       <button
-        className="sm:text-xl text-5xl pl-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
+        className="sm:text-xl text-4xl pl-2 hover:cursor-pointer hover:bg-slate-200/30 disabled:bg-white disabled:cursor-auto"
         disabled={postRead.imageId.length === imgPage + 1}
         onClick={() => setImgPage((prev) => prev + 1)}
       >
