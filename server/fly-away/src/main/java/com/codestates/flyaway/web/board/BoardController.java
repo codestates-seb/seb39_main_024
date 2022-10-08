@@ -83,9 +83,15 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}/like")
-    public void doLike(@PathVariable("boardId") Long boardId,
+    public boolean doLike(@PathVariable("boardId") Long boardId,
                        @RequestParam Long memberId) {
 
-        boardService.doLike(boardId, memberId);
+        return boardService.doLike(boardId, memberId);
+    }
+
+    @GetMapping("/{boardId}/checklike")
+    public boolean isCheck(@PathVariable("boardId") Long boardId,
+                            @RequestParam Long memberId) {
+        return boardService.readLike(boardId, memberId);
     }
 }

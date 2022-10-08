@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.NOT_AUTHORIZED;
@@ -56,11 +57,13 @@ public class CommentService {
         return toResponseDto(comment);
     }
 
-    public Page<Comment> readByBoardId(Long boardId, Pageable pageable) {
+    public List<CommentDto.MultiCommentDto> readByBoardId(Long boardId, Pageable pageable) {
 
         boardService.findById(boardId);
+        Page<Comment> comments = commentRepository.findByBoardId(boardId, pageable);
+        List<Comment> commentList = comments.getContent();
 
-        return commentRepository.findByBoardId(boardId, pageable);
+        return CommentDto.MultiCommentDto.toResponsesDto(commentList);
     }
     public void delete(CommentDto.Delete deleteDto) {
 

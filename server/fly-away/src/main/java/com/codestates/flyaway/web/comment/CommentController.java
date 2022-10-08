@@ -43,15 +43,11 @@ public class CommentController {
     }
 
     @GetMapping("/{boardId}/comment")
-    public MultiResponseDto readComment(@PathVariable("boardId") Long boardId,
-                                         @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
-                                         Pageable pageable) {
+    public List<CommentDto.MultiCommentDto> readComment(@PathVariable("boardId") Long boardId,
+                                                        @PageableDefault(sort = "id", direction = Sort.Direction.DESC)
+                                                        Pageable pageable) {
 
-        Page<Comment> comments = commentService.readByBoardId(boardId, pageable);
-        List<Comment> commentList = comments.getContent();
-        List<CommentDto.MultiCommentDto> responses = CommentDto.MultiCommentDto.toResponsesDto(commentList);
-
-        return new MultiResponseDto<>(responses, comments);
+        return commentService.readByBoardId(boardId, pageable);
     }
 
     @DeleteMapping("/{boardId}/comment/{commentId}")

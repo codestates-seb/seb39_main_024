@@ -32,10 +32,10 @@ public class BoardImageService {
 
     @Value("${cloud.aws.s3.bucket}/board")
     private String bucket;
-    @Value("${cloud.aws.s3.defaultBoard}")
+    @Value("${cloud.aws.s3.bucket}/default")
     private String defaultUrl;
 
-    BoardImage defaultImage = new BoardImage("default", defaultUrl, "default");
+    BoardImage defaultImage = new BoardImage("default", defaultUrl, "defaultboard.jpg");
 
     public BoardImage saveFile(MultipartFile multipartFile, Board board) throws IOException {
 

@@ -57,6 +57,7 @@ public class CommentDto {
     public static class CommentResponseDto {
 
         private Long memberId;
+        private String memberName;
         private Long commentId;
         private String content;
         private LocalDateTime createdAt;
@@ -65,6 +66,7 @@ public class CommentDto {
 
             return new CommentDto.CommentResponseDto(
                     comment.getMember().getId(),
+                    comment.getMember().getName(),
                     comment.getId(),
                     comment.getContent(),
                     comment.getCreatedAt());
@@ -77,6 +79,7 @@ public class CommentDto {
     public static class MultiCommentDto {
 
         private Long memberId;
+        private String memberName;
         private Long commentId;
         private String content;
         private LocalDateTime createdAt;
@@ -86,6 +89,7 @@ public class CommentDto {
             return comments.stream()
                     .map(comment -> new MultiCommentDto(
                             comment.getMember().getId(),
+                            comment.getMember().getName(),
                             comment.getId(),
                             comment.getContent(),
                             comment.getCreatedAt()))
