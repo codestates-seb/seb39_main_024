@@ -34,8 +34,8 @@
 - Discord, Microsoft Teams, Google Meet를 통해 소통
 
 # 공유문서
-### [요구사항정의서](https://ksackr-my.sharepoint.com/:x:/g/personal/hby2233_ks_ac_kr/Eb-kcbnhEqVKmNezrzqrhEUBgX64yRLw0ksTkqLiQFrsaQ?e=vhm365)
-### [화면정의서](https://ksackr-my.sharepoint.com/:w:/g/personal/hby2233_ks_ac_kr/Eb8lxh4HdKxIhm8yWexsA_wBwo8X6R5uzQSAwfFJe4CFCg?e=Uw4VQi)
+### [요구사항정의서](https://ksackr-my.sharepoint.com/:x:/g/personal/hby2233_ks_ac_kr/Eb-kcbnhEqVKmNezrzqrhEUB9wStrivPM_xKllXPyOejfw?e=xCSzFO)
+### [화면정의서](https://www.figma.com/file/aSrMGMtrdEMGiCzG7400C7/[main-project]-화면-만들기?node-id=0%3A1)
 ### [테이블명세서](https://docs.google.com/spreadsheets/d/1g31xPBhDgVgAwEFuHcrMhiMb_Crma9F9YNMw2Pe0d6Q/edit#gid=0)
 
 ## ✅ 팀원

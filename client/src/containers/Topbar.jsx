@@ -3,13 +3,17 @@ import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import instance from '../service/request';
 import { isLoginState } from '../recoil/atoms/isLoginState';
+import { authorizationState } from '../recoil/atoms/authorizationState';
+import ProfileIcon from './components/ProfileIcon';
 import homeLogo from '../images/logo_home.png';
 import mypageLogo from '../images/logo_mypage.png';
-import Button from '../components/Button';
-import Modal from '../components/Modal';
+import Button from './components/Button';
+import Modal from './components/Modal';
+import logoutIcon from '../images/logout.png';
 
 export default function TopBar({ path }) {
   const isLogin = useRecoilValue(isLoginState);
+  const token = useRecoilValue(authorizationState);
 
   const [modalOpen, setModalOpen] = useState(false);
   const menuHandler = () => {
@@ -18,7 +22,12 @@ export default function TopBar({ path }) {
 
   const logoutHandler = async () => {
     try {
-      await instance.post('/logout');
+      await instance.post('/logout', '_', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token,
+        },
+      });
       alert('로그아웃 되었습니다 !');
       window.localStorage.clear();
       window.location.replace('/');
@@ -30,8 +39,8 @@ export default function TopBar({ path }) {
   return (
     <>
       <header
-        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full ${
-          path.includes('/mypage') ? 'bg-green' : 'fixed bg-pink'
+        className={`flex flex-row items-center justify-between h-16 md:h-20 w-full fixed z-10 ${
+          path.includes('/mypage') ? 'bg-green' : 'bg-pink'
         }`}
       >
         <div className="flex flex-row items-center">
@@ -61,16 +70,10 @@ export default function TopBar({ path }) {
           )}
           {isLogin && (
             <>
-              <Link to="/mypage">
-                <img
-                  className="m-2"
-                  src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/30/000000/external-user-user-tanah-basah-glyph-tanah-basah-4.png"
-                  alt="user"
-                />
-              </Link>
+              <ProfileIcon />
               <img
                 className="m-2 cursor-pointer"
-                src="https://img.icons8.com/fluency-systems-filled/30/000000/logout-rounded.png"
+                src={logoutIcon}
                 alt="logout"
                 onClick={logoutHandler}
                 aria-hidden="true"

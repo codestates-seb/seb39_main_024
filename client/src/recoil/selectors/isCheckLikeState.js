@@ -1,19 +1,20 @@
 import { selectorFamily } from 'recoil';
 import instance from '../../service/request';
 
-import { categoryIdState } from '../atoms/categoryIdState';
+import { memberIdState } from '../atoms/memberIdState';
 import { authorizationState } from '../atoms/authorizationState';
 
-export const postsCategoryState = selectorFamily({
-  key: 'postsCategoryState',
+export const isCheckLikeState = selectorFamily({
+  key: 'isCheckLikeState',
   get:
-    (page) =>
+    (boardId) =>
     async ({ get }) => {
       try {
-        const categoryId = get(categoryIdState);
+        const memberId = get(memberIdState);
         const token = get(authorizationState);
+
         const res = await instance.get(
-          `/board?categoryId=${categoryId}&page=${page}&size=4&sort=id,DESC`,
+          `/board/${boardId}/checklike?memberId=${memberId}`,
           {
             headers: {
               'Content-Type': 'application/json',

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import instance from '../../../service/request';
 import { memberIdState } from '../../../recoil/atoms/memberIdState';
+import { authorizationState } from '../../../recoil/atoms/authorizationState';
 import Image from './Image';
 import Category from './Category';
 
 export default function Create() {
   const memberId = useRecoilValue(memberIdState);
+  const token = useRecoilValue(authorizationState);
 
   const [category, setCategory] = useState(0);
 
@@ -68,6 +70,7 @@ export default function Create() {
       await instance.post(`/board/${categoryId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: token,
         },
       });
       alert('글이 등록되었습니다 !');

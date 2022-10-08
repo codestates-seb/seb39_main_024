@@ -4,6 +4,7 @@ import instance from '../../../service/request';
 import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { postReadState } from '../../../recoil/selectors/postReadState';
 import { categoryIdState } from '../../../recoil/atoms/categoryIdState';
+import { authorizationState } from '../../../recoil/atoms/authorizationState';
 
 import Image from './Image';
 import Category from './Category';
@@ -12,6 +13,7 @@ export default function Edit() {
   const memberId = useRecoilValue(memberIdState);
   const postRead = useRecoilValue(postReadState);
   const categoryRead = useRecoilValue(categoryIdState);
+  const token = useRecoilValue(authorizationState);
 
   const [category, setCategory] = useState(categoryRead);
 
@@ -75,6 +77,7 @@ export default function Edit() {
       await instance.patch(`/board/${postRead.boardId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: token,
         },
       });
       alert('글이 수정되었습니다 !');

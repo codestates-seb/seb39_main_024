@@ -4,7 +4,6 @@ import { RecoilRoot } from 'recoil';
 import Summary from './pages/mypage/Summary';
 
 const Topbar = lazy(() => import('./containers/Topbar'));
-// const Sidebar = lazy(() => import('./containers/Sidebar'));
 const Navbar = lazy(() => import('./containers/Navbar'));
 const Join = lazy(() => import('./pages/auth/Join'));
 const Login = lazy(() => import('./pages/auth/Login'));
