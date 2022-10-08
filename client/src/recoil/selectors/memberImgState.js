@@ -18,6 +18,13 @@ export const memberImgState = selector({
       const data = await res.data;
       return data;
     } catch (err) {
+      const errStatus = err.response.data.status === 500;
+      const errMsg = err.response.data.message.includes(
+        'The Token has expired'
+      );
+      if (errStatus && errMsg) {
+        return 'token';
+      }
       console.log('err', err);
     }
   },

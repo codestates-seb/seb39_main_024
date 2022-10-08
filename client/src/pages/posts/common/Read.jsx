@@ -118,11 +118,7 @@ export default function Read() {
       <ImageBox postRead={postRead} />
       <section className="flex justify-between bg-white">
         <div className="flex items-center">
-          <img
-            className="w-6 h-6 mr-3 rounded-full"
-            src={postRead.memberImage}
-            alt="memberImage"
-          />
+          <span className="mr-1">👤</span>
           <span className="mr-3">{postRead.memberName}</span>
           <span>{`${date} ${time}`}</span>
         </div>

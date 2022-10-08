@@ -62,7 +62,6 @@ export default function Navbar({ path }) {
                 <Button link="/login" str="글쓰기" onClick={loginPageHandler} />
               )}
             </div>
-            <Search placeholder="글 검색하기" />
           </div>
         </div>
       )}

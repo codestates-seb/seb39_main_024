@@ -23,14 +23,16 @@ export default function Search({ placeholder }) {
 
   return (
     <div className="flex border-b -translate-x-5">
-      <input
-        ref={inputRef}
-        className="pt-1.5 w-full h-full outline-none"
-        type="search"
-        placeholder={placeholder}
-        onKeyPress={onKeyPress}
-      />
-      <button type="submit" onClick={onClick}>
+      <div>
+        <input
+          ref={inputRef}
+          className="pt-1.5 sm:w-[90px] w-full outline-none"
+          type="search"
+          placeholder={placeholder}
+          onKeyPress={onKeyPress}
+        />
+      </div>
+      <button type="submit" onClick={onClick} className="sm:hidden">
         <SearchIcon />
       </button>
     </div>
