@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.codestates.flyaway.global.exception.ExceptionCode.*;
 import static com.codestates.flyaway.web.board.dto.BoardDto.*;
@@ -76,14 +77,20 @@ public class BoardService {
         return toResponseDto(board);
     }
 
-    public Page<Board> readAll(Pageable pageable) {
+    public List<MultiBoardDto> readAll(Pageable pageable) {
 
-        return boardRepository.findAll(pageable);
+        Page<Board> boardPage = boardRepository.findAll(pageable);
+        List<Board> board = boardPage.getContent();
+
+        return MultiBoardDto.toResponsesDto(board);
     }
 
-    public Page<Board> readByCategory(Long categoryId, Pageable pageable) {
+    public List<MultiBoardDto> readByCategory(Long categoryId, Pageable pageable) {
 
-        return boardRepository.findAllByCategoryId(categoryId, pageable);
+        Page<Board> boardCategory = boardRepository.findAllByCategoryId(categoryId, pageable);
+        List<Board> categories = boardCategory.getContent();
+
+        return MultiBoardDto.toResponsesDto(categories);
     }
 
     @Transactional
@@ -103,36 +110,33 @@ public class BoardService {
                 new BusinessLogicException(ARTICLE_NOT_FOUND));
     }
 
-    //TODO 이미지 url 잘 내려오는지 확인 후 삭제
-//    public Resource getImage(Long imageId) {
-//
-//        BoardImageDto boardImageDto = boardImageService.findByImageId(imageId);
-//        boardImageDto.getFileUrl();
-//        boardImageDto.getFileName();
-//
-//        String path = "file:" + boardImageService.getFullPath(boardImageDto.getFileName());
-//
-//        try {
-//            return new UrlResource(path);
-//        }catch (MalformedURLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-    //Todo 좋아요기능 아직 덜만들었음
     @Transactional
-    public void doLike(Long memberId, Long boardId) {
+    public boolean doLike(Long boardId, Long memberId) {
+
+        boolean likeResult;
+        Member member = memberService.findById(memberId);
+        Board board = findById(boardId);
+        Optional<Likes> savedLikes = likesRepository.findByBoardAndMember(board, member);
+        if(savedLikes.isPresent()) {
+            likesRepository.findByBoardAndMember(board, member).ifPresent(id -> likesRepository.deleteAll());
+            board.dislike();
+            likeResult = false;
+        }else {
+            board.addLikeCount();
+            likeResult = true;
+            likesRepository.save(Likes.builder()
+                    .board(board)
+                    .member(member)
+                    .build());
+        }
+        return likeResult;
+    }
+
+    public boolean readLike(Long boardId, Long memberId) {
 
         Member member = memberService.findById(memberId);
         Board board = findById(boardId);
-        board.addLikeCount();
-        likesRepository.save(Likes.builder()
-                .board(board)
-                .member(member)
-                .build());
-        likesRepository.findByBoardAndMember(board, member).ifPresent(id -> {
-            likesRepository.deleteAll();
-            board.dislike();
-        });
+        Optional<Likes> savedLikes = likesRepository.findByBoardAndMember(board, member);
+        return savedLikes.isPresent();
     }
 }

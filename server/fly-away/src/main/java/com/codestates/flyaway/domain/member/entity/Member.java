@@ -3,7 +3,6 @@ package com.codestates.flyaway.domain.member.entity;
 import com.codestates.flyaway.domain.board.entity.Board;
 import com.codestates.flyaway.domain.comment.entity.Comment;
 import com.codestates.flyaway.domain.likes.Likes;
-import com.codestates.flyaway.domain.member.util.PasswordConverter;
 import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.record.entity.Record;
 import com.codestates.flyaway.global.audit.Auditable;
@@ -13,10 +12,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static com.codestates.flyaway.domain.member.util.MemberUtil.*;
 import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
@@ -46,13 +44,15 @@ public class Member extends Auditable {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = ALL)
-    private List<Likes> likes = new ArrayList<>();
+    private Set<Likes> likes = new HashSet<>();
 
     private String name;
     private String email;
 
-    @Convert(converter = PasswordConverter.class)
+//    @Convert(converter = PasswordConverter.class)
     private String password;
+
+    private String isLoggedIn;
 
     public Member(String name, String email, String password) {
         this.name = name;
@@ -60,18 +60,27 @@ public class Member extends Auditable {
         this.password = password;
     }
 
-    public void setMemberImage(MemberImage memberImage) {
-        this.memberImage = memberImage;
-    }
 
 
     //==================
 
 
+    public void setMemberImage(MemberImage memberImage) {
+        this.memberImage = memberImage;
+    }
+
     public void update(String name, String password) {
         Optional.ofNullable(name)
                 .ifPresent(n -> this.name = n);
         Optional.ofNullable(password)
-                .ifPresent(p -> this.password = p);
+                .ifPresent(p -> this.password = encode(p));
+    }
+
+    public void setLogin() {
+        this.isLoggedIn = "Y";
+    }
+
+    public void setLogout(){
+        this.isLoggedIn = "N";
     }
 }

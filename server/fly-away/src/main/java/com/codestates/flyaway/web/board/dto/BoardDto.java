@@ -63,24 +63,28 @@ public class BoardDto {
     public static class BoardResponseDto {
 
         private Long memberId;
+        private String memberName;
         private Long categoryId;
         private Long boardId;
         private String title;
         private String content;
         private List<Long> imageId;
         private int viewCount;
+        private int likeCount;
         private LocalDateTime createdAt;
 
         public static BoardResponseDto toResponseDto(Board board){
 
             return new BoardResponseDto(
                     board.getMember().getId(),
+                    board.getMember().getName(),
                     board.getCategory().getId(),
                     board.getId(),
                     board.getTitle(),
                     board.getContent(),
                     board.getImages().stream().map(BoardImage::getId).collect(Collectors.toList()),
                     board.getViewCount(),
+                    board.getLikeCount(),
                     board.getCreatedAt());
         }
     }
@@ -90,23 +94,27 @@ public class BoardDto {
     @NoArgsConstructor
     public static class MultiBoardDto {
 
+        private String memberName;
         private Long boardId;
         private String title;
         private String content;
         private List<Long> imageId;
         private LocalDateTime createdAt;
         private int viewCount;
+        private int likeCount;
 
         public static List<MultiBoardDto> toResponsesDto(List<Board> boards) {
 
             return boards.stream()
                     .map(board -> new MultiBoardDto(
+                            board.getMember().getName(),
                             board.getId(),
                             board.getTitle(),
                             board.getContent(),
                             board.getImages().stream().map(BoardImage::getId).collect(Collectors.toList()),
                             board.getCreatedAt(),
-                            board.getViewCount()))
+                            board.getViewCount(),
+                            board.getLikeCount()))
                     .collect(Collectors.toList());
         }
     }
