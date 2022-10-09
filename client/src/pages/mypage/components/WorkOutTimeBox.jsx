@@ -15,12 +15,16 @@ export default function WorkOutTimeBox() {
   const totalRecord = Math.floor(data.totalRecord / 60);
 
   return (
-    <section className="flex flex-col justify-center p-4 mb-4 bg-pale_pink rounded-[8px] grow">
-      <p className="">일일 운동 시간</p>
-      <p className="text-center">오늘 운동 시간(분) / 총 운동 시간(분)</p>
-      <p className="text-center text-5xl">
-        {todayRecord} / {totalRecord}
-      </p>
+    <section className="flex flex-col p-4 mb-4 bg-light_pink rounded-[8px]">
+      <p className="font-extrabold mb-3">일일 운동 시간</p>
+      <div className="flex flex-col justify-center itmes-center">
+        <p className="text-center text-xs">
+          오늘 운동 시간(분) / 총 운동 시간(분)
+        </p>
+        <p className="text-center text-5xl">
+          {todayRecord} / {totalRecord}
+        </p>
+      </div>
     </section>
   );
 }

@@ -31,10 +31,16 @@ export default function LikeCount({ like }) {
       {isLogin && (
         <>
           <button className="mr-2" onClick={likeHandler}>
-            {isCheckLike && <span className="text-xl">&#10084;</span>}
-            {!isCheckLike && <span className="text-xl">&#129293;</span>}
+            {isCheckLike && (
+              <span className="sm:text-2xl text-3xl text-rose-500">
+                &#9829;
+              </span>
+            )}
+            {!isCheckLike && (
+              <span className="sm:text-xl  text-2xl">&#129293;</span>
+            )}
           </button>
-          <span className="text-xl">{like}</span>
+          <span className="text-2xl">{like}</span>
         </>
       )}
       {!isLogin && (

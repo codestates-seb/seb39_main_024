@@ -9,7 +9,7 @@ export default memo(function Calendar({ summary }) {
   const records = useRecoilValue(getMemberInfoState).records;
 
   return (
-    <section className="flex justify-center items-center sm:my-5 h-full">
+    <section className="flex justify-center items-center w-full h-full">
       <CalendarApp
         showNeighboringMonth={false}
         formatDay={(locale, date) => (summary ? '' : moment(date).format('DD'))}
@@ -19,7 +19,7 @@ export default memo(function Calendar({ summary }) {
             : records.map((el) =>
                 el.date === moment(date).format('YYYY-MM-DD') ? (
                   <div
-                    className={
+                    className={`${
                       el.record < 900
                         ? 'record record__mint'
                         : el.record < 1800
@@ -28,6 +28,7 @@ export default memo(function Calendar({ summary }) {
                         ? 'record record__green'
                         : 'record record__deep-green'
                     }
+                    text-[20px] h-full pt-2`}
                   >
                     {summary
                       ? ''
