@@ -6,9 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import static com.codestates.flyaway.web.member.dto.MemberDto.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -49,12 +46,8 @@ public class MemberController {
 
     @ApiOperation(value = "회원 탈퇴")
     @DeleteMapping("/{memberId}")
-    public String delete(@PathVariable long memberId, HttpServletRequest request) {
+    public String delete(@PathVariable long memberId) {
         memberService.delete(memberId);
-
-        HttpSession session = request.getSession(false);
-        session.invalidate();
-
         return "회원 탈퇴 성공";
     }
 }
