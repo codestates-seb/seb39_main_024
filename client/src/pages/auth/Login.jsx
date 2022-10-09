@@ -49,12 +49,22 @@ export default function Login() {
         setIsLogin(true);
         setMemberId(res.headers.memberid);
         setAuthorization(res.headers.authorization);
-        console.log(res);
         alert('로그인 되었습니다.');
         navigate('/');
       })
-      .catch((e) => {
-        console.log('err', e);
+      .catch((err) => {
+        const errStatus = err.response.data.status === 400;
+        const errMsgEmail = err.response.data.message.includes('이메일');
+        const errMsgPassword = err.response.data.message.includes('비밀번호');
+        if (errStatus && errMsgEmail) {
+          alert('존재하지 않는 이메일입니다.');
+          return;
+        }
+        if (errStatus && errMsgPassword) {
+          alert('비밀번호가 일치하지 않습니다.');
+          return;
+        }
+        console.log('err', err);
       });
   };
   return (

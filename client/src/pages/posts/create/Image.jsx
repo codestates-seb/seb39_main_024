@@ -78,7 +78,7 @@ export default function Image({ imgFile, setImgFile }) {
           >
             {imgFile.url.map((img, id) => (
               <SwiperSlide
-                key={id}
+                key={Math.random() * id}
                 className="p-3 m-0 flex flex-col justify-center items-center"
               >
                 <img src={img} alt={`${img.url}-${id}`} className="w-60 h-60" />

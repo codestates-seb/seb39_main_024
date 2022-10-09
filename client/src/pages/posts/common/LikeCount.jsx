@@ -3,17 +3,17 @@ import instance from '../../../service/request';
 import { boardIdState } from '../../../recoil/atoms/boardIdState';
 import { memberIdState } from '../../../recoil/atoms/memberIdState';
 import { isCheckLikeState } from '../../../recoil/selectors/isCheckLikeState';
+import { isLoginState } from '../../../recoil/atoms/isLoginState';
 
 export default function LikeCount({ like }) {
   const boardId = useRecoilValue(boardIdState);
   const memberId = useRecoilValue(memberIdState);
   const isCheckLike = useRecoilValue(isCheckLikeState(boardId));
+  const isLogin = useRecoilValue(isLoginState);
 
   const likeHandler = async () => {
     try {
-      await instance.post(
-        `http://211.41.205.19:8080/board/${boardId}/like?memberId=${memberId}`
-      );
+      await instance.post(`/board/${boardId}/like?memberId=${memberId}`);
       if (!isCheckLike) {
         alert('해당 글에 좋아요를 눌렀습니다.');
       }
@@ -25,13 +25,35 @@ export default function LikeCount({ like }) {
       console.log('err', err);
     }
   };
+
   return (
     <section>
-      <button className="mr-2" onClick={likeHandler}>
-        {isCheckLike && <span className="text-xl">&#10084;</span>}
-        {!isCheckLike && <span className="text-xl">&#129293;</span>}
-      </button>
-      <span className="text-xl">{like}</span>
+      {isLogin && (
+        <>
+          <button className="mr-2" onClick={likeHandler}>
+            {isCheckLike && (
+              <span className="sm:text-2xl text-3xl text-rose-500">
+                &#9829;
+              </span>
+            )}
+            {!isCheckLike && (
+              <span className="sm:text-xl  text-2xl">&#129293;</span>
+            )}
+          </button>
+          <span className="text-2xl">{like}</span>
+        </>
+      )}
+      {!isLogin && (
+        <>
+          <button
+            className="mr-2"
+            onClick={() => alert('로그인 후 이용해주세요.')}
+          >
+            <span className="text-xl">&#129293;</span>
+          </button>
+          <span className="text-xl">{like}</span>
+        </>
+      )}
     </section>
   );
 }

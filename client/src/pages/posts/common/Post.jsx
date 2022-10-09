@@ -19,7 +19,7 @@ export default function Post({ items }) {
 
   return (
     <section
-      className="flex flex-col p-2.5 m-1.5 border-solid border border-slate-500 rounded-sm hover:cursor-pointer hover:bg-slate-200/30"
+      className="flex flex-col justify-between p-2.5 m-1.5 border-solid border border-slate-500 rounded-sm hover:cursor-pointer hover:bg-slate-200/30"
       onClick={postReadHandler}
       aria-hidden="true"
     >
@@ -31,9 +31,13 @@ export default function Post({ items }) {
       <p className="text-start text-2xl py-2">{items.title}</p>
       <div className="flex justify-between">
         <span className="text-xl">&#128100; {items.memberName}</span>
-        <div className="flex row-end text-lg">
-          {isCheckLike && <span>&#10084;</span>}
-          {!isCheckLike && <span>&#129293;</span>}
+        <div className="flex row-end items-center text-lg">
+          {isCheckLike && (
+            <span className="sm:text-2xl text-3xl text-rose-500">&#9829;</span>
+          )}
+          {!isCheckLike && (
+            <span className="sm:text-xl text-2xl">&#129293;</span>
+          )}
           <span className="ml-2">{items.likeCount}</span>
         </div>
       </div>

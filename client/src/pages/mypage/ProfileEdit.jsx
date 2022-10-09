@@ -70,26 +70,26 @@ export default function ProfileEdit() {
     }
   };
   return (
-    <section className="my-10">
+    <section>
       <form
         className="flex flex-col items-center"
         method="post"
         encType="multipart/form-data"
       >
         {imgFile.url.trim().length === 0 && (
-          <p className="text-center border-solid border border-zinc-300 w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white">
+          <p className="text-center border-solid border border-zinc-300 rounded-lg w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white">
             No Image
           </p>
         )}
         {imgFile.url.trim().length > 0 && (
           <img
-            className="text-center border-solid border border-zinc-300 rounded w-80 h-80 sm:w-64 sm:h-64 sm:mt-6 bg-white"
+            className="text-center border-solid border border-zinc-300 rounded-lg w-80 h-80 sm:w-64 sm:h-64 sm:mt-6"
             src={imgFile.url}
             alt={`${imgFile.url}`}
           />
         )}
         <label
-          className="bg-pink p-2 my-5 rounded text-xl"
+          className="bg-pink p-2 my-5 rounded-lg text-xl"
           htmlFor="img"
           onChange={imgAddHandler}
         >
@@ -97,14 +97,14 @@ export default function ProfileEdit() {
           <input className="hidden" id="img" type="file" accept="image/*" />
         </label>
         <input
-          className="p-1.5 mb-2 w-80 sm:w-64 text-xl rounded"
+          className="p-1.5 mb-2 w-80 sm:w-64 text-xl rounded-lg border-solid border-slate-200 border-2"
           placeholder="이름 수정"
           name="name"
           value={editValue.name}
           onChange={nameValueHandler}
         />
         <input
-          className="p-1.5 w-80 sm:w-64 text-xl rounded"
+          className="p-1.5 w-80 sm:w-64 text-xl rounded-lg border-slate-200 border-2"
           placeholder="비밀번호 수정"
           name="password"
           value={editValue.password}
@@ -113,13 +113,13 @@ export default function ProfileEdit() {
       </form>
       <div className="flex flex-col items-center mt-10">
         <button
-          className="bg-pink w-80 sm:w-64 p-1 mb-2 text-2xl rounded"
+          className="bg-pink w-80 sm:w-64 p-1 mb-2 text-2xl rounded-lg"
           onClick={cancelHandler}
         >
           취소
         </button>
         <button
-          className="bg-green w-80 sm:w-64 p-1 sm:mb-6 text-2xl rounded"
+          className="bg-green w-80 sm:w-64 p-1 sm:mb-6 text-2xl rounded-lg"
           onClick={submitHandler}
         >
           적용
