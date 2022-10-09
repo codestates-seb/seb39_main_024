@@ -70,7 +70,7 @@ export default function ProfileEdit() {
     }
   };
   return (
-    <section>
+    <section className="md:py-10">
       <form
         className="flex flex-col items-center"
         method="post"
