@@ -97,14 +97,14 @@ export default function ProfileEdit() {
           <input className="hidden" id="img" type="file" accept="image/*" />
         </label>
         <input
-          className="p-1.5 mb-2 w-80 sm:w-64 text-xl rounded"
+          className="p-1.5 mb-2 w-80 sm:w-64 text-xl rounded border-solid border-slate-200 border-2"
           placeholder="이름 수정"
           name="name"
           value={editValue.name}
           onChange={nameValueHandler}
         />
         <input
-          className="p-1.5 w-80 sm:w-64 text-xl rounded"
+          className="p-1.5 w-80 sm:w-64 text-xl rounded border-slate-200 border-2"
           placeholder="비밀번호 수정"
           name="password"
           value={editValue.password}
