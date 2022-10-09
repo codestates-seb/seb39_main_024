@@ -8,9 +8,9 @@ import medal from '../../../images/medal.png';
 export default function Goal() {
   const totalRecord = useRecoilValue(getMemberInfoState).totalRecord;
   return (
-    <section className="p-4 rounded-[8px] bg-pale_pink grow">
-      <p className="pr-5">목표 달성 스티커</p>
-      <div className="flex items-center w-full md:pt-8 sm:overflow-scroll md:flex-wrap">
+    <section className="p-4 rounded-[8px] bg-light_pink grow">
+      <p className="md:pb-4 font-extrabold">목표 달성 스티커</p>
+      <div className="flex items-center w-full overflow-x-scroll">
         <img
           className={`m-[5px] w-[100px] ${
             totalRecord < 72000 ? 'grayscale' : ''
