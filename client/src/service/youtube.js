@@ -46,7 +46,7 @@ class Youtube {
         id: id,
         part: 'snippet, statistics',
         fields:
-          'items(id,snippet(publishedAt,title,description,channelTitle),statistics(likeCount,viewCount))',
+          'items(id,snippet(publishedAt,title,description,channelTitle,thumbnails),statistics(likeCount,viewCount))',
       },
     });
     return response.data.items;
