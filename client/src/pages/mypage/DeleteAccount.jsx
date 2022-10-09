@@ -10,13 +10,14 @@ export default function DeleteAccount() {
 
   const deleteAccountHandler = async () => {
     try {
-      await instance.delete(`/members/${memberId}`, '_', {
+      await instance.delete(`/members/${memberId}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: token,
         },
       });
       alert('회원탈퇴가 되었습니다 ! 그동안 서비스를 이용해주셔서 감사합니다.');
+      window.localStorage.clear();
       window.location.replace('/');
     } catch (err) {
       console.log('err', err);
