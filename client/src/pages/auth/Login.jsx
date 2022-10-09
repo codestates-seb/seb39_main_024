@@ -53,14 +53,13 @@ export default function Login() {
         navigate('/');
       })
       .catch((err) => {
-        const errStatus = err.response.data.status === 400;
         const errMsgEmail = err.response.data.message.includes('이메일');
         const errMsgPassword = err.response.data.message.includes('비밀번호');
-        if (errStatus && errMsgEmail) {
+        if (errMsgEmail) {
           alert('존재하지 않는 이메일입니다.');
           return;
         }
-        if (errStatus && errMsgPassword) {
+        if (errMsgPassword) {
           alert('비밀번호가 일치하지 않습니다.');
           return;
         }
