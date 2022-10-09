@@ -50,7 +50,7 @@ export default function Videos({ query, id }) {
           {
             memberId: memberId,
             title: video[0].snippet.title,
-            url: video[0].snippet.thumbnails.default.url,
+            url: video[0].snippet.thumbnails.standard.url,
             videoId: video[0].id,
           },
           {
