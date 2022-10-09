@@ -5,6 +5,7 @@ import com.codestates.flyaway.domain.comment.entity.Comment;
 import com.codestates.flyaway.domain.likes.Likes;
 import com.codestates.flyaway.domain.memberimage.MemberImage;
 import com.codestates.flyaway.domain.record.entity.Record;
+import com.codestates.flyaway.domain.video.entity.Video;
 import com.codestates.flyaway.global.audit.Auditable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,9 @@ public class Member extends Auditable {
 
     @OneToMany(mappedBy = "member", cascade = REMOVE)
     private List<Record> records = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = REMOVE)
+    private List<Video> videos = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
