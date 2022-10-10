@@ -35,7 +35,7 @@ public class BoardImageService {
     @Value("${cloud.aws.s3.bucket}/default")
     private String defaultUrl;
 
-    BoardImage defaultImage = new BoardImage("default", defaultUrl, "defaultboard.jpg");
+    BoardImage defaultImage = new BoardImage("default", "fly-away-bucket/default", "defaultboard.jpg");
 
     public BoardImage saveFile(MultipartFile multipartFile, Board board) throws IOException {
 
