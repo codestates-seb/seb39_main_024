@@ -16,6 +16,46 @@ MySQL
 java -jar /server/fly-away/build/libs/fly-away-0.0.1-SNAPSHOT.jar
 ```
 <details>
+<summary>실행하기 위한 yml파일</summary>
+<div markdown="1">
+  <pre> spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://[ RDS ENDPOINT ADDRESS]:[ PORT NUMBER ]/[ DATABASE NAME]
+      username: { username }
+      password: { password }
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: update
+    open-in-view: false
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+cloud:
+  aws:
+    credentials:
+      accessKey: { AWS S3 ACCESSKEY }
+      secretKey: { AWS S3 SECRETKEY }
+    s3:
+      bucket: { AWS S3 BUCKET NAME }
+      defaultBoard: { AWS S3 STATIC DEFAULT BOARD IMAGE URL }
+      default: { AWS S3 STATIC DEFAULT MEMBER IMAGE URL }
+    region:
+      static: { AWS REGION }
+    stack:
+      auto: false
+config:
+  domain: { AWS S3 DOMAIN } </pre>
+  </div>
+</details>
+  
+<details>
 <summary>프로젝트 패키지 구조</summary>
 <div markdown="1">
   <img src="https://user-images.githubusercontent.com/104135990/194977628-9ba3c8fc-da4b-4446-a70d-ce7fcff7d0e8.PNG">
