@@ -1,31 +1,29 @@
 # client 개발 기술 상세
 
----
-
 ## 프로젝트 구조
 
-- 회원 가입
+- 회원 가입 (join)
 
-- 로그인
+- 로그인 (login)
 
-- jwt 로그인 방식
+  - jwt 로그인 방식
 
-- 로그아웃
+- 로그아웃 (logout)
 
-- 마이페이지
+- 마이페이지 (mypage)
 
   - 요약
   - 캘린더
   - 프로필 편집
   - 회원 탈퇴
 
-- 운동하기 게시판
+- 운동하기 게시판 (videos)
 
   - 조회수 Top 10
   - 홈트레이닝
   - 스트레칭
 
-- 공유하기 게시판
+- 공유하기 게시판 (posts)
 
   - 전체
   - 운동 기록
@@ -72,21 +70,13 @@
 
 ## 실행방법
 
-- step 1
+- step 1 : git clone
 
-  -> git clone git@github.com:codestates-seb/seb39_main_024.git
+- step 2 : cd client
 
-- step 2
+- step 3 : npm install
 
--> cd client
-
-- step 3
-
--> npm install
-
-- step 4
-
--> npm start
+- step 4 : npm start
 
 ## 운영 환경
 
