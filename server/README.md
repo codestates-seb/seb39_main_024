@@ -1,4 +1,4 @@
-# FLYAWAY SERVER
+# 🥇FLYAWAY SERVER
 > 개발기간 : 2022-09-11 ~ 2022-10-11
 
 ## Develop
