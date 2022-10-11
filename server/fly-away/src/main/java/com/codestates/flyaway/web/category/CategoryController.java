@@ -40,13 +40,9 @@ public class CategoryController {
     }
 
     @GetMapping 
-    public MultiResponseDto readCategories(Pageable pageable) {
+    public List<CategoryDto.MultiCategoryDto> readCategories(Pageable pageable) {
 
-        Page<Category> categories = categoryService.readAll(pageable);
-        List<Category> category = categories.getContent();
-        List<CategoryDto.MultiCategoryDto> responses = CategoryDto.MultiCategoryDto.toResponsesDto(category);
-
-        return new MultiResponseDto<>(responses, categories);
+        return categoryService.readAll(pageable);
     }
 
     @DeleteMapping("/{categoryId}")
