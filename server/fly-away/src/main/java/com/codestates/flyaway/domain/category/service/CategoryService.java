@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.codestates.flyaway.web.category.dto.CategoryDto.*;
 import static com.codestates.flyaway.web.category.dto.CategoryDto.CategoryResponseDto.*;
 
@@ -39,9 +41,12 @@ public class CategoryService {
     }
 
     @Transactional
-    public Page<Category> readAll(Pageable pageable) {
+    public List<MultiCategoryDto> readAll(Pageable pageable) {
 
-        return categoryRepository.findAll(pageable);
+        Page<Category> savedCategory = categoryRepository.findAll(pageable);
+        List<Category> categories = savedCategory.getContent();
+
+        return MultiCategoryDto.toResponsesDto(categories);
     }
 
     @Transactional
