@@ -16,8 +16,9 @@ MySQL
 java -jar /server/fly-away/build/libs/fly-away-0.0.1-SNAPSHOT.jar
 ```
 <details>
-<summary>yml 파일</summary>
+<summary>프로젝트 패키지 구조</summary>
 <div markdown="1">
+  <img src="https://user-images.githubusercontent.com/104135990/194977628-9ba3c8fc-da4b-4446-a70d-ce7fcff7d0e8.PNG">
   </div>
 </details>
 
@@ -34,4 +35,5 @@ java -jar /server/fly-away/build/libs/fly-away-0.0.1-SNAPSHOT.jar
 
 ## 기술스택 및 배포구조
 <img src="https://user-images.githubusercontent.com/104135990/194977290-08ef627c-a5db-4a74-afca-77ad2e3aeb86.png" width="600" height="450"/>
+
 
