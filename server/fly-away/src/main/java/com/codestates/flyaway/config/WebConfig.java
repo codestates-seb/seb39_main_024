@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/record/**", "/members/**", "/logout")  // 미인증 사용자의 회원,게시판 기능을 모두 막고, 그 중 회원가입, 게시글 전체 목록만 허용
+                .addPathPatterns("/record/**", "/members/**", "/logout")  // 미인증 사용자의 회원, 운동 기록 기능을 막고, 그 중 회원가입만 허용
                 .excludePathPatterns("/members/join");
     }
 }
