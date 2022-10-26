@@ -30,7 +30,6 @@ public class MemberImageService {
     private final AmazonS3 amazonS3;
     private final MemberImageRepository imageRepository;
 
-
     /**
      * S3 이미지 업로드
      * @param multipartFile

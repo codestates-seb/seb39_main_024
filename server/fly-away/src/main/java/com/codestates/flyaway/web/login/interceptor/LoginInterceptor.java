@@ -1,13 +1,14 @@
 package com.codestates.flyaway.web.login.interceptor;
 
-import com.auth0.jwt.JWT;
-import com.codestates.flyaway.domain.member.entity.Member;
+import com.codestates.flyaway.domain.login.util.JwtUtil;
 import com.codestates.flyaway.domain.member.repository.MemberRepository;
-import com.codestates.flyaway.global.exception.BusinessLogicException;
-import com.codestates.flyaway.global.exception.ExceptionCode;
+import com.codestates.flyaway.domain.redis.RedisUtil;
+import com.codestates.flyaway.global.exception.ErrorResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,10 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Map;
 
-import static com.auth0.jwt.algorithms.Algorithm.*;
-import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
+import static com.codestates.flyaway.domain.login.util.JwtUtil.*;
 
 @Slf4j
 @Component
@@ -26,6 +26,8 @@ import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
 public class LoginInterceptor implements HandlerInterceptor {
 
     private final MemberRepository memberRepository;
+    private final RedisUtil redisUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -34,57 +36,44 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        String header = request.getHeader(HEADER);
-
+        //header 확인
+        String header = request.getHeader(AUTHORIZATION);
         if (header == null || !header.startsWith(PREFIX)) {
-            errorResponse(response);
+            errorResponse(response, "token is missing");
             return false;
         }
 
-        String token = request.getHeader(HEADER).replace(PREFIX, "");
-        String email = JWT.require(HMAC512(SECRET)).build()
-                .verify(token)
-                .getClaim("email").asString();
+        String token = request.getHeader(AUTHORIZATION).replace(PREFIX, "");
 
+        //blacklist 확인
+        if (redisUtil.isBlacklist(token)) {
+            log.info("### access token from blacklist - {}", token);
+            errorResponse(response, "token from blacklist");
+            return false;
+        }
+
+        //토큰 검증
+        Map<String, String> verified = jwtUtil.verifyToken(token);
+
+        if (verified.containsKey(AUTHORIZATION)) {
+            response.addHeader(AUTHORIZATION, verified.get(AUTHORIZATION));
+            errorResponse(response, "reissued access token");
+            return false;
+        }
+
+        //이메일 검증
+        String email = verified.get("email");
         if (email == null || !memberRepository.existsByEmail(email)) {
-            errorResponse(response);
-            return false;
-        }
-
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.EMAIL_NOT_EXISTS));
-
-        if (!member.getIsLoggedIn().equals("Y")) {
-            errorResponse(response);
+            errorResponse(response, "email from token not valid");
             return false;
         }
 
         if (request.getRequestURI().equals("/logout")) {
-            log.info("email ={}", email);
+            log.info("### logout interceptor - {}", email);
             request.setAttribute("email", email);
         }
 
         return true;
-    }
-
-    private boolean isPreflightRequest(HttpServletRequest request) {
-        return isOptions(request) && hasHeaders(request) && hasMethod(request) && hasOrigin(request);
-    }
-
-    private boolean isOptions(HttpServletRequest request) {
-        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.toString());
-    }
-
-    private boolean hasHeaders(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Access-Control-Request-Headers"));
-    }
-
-    private boolean hasMethod(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Access-Control-Request-Method"));
-    }
-
-    private boolean hasOrigin(HttpServletRequest request) {
-        return Objects.nonNull(request.getHeader("Origin"));
     }
 
     @Override
@@ -99,9 +88,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
     }
 
-    private void errorResponse(HttpServletResponse response) throws IOException {
+    private void errorResponse(HttpServletResponse response, String message) throws IOException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        String error = mapper.writeValueAsString(ErrorResponse.of(HttpStatus.valueOf(401), message));
+
         response.setStatus(401);
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("로그인이 필요한 서비스입니다.");
+        response.getWriter().write(error);
     }
 }

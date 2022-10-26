@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static com.codestates.flyaway.domain.login.util.JwtUtil.AUTHORIZATION;
+import static com.codestates.flyaway.domain.login.util.JwtUtil.PREFIX;
 import static com.codestates.flyaway.web.login.dto.LoginDto.*;
-import static com.codestates.flyaway.domain.login.util.JwtProperties.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,13 +25,15 @@ public class LoginController {
 
     @ApiOperation(value = "로그인 API")
     @PostMapping("/login")
-    public LoginResponse login(HttpServletResponse response, @RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
 
-        String token = loginService.login(loginRequest);
+        String accessToken = loginService.login(loginRequest);
+
         Member member = loginService.findByEmail(loginRequest.getEmail());
 
         response.addHeader("memberId", String.valueOf(member.getId()));
-        response.addHeader(HEADER, PREFIX + token);
+        response.addHeader(AUTHORIZATION, accessToken);
+
         return new LoginResponse("로그인 성공");
     }
 
@@ -39,12 +42,11 @@ public class LoginController {
     public String logout(HttpServletRequest request) {
 
         String email = (String) request.getAttribute("email");
-        log.info("email ={}", email);
-        loginService.logout(email);
+        String accessToken = request.getHeader(AUTHORIZATION).replace(PREFIX, "");
+        log.info("### 로그아웃 요청 - {}", email);
+
+        loginService.logout(email, accessToken);
 
         return "로그아웃 성공";
-
-//        return "로그인 되지 않은 사용자입니다.";
-//        throw new BusinessLogicException(MEMBER_NOT_AUTHORIZED);
     }
 }

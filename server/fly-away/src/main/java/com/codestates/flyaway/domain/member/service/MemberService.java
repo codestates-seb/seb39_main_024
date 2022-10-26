@@ -31,15 +31,19 @@ public class MemberService {
     private final MemberImageService memberImageService;
     private final RecordRepository recordRepository;
 
-
     /**
      * 회원가입
      * @return 가입 완료된 회원의 id, name, email, createdAt
      */
     public JoinResponse join(JoinRequest joinRequest) {
+        String email = joinRequest.getEmail();
+        String password = joinRequest.getPassword();
 
-        verifyEmail(joinRequest.getEmail());
-        joinRequest.setPassword(encode(joinRequest.getPassword()));
+//        checkEmail(email);
+//        checkPassword(password);
+        verifyEmail(email);
+
+        joinRequest.setPassword(encode(password));
 
         Member member = joinRequest.toEntity();
         Member savedMember = memberRepository.save(member);
@@ -52,7 +56,6 @@ public class MemberService {
      * @return 수정 완료된 회원의 id, name, email, modifiedAt
      */
     public UpdateResponse update(UpdateRequest updateRequest) {
-
         Member member = findById(updateRequest.getMemberId());
         saveImage(updateRequest, member);
 
@@ -66,8 +69,7 @@ public class MemberService {
     /**
      * 이미지 저장 메서드
      */
-    private void saveImage(UpdateRequest updateRequest, Member member) {
-
+    public void saveImage(UpdateRequest updateRequest, Member member) {
         if (updateRequest.getImage() == null) {
             return;
         }
@@ -95,8 +97,7 @@ public class MemberService {
      * @return 회원 프로필 정보
      */
     @Transactional(readOnly = true)
-    public MemberProfileResponse findByIdFetch(long memberId) { //todo : 테스트 코드에서의 오류 해결
-
+    public MemberProfileResponse findByIdFetch(long memberId) {
         Member findMember = memberRepository.findByIdFetch(memberId)
                 .orElseThrow(() -> new BusinessLogicException(MEMBER_NOT_FOUND));
 
