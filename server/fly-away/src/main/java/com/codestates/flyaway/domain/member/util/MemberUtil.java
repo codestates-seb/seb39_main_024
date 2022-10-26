@@ -1,11 +1,16 @@
 package com.codestates.flyaway.domain.member.util;
 
+import com.codestates.flyaway.global.exception.BusinessLogicException;
+import com.codestates.flyaway.global.exception.ExceptionCode;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Pattern;
 
-public class MemberUtil {  //todo : 다른 네이밍 방법 고려
+import static com.codestates.flyaway.global.exception.ExceptionCode.*;
+
+public class MemberUtil {
 
     //이메일
     private static final String REG_EMAIL = "\\w+@\\w+\\.\\w+(\\.\\w+)?";
@@ -20,18 +25,18 @@ public class MemberUtil {  //todo : 다른 네이밍 방법 고려
     /**
      * Email 검증
      */
-    public static void verifyEmail(String email) {
+    public static void checkEmail(String email) {
         if (!Pattern.matches(REG_EMAIL, email)) {
-            throw new RuntimeException("이메일 형식이 올바르지 않습니다.");
+            throw new BusinessLogicException(EMAIL_NOT_VALID);
         }
     }
 
     /**
      * Password 검증
      */
-    public static void verifyPassword(String password) {
+    public static void checkPassword(String password) {
         if (!Pattern.matches(REG_PASSWORD, password)) {
-            throw new RuntimeException("비밀번호 형식이 올바르지 않습니다.");
+            throw new BusinessLogicException(PASSWORD_NOT_VALID);
         }
     }
 
