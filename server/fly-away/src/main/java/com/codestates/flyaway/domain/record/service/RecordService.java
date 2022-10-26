@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 import static com.codestates.flyaway.web.record.dto.RecordDto.*;
 import static com.codestates.flyaway.web.record.dto.RecordDto.InsertResponse.recordToInsertResponse;
 import static java.time.LocalDate.*;
@@ -22,27 +20,23 @@ public class RecordService {
     private final RecordRepository recordRepository;
     private final MemberService memberService;
 
-
     /**
      * 운동 시간 기록
      * @return 회원 id, 기록 정보(날짜, 운동시간)
      */
     public InsertResponse insertRecord(long memberId, InsertRequest insertDto) {
-
-        LocalDate date = now();
         long rec = insertDto.getRecord();
 
-        Record record = recordRepository.findByMemberIdAndDate(memberId, date)
-                .orElseGet(() -> new Record(date, 0));
+        Record record = recordRepository.findByMemberIdAndDate(memberId, now())
+                .orElseGet(() -> new Record(now(), 0));
 
         return saveRecord(memberId, rec, record);
     }
 
     private InsertResponse saveRecord(long memberId, long rec, Record record) {
-
         Member findMember = memberService.findById(memberId);
 
-        //해당 날짜에 이미 기록이 있는 경우 운동 시간만 추가
+        //운동 시간 추가
         record.addRecord(rec);
 
         //해당 날짜 첫 운동기록인 경우
@@ -53,5 +47,4 @@ public class RecordService {
 
         return recordToInsertResponse(memberId, record);
     }
-
 }

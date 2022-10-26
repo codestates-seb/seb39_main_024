@@ -1,7 +1,6 @@
 package com.codestates.flyaway.domain.member.util;
 
 import com.codestates.flyaway.global.exception.BusinessLogicException;
-import com.codestates.flyaway.global.exception.ExceptionCode;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

@@ -8,9 +8,12 @@ public enum ExceptionCode {
     MEMBER_NOT_AUTHORIZED(403, "로그인되지 않은 사용자입니다."),
     MEMBER_ALREADY_AUTHORIZED(400, "이미 로그인 상태입니다."),
     NOT_AUTHORIZED(403, "작성자가 일치하지 않습니다."),
+    REFRESH_TOKEN_EXPIRED(401, "refresh token 만료, 강제 로그아웃"),
 
     EMAIL_ALREADY_EXISTS(409, "이미 존재하는 이메일입니다."),
     EMAIL_NOT_EXISTS(400, "존재하지 않는 이메일입니다."),
+    EMAIL_NOT_VALID(400, "이메일 형식이 올바르지 않습니다."),
+    PASSWORD_NOT_VALID(400, "비밀번호 형식이 올바르지 않습니다."),
     PASSWORD_NOT_MATCH(400, "비밀번호가 일치하지 않습니다."),
 
     IMAGE_NOT_FOUND(404, "이미지가 존재하지 않습니다."),

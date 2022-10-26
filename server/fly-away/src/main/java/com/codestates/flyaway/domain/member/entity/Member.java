@@ -52,11 +52,7 @@ public class Member extends Auditable {
 
     private String name;
     private String email;
-
-//    @Convert(converter = PasswordConverter.class)
     private String password;
-
-    private String isLoggedIn;
 
     public Member(String name, String email, String password) {
         this.name = name;
@@ -64,7 +60,19 @@ public class Member extends Auditable {
         this.password = password;
     }
 
+    public Member(String name, String email, String password, List<Record> records) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.records = records;
+    }
 
+    public Member(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     //==================
 
@@ -78,13 +86,10 @@ public class Member extends Auditable {
                 .ifPresent(n -> this.name = n);
         Optional.ofNullable(password)
                 .ifPresent(p -> this.password = encode(p));
-    }
-
-    public void setLogin() {
-        this.isLoggedIn = "Y";
-    }
-
-    public void setLogout(){
-        this.isLoggedIn = "N";
+//        Optional.ofNullable(password)
+//                .ifPresent(p -> {
+//                    checkPassword(p);
+//                    this.password = encode(p);
+//                });
     }
 }
