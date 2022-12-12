@@ -36,14 +36,10 @@ public class MemberService {
      * @return 가입 완료된 회원의 id, name, email, createdAt
      */
     public JoinResponse join(JoinRequest joinRequest) {
-        String email = joinRequest.getEmail();
-        String password = joinRequest.getPassword();
-
 //        checkEmail(email);
 //        checkPassword(password);
-        verifyEmail(email);
 
-        joinRequest.setPassword(encode(password));
+        joinRequest.setPassword(encode(joinRequest.getPassword()));
 
         Member member = joinRequest.toEntity();
         Member savedMember = memberRepository.save(member);
